@@ -2,11 +2,12 @@ import { AsyncPipe, NgIf } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { map, Observable } from "rxjs";
 
-import { HostService } from "./host.service";
+import { HostService } from "../../services/host.service";
+import { FullscreenMessageComponent } from "../core/fullscreen-message.component";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, NgIf],
+  imports: [AsyncPipe, FullscreenMessageComponent, NgIf],
   providers: [HostService],
   selector: "host",
   standalone: true,

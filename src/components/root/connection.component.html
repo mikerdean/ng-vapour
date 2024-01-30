@@ -1,0 +1,25 @@
+<ng-container [ngSwitch]="connectionState$ | async">
+  <ng-content *ngSwitchCase="'connected'" />
+
+  <div *ngSwitchCase="'connecting'">connecting...</div>
+
+  <div *ngSwitchCase="'disconnected'">
+    <fullscreen-message>
+      <heading [level]="1">Connection error</heading>
+      <p class="mb-5">
+        <strong>The connection to Kodi failed.</strong>
+      </p>
+      <p class="mb-2">Please ensure that:</p>
+      <ordered-list [items]="errorListItems" />
+      <div class="my-5">
+        <form-button (click)="reconnect()">Retry connection</form-button>
+      </div>
+      <hr class="mb-5" />
+      <p class="mb-2">We tried to connect you to:</p>
+      <div>[summary]</div>
+      <div class="my-5">
+        <form-button (click)="clear()">Try a different host</form-button>
+      </div>
+    </fullscreen-message>
+  </div>
+</ng-container>

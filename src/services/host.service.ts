@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, map, Subject } from "rxjs";
+import { BehaviorSubject, map } from "rxjs";
 
 import type { Host } from "./host.service.types";
 
 @Injectable({ providedIn: "root" })
 export class HostService {
-  #host: Subject<Host | undefined> = new BehaviorSubject<Host | undefined>({
+  #host = new BehaviorSubject<Host | undefined>({
     hostname: window.location.hostname,
     httpPort: 8080,
     tcpPort: 9090,
@@ -13,7 +13,7 @@ export class HostService {
 
   host$ = this.#host.asObservable();
 
-  httpUrl$ = this.host$.pipe(
+  httpUrl$ = this.#host.pipe(
     map((host) => {
       if (!host) {
         return undefined;
@@ -26,7 +26,7 @@ export class HostService {
     }),
   );
 
-  websocketUrl$ = this.host$.pipe(
+  websocketUrl$ = this.#host.pipe(
     map((host) => {
       if (!host) {
         return undefined;
@@ -41,6 +41,13 @@ export class HostService {
 
   clear(): void {
     this.#host.next(undefined);
+  }
+
+  retry(): void {
+    const host = this.#host.value;
+    if (host) {
+      this.update({ ...host });
+    }
   }
 
   update(host: Host): void {

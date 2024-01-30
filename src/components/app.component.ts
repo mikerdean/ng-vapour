@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 
-import { ConnectionComponent } from "./connection/connection.component";
-import { HostComponent } from "./host/host.component";
+import { ConnectionComponent } from "./root/connection.component";
+import { HostComponent } from "./root/host.component";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

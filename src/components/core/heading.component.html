@@ -1,0 +1,22 @@
+<ng-container [ngSwitch]="level">
+  <h1
+    *ngSwitchCase="1"
+    class="text-xl border-b-2 border-slate-600 text-cyan-400 mb-4"
+  >
+    <ng-container *ngTemplateOutlet="content" />
+  </h1>
+  <h2
+    *ngSwitchCase="2"
+    class="text-lg text-cyan-500 mb-3 underline underline-offset-4 decoration-2 decoration-cyan-900"
+  >
+    <ng-container *ngTemplateOutlet="content" />
+  </h2>
+  <h3 *ngSwitchCase="3"><ng-container *ngTemplateOutlet="content" /></h3>
+  <h4 *ngSwitchCase="4"><ng-container *ngTemplateOutlet="content" /></h4>
+  <h5 *ngSwitchCase="5"><ng-container *ngTemplateOutlet="content" /></h5>
+  <h6 *ngSwitchCase="6"><ng-container *ngTemplateOutlet="content" /></h6>
+</ng-container>
+
+<ng-template #content>
+  <ng-content />
+</ng-template>
