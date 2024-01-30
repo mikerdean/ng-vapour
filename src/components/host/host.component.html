@@ -1,0 +1,7 @@
+<ng-container *ngIf="hasValidHost$ | async; else hostForm">
+  <ng-content />
+</ng-container>
+
+<ng-template #hostForm>
+  
+</ng-template>

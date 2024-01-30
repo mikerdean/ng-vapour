@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-display: swap;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src:
+    url("assets/fonts/roboto-v30-latin-regular.woff2") format("woff2"),
+    url("assets/fonts/roboto-v30-latin-regular.woff") format("woff");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  src:
+    url("assets/fonts/roboto-v30-latin-700.woff2") format("woff2"),
+    url("assets/fonts/roboto-v30-latin-700.woff") format("woff");
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
