@@ -1,7 +1,9 @@
 <ng-container [ngSwitch]="connectionState$ | async">
   <ng-content *ngSwitchCase="'connected'" />
 
-  <div *ngSwitchCase="'connecting'">connecting...</div>
+  <div *ngSwitchCase="'connecting'">
+    <fullscreen-message>Loading...</fullscreen-message>
+  </div>
 
   <div *ngSwitchCase="'disconnected'">
     <fullscreen-message>

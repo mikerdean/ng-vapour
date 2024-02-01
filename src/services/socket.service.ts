@@ -1,18 +1,19 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { Injectable, OnDestroy } from "@angular/core";
+import { BehaviorSubject, Subscription } from "rxjs";
 
 import { HostService } from "./host.service";
 import type { ConnectionState } from "./socket.service.types";
 
 @Injectable({ providedIn: "root" })
-export class SocketService {
+export class SocketService implements OnDestroy {
   #connectionState = new BehaviorSubject<ConnectionState>("connecting");
   #socket: WebSocket | undefined;
+  #hostSubscription: Subscription;
 
   connectionState$ = this.#connectionState.asObservable();
 
   constructor(hostService: HostService) {
-    hostService.websocketUrl$.subscribe((url) => {
+    this.#hostSubscription = hostService.websocketUrl$.subscribe((url) => {
       if (this.#socket) {
         this.#socket.close();
       }
@@ -35,5 +36,9 @@ export class SocketService {
         }, 250);
       };
     });
+  }
+
+  ngOnDestroy(): void {
+    this.#hostSubscription.unsubscribe();
   }
 }

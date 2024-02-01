@@ -4,11 +4,11 @@ import { map, Observable } from "rxjs";
 
 import { HostService } from "../../services/host.service";
 import { FullscreenMessageComponent } from "../core/fullscreen-message.component";
+import { HeadingComponent } from "../core/heading.component";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, FullscreenMessageComponent, NgIf],
-  providers: [HostService],
+  imports: [AsyncPipe, FullscreenMessageComponent, HeadingComponent, NgIf],
   selector: "host",
   standalone: true,
   templateUrl: "host.component.html",
