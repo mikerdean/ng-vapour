@@ -10,7 +10,7 @@ export class SocketService implements OnDestroy {
   #hostSubscription: Subscription;
   #socket: WebSocket | undefined;
 
-  connectionState$ = this.#connectionState.asObservable();
+  readonly connectionState$ = this.#connectionState.asObservable();
 
   constructor(hostService: HostService) {
     this.#hostSubscription = hostService.websocketUrl$.subscribe((url) => {

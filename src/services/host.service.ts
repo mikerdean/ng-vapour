@@ -11,9 +11,9 @@ export class HostService {
     tcpPort: 9090,
   });
 
-  host$ = this.#host.asObservable();
+  readonly host$ = this.#host.asObservable();
 
-  httpUrl$ = this.#host.pipe(
+  readonly httpUrl$ = this.#host.pipe(
     map((host) => {
       if (!host) {
         return undefined;
@@ -26,7 +26,7 @@ export class HostService {
     }),
   );
 
-  websocketUrl$ = this.#host.pipe(
+  readonly websocketUrl$ = this.#host.pipe(
     map((host) => {
       if (!host) {
         return undefined;
