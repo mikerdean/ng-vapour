@@ -18,7 +18,10 @@
       </div>
       <hr class="mb-5" />
       <p class="mb-2">We tried to connect you to:</p>
-      <div>[summary]</div>
+      <definition-list
+        label="Host details"
+        [items]="(hostSummaryItems | async) || []"
+      />
       <div class="my-5">
         <form-button (click)="clear()">Try a different host</form-button>
       </div>

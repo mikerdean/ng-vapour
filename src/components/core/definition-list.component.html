@@ -1,0 +1,8 @@
+<dl [attr.aria-label]="label" class="grid grid-cols-2 mb-3" role="list">
+  <ng-container *ngFor="let item of items; trackBy: trackByIndex">
+    <dt class="font-bold" role="listitem">
+      {{ item.header }}
+    </dt>
+    <dd>{{ item.description }}</dd>
+  </ng-container>
+</dl>
