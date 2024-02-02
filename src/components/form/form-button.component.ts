@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,10 +9,4 @@ import {
 export class FormButtonComponent {
   @Input() disabled = false;
   @Input() type: "button" | "submit" | "reset" = "button";
-
-  @Output() click = new EventEmitter<never>();
-
-  clicked() {
-    this.click.emit();
-  }
 }
