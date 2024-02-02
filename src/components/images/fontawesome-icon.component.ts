@@ -1,5 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from "@angular/core";
+import {
+  Icon,
   icon as parseIcon,
   type FlipProp,
   type IconDefinition,
@@ -18,7 +25,7 @@ import type {
   selector: "fa-icon",
   templateUrl: "fontawesome-icon.component.svg",
 })
-export class FontawesomeIconComponent {
+export class FontawesomeIconComponent implements OnChanges {
   @Input() animation?: FontAwesomeAnimation;
   @Input() border = false;
   @Input() class?: ClassOrStyle;
@@ -31,6 +38,16 @@ export class FontawesomeIconComponent {
   @Input() size?: SizeProp;
   @Input() style?: ClassOrStyle;
   @Input() swapOpacity = false;
+
+  parsedIcon!: Icon;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const iconChange = changes["icon"];
+
+    if (iconChange) {
+      this.parsedIcon = parseIcon(iconChange.currentValue);
+    }
+  }
 
   get classList(): ClassOrStyle {
     return {
@@ -79,10 +96,6 @@ export class FontawesomeIconComponent {
     };
   }
 
-  get parsedIcon() {
-    return parseIcon(this.icon);
-  }
-
   get styleList() {
     return {
       "--fa-rotate-by": this.rotate ? `${this.rotate}deg` : undefined,
@@ -91,7 +104,6 @@ export class FontawesomeIconComponent {
   }
 
   get viewBox() {
-    const icon = this.parsedIcon;
-    return `0 0 ${icon.icon[0]} ${icon.icon[1]}`;
+    return `0 0 ${this.parsedIcon.icon[0]} ${this.parsedIcon.icon[1]}`;
   }
 }
