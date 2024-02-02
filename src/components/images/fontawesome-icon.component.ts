@@ -6,9 +6,9 @@ import {
   SimpleChanges,
 } from "@angular/core";
 import {
-  Icon,
   icon as parseIcon,
   type FlipProp,
+  type Icon,
   type IconDefinition,
   type SizeProp,
 } from "@fortawesome/fontawesome-svg-core";
