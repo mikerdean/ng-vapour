@@ -2,8 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
-  OnChanges,
-  SimpleChanges,
+  type OnChanges,
+  type SimpleChanges,
 } from "@angular/core";
 import {
   icon as parseIcon,
