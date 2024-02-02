@@ -1,5 +1,6 @@
 import { AsyncPipe, NgIf, NgSwitch, NgSwitchCase } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { map, Observable } from "rxjs";
 
 import { HostService } from "../../services/host.service";
@@ -10,12 +11,14 @@ import { FullscreenMessageComponent } from "../core/fullscreen-message.component
 import { HeadingComponent } from "../core/heading.component";
 import { OrderedListComponent } from "../core/ordered-list.component";
 import { FormButtonComponent } from "../form/form-button.component";
+import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
     DefinitionListComponent,
+    FontawesomeIconComponent,
     FormButtonComponent,
     FullscreenMessageComponent,
     HeadingComponent,
@@ -44,6 +47,10 @@ export class ConnectionComponent {
         { header: "Port", description: host?.tcpPort.toString() || "Unknown" },
       ]),
     );
+
+  icons = {
+    loading: faCircleNotch,
+  };
 
   constructor(
     private hostService: HostService,
