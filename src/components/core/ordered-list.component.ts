@@ -1,7 +1,8 @@
 import { NgForOf } from "@angular/common";
-import { Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgForOf],
   selector: "ordered-list",
   standalone: true,

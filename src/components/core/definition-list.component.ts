@@ -1,7 +1,7 @@
 import { NgForOf } from "@angular/common";
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 
-import { DefinitionListItem } from "./definition-list.types";
+import type { DefinitionListItem } from "./definition-list.types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

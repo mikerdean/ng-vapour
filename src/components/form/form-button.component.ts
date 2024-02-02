@@ -1,6 +1,13 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from "@angular/core";
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: "form-button",
   standalone: true,
   templateUrl: "form-button.component.html",

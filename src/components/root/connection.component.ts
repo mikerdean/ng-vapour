@@ -5,7 +5,7 @@ import { map, Observable } from "rxjs";
 import { HostService } from "../../services/host.service";
 import { SocketService } from "../../services/socket.service";
 import { DefinitionListComponent } from "../core/definition-list.component";
-import { DefinitionListItem } from "../core/definition-list.types";
+import type { DefinitionListItem } from "../core/definition-list.types";
 import { FullscreenMessageComponent } from "../core/fullscreen-message.component";
 import { HeadingComponent } from "../core/heading.component";
 import { OrderedListComponent } from "../core/ordered-list.component";

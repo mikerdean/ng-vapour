@@ -1,7 +1,8 @@
 import { NgSwitch, NgSwitchCase, NgTemplateOutlet } from "@angular/common";
-import { Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgSwitch, NgSwitchCase, NgTemplateOutlet],
   selector: "heading",
   standalone: true,
