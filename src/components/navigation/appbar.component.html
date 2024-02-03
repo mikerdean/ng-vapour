@@ -1,0 +1,26 @@
+<header class="sticky top-0 w-full bg-fuchsia-600 text-slate-50 z-10">
+  <div class="flex py-2 px-3 items-center">
+    <kodi-logo />
+    <p class="grow ml-2 text-lg">
+      <span>Kodi</span>
+    </p>
+    <div>
+      <button class="mr-6">
+        <fa-icon [icon]="icons.remote" />
+        <span class="sr-only">Remote</span>
+      </button>
+      <button class="mr-6">
+        <fa-icon [icon]="icons.search" />
+        <span class="sr-only">Search</span>
+      </button>
+      <button class="mr-6" *ngIf="allowProfileChange$ | async">
+        <fa-icon [icon]="icons.profile" />
+        <span class="sr-only">Change profile</span>
+      </button>
+      <button>
+        <fa-icon [icon]="icons.config" />
+        <span class="sr-only">Edit configuration</span>
+      </button>
+    </div>
+  </div>
+</header>
