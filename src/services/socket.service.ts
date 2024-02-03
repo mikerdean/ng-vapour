@@ -6,7 +6,10 @@ import type { ConnectionState } from "./socket.service.types";
 
 @Injectable({ providedIn: "root" })
 export class SocketService implements OnDestroy {
-  #connectionState = new BehaviorSubject<ConnectionState>("connecting");
+  readonly #connectionState = new BehaviorSubject<ConnectionState>(
+    "connecting",
+  );
+
   #hostSubscription: Subscription;
   #socket: WebSocket | undefined;
 

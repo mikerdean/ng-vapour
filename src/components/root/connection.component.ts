@@ -32,15 +32,15 @@ import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
   templateUrl: "connection.component.html",
 })
 export class ConnectionComponent {
-  connectionState$ = this.socketService.connectionState$;
+  readonly connectionState$ = this.socketService.connectionState$;
 
-  errorListItems = [
+  readonly errorListItems = [
     "Kodi is running",
     "You have enabled Settings > Services > Control > Allow Remote Control via HTTP",
     "You have enabled Settings > Services > Control > Allow Remote Control from applications on this system",
   ];
 
-  hostSummaryItems: Observable<DefinitionListItem[]> =
+  readonly hostSummaryItems: Observable<DefinitionListItem[]> =
     this.hostService.host$.pipe(
       map((host) => [
         { header: "Hostname", description: host?.hostname || "Unknown" },
@@ -48,7 +48,7 @@ export class ConnectionComponent {
       ]),
     );
 
-  icons = {
+  readonly icons = {
     loading: faCircleNotch,
   };
 

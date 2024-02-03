@@ -5,7 +5,7 @@ import type { Host } from "./host.service.types";
 
 @Injectable({ providedIn: "root" })
 export class HostService {
-  #host = new BehaviorSubject<Host | undefined>({
+  readonly #host = new BehaviorSubject<Host | undefined>({
     hostname: window.location.hostname,
     httpPort: 8080,
     tcpPort: 9090,

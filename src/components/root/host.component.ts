@@ -33,11 +33,11 @@ export class HostComponent {
   readonly portMin = 1000;
   readonly portMax = 9999;
 
-  hasValidHost$: Observable<boolean> = this.hostService.host$.pipe(
+  readonly hasValidHost$: Observable<boolean> = this.hostService.host$.pipe(
     map((host) => (host ? true : false)),
   );
 
-  hostForm = new FormGroup({
+  readonly hostForm = new FormGroup({
     hostname: new FormControl<string>(window.location.hostname, {
       nonNullable: true,
       validators: [Validators.required],
