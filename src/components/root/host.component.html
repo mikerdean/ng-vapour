@@ -1,10 +1,37 @@
-<ng-container *ngIf="hasValidHost$ | async; else hostForm">
+<ng-container *ngIf="hasValidHost$ | async; else showHostForm">
   <ng-content />
 </ng-container>
 
-<ng-template #hostForm>
+<ng-template #showHostForm>
   <fullscreen-message>
-    <heading [level]="1">Enter host details</heading>
-    <p>[ the rest of the form goes here ]</p>
+    <form [formGroup]="hostForm" (ngSubmit)="onSubmit()">
+      <heading [level]="1">Enter host details</heading>
+      <div class="mb-5">
+        <form-input [form]="hostForm" label="Hostname" name="hostname" />
+      </div>
+      <div class="mb-5">
+        <form-input
+          [form]="hostForm"
+          label="HTTP Port"
+          [max]="portMax"
+          [min]="portMin"
+          name="httpPort"
+          type="number"
+        />
+      </div>
+      <div class="mb-5">
+        <form-input
+          [form]="hostForm"
+          label="TCP Port"
+          [max]="portMax"
+          [min]="portMin"
+          name="tcpPort"
+          type="number"
+        />
+      </div>
+      <div>
+        <form-button type="submit">Save</form-button>
+      </div>
+    </form>
   </fullscreen-message>
 </ng-template>

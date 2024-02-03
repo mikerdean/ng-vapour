@@ -1,0 +1,26 @@
+<ng-container [formGroup]="form">
+  <label *ngIf="label" [attr.for]="id">{{ label }}</label>
+  <input
+    class="px-2 py-1 w-full rounded border text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-fuchsia-700"
+    [class]="{
+      'bg-slate-400': !hasError,
+      'bg-fuchsia-200': hasError,
+      'border-fuchsia-500': hasError,
+      'border-slate-300': !hasError
+    }"
+    [formControlName]="name"
+    [id]="id"
+    [attr.max]="max"
+    [attr.min]="min"
+    [attr.type]="type"
+  />
+  <div *ngIf="hasError" class="mt-2 text-xs text-slate-300">
+    <span *ngIf="errorRequired">This field is required.</span>
+    <span *ngIf="errorMin"
+      >This field has a minimum value of {{ min || "unknown" }}.</span
+    >
+    <span *ngIf="errorMax"
+      >This field has a maximum value of {{ max || "unknown" }}.</span
+    >
+  </div>
+</ng-container>
