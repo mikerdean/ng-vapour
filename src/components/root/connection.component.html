@@ -1,7 +1,8 @@
 <ng-container [ngSwitch]="connectionState$ | async">
   <ng-container *ngSwitchCase="'connected'">
-    <appbar />
+    <app-bar />
     <router-outlet />
+    <navigation-bar />
   </ng-container>
 
   <div *ngSwitchCase="'connecting'">

@@ -24,9 +24,9 @@ const navigationEvents = new Set<EventType>([
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, FontawesomeIconComponent, KodiLogoComponent, NgIf],
-  selector: "appbar",
+  selector: "app-bar",
   standalone: true,
-  templateUrl: "appbar.component.html",
+  templateUrl: "app-bar.component.html",
 })
 export class AppbarComponent {
   readonly allowProfileChange$ = this.profileService

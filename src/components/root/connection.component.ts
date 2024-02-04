@@ -13,7 +13,8 @@ import { HeadingComponent } from "../core/heading.component";
 import { OrderedListComponent } from "../core/ordered-list.component";
 import { FormButtonComponent } from "../form/form-button.component";
 import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
-import { AppbarComponent } from "../navigation/appbar.component";
+import { AppbarComponent } from "../navigation/app-bar.component";
+import { NavigationBarComponent } from "../navigation/navigation-bar.component";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,6 +26,7 @@ import { AppbarComponent } from "../navigation/appbar.component";
     FormButtonComponent,
     FullscreenMessageComponent,
     HeadingComponent,
+    NavigationBarComponent,
     NgIf,
     NgSwitch,
     NgSwitchCase,
