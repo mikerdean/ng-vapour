@@ -6,8 +6,10 @@ import {
   faSearch,
   faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { of } from "rxjs";
+import { map } from "rxjs";
 
+import { SocketService } from "../../services/socket.service";
+import { ProfileDetailsPaged, ProfilesQuery } from "../../shared/kodi";
 import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
 import { KodiLogoComponent } from "../images/kodi-logo.component";
 
@@ -19,11 +21,19 @@ import { KodiLogoComponent } from "../images/kodi-logo.component";
   templateUrl: "appbar.component.html",
 })
 export class AppbarComponent {
-  readonly allowProfileChange$ = of(true);
+  allowProfileChange$ = this.socketService
+    .send<ProfilesQuery, ProfileDetailsPaged>("Profiles.GetProfiles", {
+      properties: ["lockmode", "thumbnail"],
+      sort: { method: "label", order: "ascending" },
+    })
+    .pipe(map((data) => data.limits.total > 1));
+
   readonly icons = {
     config: faEllipsisVertical,
     profile: faUserCircle,
     remote: faRss,
     search: faSearch,
   };
+
+  constructor(private socketService: SocketService) {}
 }

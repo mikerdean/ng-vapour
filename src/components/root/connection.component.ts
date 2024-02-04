@@ -1,5 +1,6 @@
 import { AsyncPipe, NgIf, NgSwitch, NgSwitchCase } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { map, Observable } from "rxjs";
 
@@ -12,10 +13,12 @@ import { HeadingComponent } from "../core/heading.component";
 import { OrderedListComponent } from "../core/ordered-list.component";
 import { FormButtonComponent } from "../form/form-button.component";
 import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
+import { AppbarComponent } from "../navigation/appbar.component";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    AppbarComponent,
     AsyncPipe,
     DefinitionListComponent,
     FontawesomeIconComponent,
@@ -26,6 +29,7 @@ import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
     NgSwitch,
     NgSwitchCase,
     OrderedListComponent,
+    RouterOutlet,
   ],
   selector: "connection",
   standalone: true,

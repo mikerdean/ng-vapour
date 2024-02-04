@@ -13,11 +13,13 @@ import { FullscreenMessageComponent } from "../core/fullscreen-message.component
 import { HeadingComponent } from "../core/heading.component";
 import { FormButtonComponent } from "../form/form-button.component";
 import { FormInputComponent } from "../form/form-input.component";
+import { ConnectionComponent } from "./connection.component";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
+    ConnectionComponent,
     FormButtonComponent,
     FormInputComponent,
     FullscreenMessageComponent,
