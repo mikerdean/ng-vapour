@@ -23,4 +23,16 @@
       </button>
     </div>
   </div>
+  <div
+    class="h-2 relative"
+    [class]="{
+      'bg-slate-900': !(loading$ | async),
+      'bg-cyan-700': (loading$ | async)
+    }"
+  >
+    <span
+      *ngIf="loading$ | async"
+      class="bg-cyan-500 h-full w-1/2 absolute left-[-50%] animate-loading"
+    ></span>
+  </div>
 </header>
