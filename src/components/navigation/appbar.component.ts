@@ -8,8 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { map } from "rxjs";
 
-import { SocketService } from "../../services/socket.service";
-import { ProfileDetailsPaged, ProfilesQuery } from "../../shared/kodi";
+import { ProfileService } from "../../services/profile.service";
 import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
 import { KodiLogoComponent } from "../images/kodi-logo.component";
 
@@ -21,12 +20,11 @@ import { KodiLogoComponent } from "../images/kodi-logo.component";
   templateUrl: "appbar.component.html",
 })
 export class AppbarComponent {
-  allowProfileChange$ = this.socketService
-    .send<ProfilesQuery, ProfileDetailsPaged>("Profiles.GetProfiles", {
-      properties: ["lockmode", "thumbnail"],
-      sort: { method: "label", order: "ascending" },
-    })
+  readonly allowProfileChange$ = this.profileService
+    .getProfiles()
     .pipe(map((data) => data.limits.total > 1));
+
+  readonly currentUser$ = this.profileService.getCurrentProfile();
 
   readonly icons = {
     config: faEllipsisVertical,
@@ -35,5 +33,5 @@ export class AppbarComponent {
     search: faSearch,
   };
 
-  constructor(private socketService: SocketService) {}
+  constructor(private profileService: ProfileService) {}
 }
