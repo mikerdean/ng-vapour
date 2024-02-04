@@ -112,10 +112,12 @@ export class SocketService implements OnDestroy {
     return subject.pipe(
       timeout({
         each: this.timeout,
-        with: () =>
-          throwError(() =>
+        with: () => {
+          this.#queue.delete(id);
+          return throwError(() =>
             Error(`Message ${id} exceeded the timeout value (${timeout})`),
-          ),
+          );
+        },
       }),
       map((message) => {
         if (isKodiError(message)) {
