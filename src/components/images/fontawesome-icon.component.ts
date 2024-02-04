@@ -98,7 +98,7 @@ export class FontawesomeIconComponent implements OnChanges {
 
   get styleList() {
     return {
-      "--fa-rotate-by": this.rotate ? `${this.rotate}deg` : undefined,
+      "--fa-rotate-angle": this.rotate ? `${this.rotate}deg` : undefined,
       ...this.style,
     };
   }
