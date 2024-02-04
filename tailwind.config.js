@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       animation: {
-        loading: "loading 2s ease-in 0.5s infinite",
+        loading: "loading 1.25s ease-in 0s infinite",
       },
       keyframes: {
         loading: {
