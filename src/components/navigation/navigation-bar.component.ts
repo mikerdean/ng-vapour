@@ -1,16 +1,15 @@
 import { NgForOf } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
-import {
-  faCog,
-  faCubes,
-  faDisplay,
-  faFilm,
-  faMusic,
-} from "@fortawesome/free-solid-svg-icons";
 
+import { routes } from "../app.routes";
+import type { RouteWithMetadata } from "../app.routes.types";
 import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
-import { NavigationBarItem } from "./navigation-bar.types";
+import type { NavigationBarItem } from "./navigation-bar.types";
+
+const hasIcon = (route: RouteWithMetadata): route is NavigationBarItem => {
+  return "icon" in route;
+};
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,11 +19,5 @@ import { NavigationBarItem } from "./navigation-bar.types";
   templateUrl: "navigation-bar.component.html",
 })
 export class NavigationBarComponent {
-  readonly links: NavigationBarItem[] = [
-    { label: "Movies", icon: faFilm, path: ["movies"] },
-    { label: "TV", icon: faDisplay, path: ["tv"] },
-    { label: "Music", icon: faMusic, path: ["music"] },
-    { label: "Addons", icon: faCubes, path: ["addons"] },
-    { label: "Settings", icon: faCog, path: ["settings"] },
-  ];
+  readonly links: NavigationBarItem[] = routes.filter(hasIcon);
 }
