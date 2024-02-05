@@ -26,12 +26,12 @@
   <div
     class="h-1.5 relative"
     [class]="{
-      'bg-slate-900': !(loading$ | async),
-      'bg-cyan-700': (loading$ | async)
+      'bg-slate-900': !(navigating$ | async),
+      'bg-cyan-700': (navigating$ | async)
     }"
   >
     <span
-      *ngIf="loading$ | async"
+      *ngIf="navigating$ | async"
       class="bg-cyan-500 h-full w-1/2 absolute left-[-50%] animate-loading"
     ></span>
   </div>

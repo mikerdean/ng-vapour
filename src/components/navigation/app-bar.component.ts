@@ -1,25 +1,17 @@
 import { AsyncPipe, NgIf } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { EventType, Router } from "@angular/router";
 import {
   faEllipsisVertical,
   faMobileRetro,
   faSearch,
   faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { filter, map } from "rxjs";
+import { map } from "rxjs";
 
+import { NavigationService } from "../../services/navigation.service";
 import { ProfileService } from "../../services/profile.service";
 import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
 import { KodiLogoComponent } from "../images/kodi-logo.component";
-
-const navigationEvents = new Set<EventType>([
-  EventType.NavigationCancel,
-  EventType.NavigationEnd,
-  EventType.NavigationError,
-  EventType.NavigationSkipped,
-  EventType.NavigationStart,
-]);
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,10 +27,7 @@ export class AppbarComponent {
 
   readonly currentUser$ = this.profileService.getCurrentProfile();
 
-  readonly loading$ = this.router.events.pipe(
-    filter((ev) => navigationEvents.has(ev.type)),
-    map((ev) => ev.type === EventType.NavigationStart),
-  );
+  readonly navigating$ = this.navigationService.navigating$;
 
   readonly icons = {
     config: faEllipsisVertical,
@@ -48,7 +37,7 @@ export class AppbarComponent {
   };
 
   constructor(
+    private navigationService: NavigationService,
     private profileService: ProfileService,
-    private router: Router,
   ) {}
 }
