@@ -7,41 +7,59 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { RouteWithMetadata } from "./app.routes.types";
-import { InstalledAddonsComponent } from "./views/addons/installed-addons.component";
-import { RecentMoviesComponent } from "./views/movies/recent-movies.component";
-import { RecentMusicComponent } from "./views/music/recent-music.component";
-import { SettingsComponent } from "./views/settings/settings.component";
-import { RecentTvComponent } from "./views/tv/recent-tv.component";
+import { Error404Component } from "./views/error/error404.component";
 
 export const routes: RouteWithMetadata[] = [
+  {
+    path: "movies",
+    loadComponent: () =>
+      import("./views/movies/recent-movies.component").then(
+        (x) => x.RecentMoviesComponent,
+      ),
+    icon: faFilm,
+    title: "Movies",
+  },
+  {
+    path: "music",
+    loadComponent: () =>
+      import("./views/music/recent-music.component").then(
+        (x) => x.RecentMusicComponent,
+      ),
+    icon: faMusic,
+    title: "Music",
+  },
+  {
+    path: "tv",
+    loadComponent: () =>
+      import("./views/tv/recent-tv.component").then((x) => x.RecentTvComponent),
+    icon: faDisplay,
+    title: "TV",
+  },
+  {
+    path: "addons",
+    loadComponent: () =>
+      import("./views/addons/installed-addons.component").then(
+        (x) => x.InstalledAddonsComponent,
+      ),
+    icon: faCubes,
+    title: "Addons",
+  },
+  {
+    path: "settings",
+    loadComponent: () =>
+      import("./views/settings/settings.component").then(
+        (x) => x.SettingsComponent,
+      ),
+    icon: faCog,
+    title: "Settings",
+  },
   {
     path: "",
     redirectTo: "/movies",
     pathMatch: "full",
   },
   {
-    path: "movies",
-    component: RecentMoviesComponent,
-    icon: faFilm,
-    title: "Movies",
-  },
-  {
-    path: "music",
-    component: RecentMusicComponent,
-    icon: faMusic,
-    title: "Music",
-  },
-  { path: "tv", component: RecentTvComponent, icon: faDisplay, title: "TV" },
-  {
-    path: "addons",
-    component: InstalledAddonsComponent,
-    icon: faCubes,
-    title: "Addons",
-  },
-  {
-    path: "settings",
-    component: SettingsComponent,
-    icon: faCog,
-    title: "Settings",
+    path: "**",
+    component: Error404Component,
   },
 ];
