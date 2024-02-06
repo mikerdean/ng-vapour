@@ -39,6 +39,7 @@ export class SocketService implements OnDestroy {
       }
 
       if (!url) {
+        this.#connectionState.next("disconnected");
         return;
       }
 
