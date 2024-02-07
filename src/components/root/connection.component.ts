@@ -35,6 +35,11 @@ import { NavigationBarComponent } from "../navigation/navigation-bar.component";
   templateUrl: "connection.component.html",
 })
 export class ConnectionComponent {
+  constructor(
+    private hostService: HostService,
+    private socketService: SocketService,
+  ) {}
+
   readonly connectionState$ = this.socketService.connectionState$;
 
   readonly errorListItems = [
@@ -54,11 +59,6 @@ export class ConnectionComponent {
   readonly icons = {
     loading: faCircleNotch,
   };
-
-  constructor(
-    private hostService: HostService,
-    private socketService: SocketService,
-  ) {}
 
   clear() {
     this.hostService.clear();

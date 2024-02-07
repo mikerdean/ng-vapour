@@ -12,10 +12,10 @@ const navigationEvents = new Set<EventType>([
 
 @Injectable({ providedIn: "root" })
 export class NavigationService {
+  constructor(private router: Router) {}
+
   readonly navigating$ = this.router.events.pipe(
     filter((ev) => navigationEvents.has(ev.type)),
     map((ev) => ev.type === EventType.NavigationStart),
   );
-
-  constructor(private router: Router) {}
 }

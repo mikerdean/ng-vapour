@@ -31,6 +31,8 @@ import { ConnectionComponent } from "./connection.component";
   templateUrl: "host.component.html",
 })
 export class HostComponent {
+  constructor(private hostService: HostService) {}
+
   readonly portMin = 1000;
   readonly portMax = 9999;
 
@@ -60,8 +62,6 @@ export class HostComponent {
       ],
     }),
   });
-
-  constructor(private hostService: HostService) {}
 
   onSubmit() {
     if (!this.hostForm.valid) {

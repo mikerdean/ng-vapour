@@ -21,6 +21,11 @@ import { KodiLogoComponent } from "../images/kodi-logo.component";
   templateUrl: "app-bar.component.html",
 })
 export class AppbarComponent {
+  constructor(
+    private navigationService: NavigationService,
+    private profileService: ProfileService,
+  ) {}
+
   readonly allowProfileChange$ = this.profileService
     .getProfiles()
     .pipe(map((data) => data.limits.total > 1));
@@ -35,9 +40,4 @@ export class AppbarComponent {
     remote: faMobileRetro,
     search: faSearch,
   };
-
-  constructor(
-    private navigationService: NavigationService,
-    private profileService: ProfileService,
-  ) {}
 }

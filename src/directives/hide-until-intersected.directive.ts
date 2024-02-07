@@ -7,12 +7,12 @@ import { ImageOberserverService } from "../services/image-observer.service";
   standalone: true,
 })
 export class HideUntilIntersectedDirective implements OnDestroy, OnInit {
-  @Input("hideUntilIntersected") src = "";
-
   constructor(
     private element: ElementRef,
     private imageObserver: ImageOberserverService,
   ) {}
+
+  @Input("hideUntilIntersected") src = "";
 
   ngOnInit(): void {
     const element = this.element.nativeElement;
