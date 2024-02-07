@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { map, Observable } from "rxjs";
 
 import { MoviesService } from "../../../services/movies.service";
-import { getVideoDuration } from "../../../shared/duration";
+import { mapMovieToGridItem } from "../../../shared/mapping";
 import { GridComponent } from "../../grid/grid.component";
 import type { GridItem } from "../../grid/grid.types";
 
@@ -16,21 +16,11 @@ import type { GridItem } from "../../grid/grid.types";
 export class RecentMoviesComponent {
   constructor(private moviesService: MoviesService) {}
 
-  readonly movies$: Observable<GridItem[]> = this.moviesService
-    .getRecentlyAddedMovies()
-    .pipe(
-      map((data) =>
-        data.movies.map((movie) => ({
-          id: movie.movieid,
-          details: [
-            movie.runtime && getVideoDuration(movie.runtime),
-            movie.year,
-          ],
-          label: movie.label,
-          played: movie.playcount !== undefined && movie.playcount > 0,
-          thumbnail: movie.art?.poster,
-          url: `/movies/${movie.movieid}`,
-        })),
-      ),
-    );
+  readonly recentMovies$ = this.moviesService.getRecentlyAddedMovies();
+
+  readonly movies$: Observable<GridItem[]> = this.recentMovies$.pipe(
+    map((data) => data.movies.map(mapMovieToGridItem)),
+  );
+
+  readonly pagination$ = this.recentMovies$.pipe(map((data) => data.limits));
 }
