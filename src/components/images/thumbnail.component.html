@@ -1,0 +1,14 @@
+@if (imageUrl$ | async; as imageUrl) {
+  <div class="relative">
+    <img
+      [alt]="alt"
+      class="w-full h-auto transition-opacity opacity-0 ease-in duration-300"
+      [hideUntilIntersected]="imageUrl"
+    />
+  </div>
+} @else {
+  <fa-icon
+    [class]="{ 'max-w-full': true, 'h-auto': true, 'p-2': true }"
+    [icon]="fallbackIcon"
+  />
+}

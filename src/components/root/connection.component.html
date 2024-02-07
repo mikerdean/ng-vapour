@@ -1,7 +1,9 @@
 <ng-container [ngSwitch]="connectionState$ | async">
   <ng-container *ngSwitchCase="'connected'">
     <app-bar />
-    <router-outlet />
+    <main class="p-3">
+      <router-outlet />
+    </main>
     <navigation-bar />
   </ng-container>
 
