@@ -13,10 +13,12 @@
         <fa-icon [icon]="icons.search" />
         <span class="sr-only">Search</span>
       </button>
-      <button class="mr-6" *ngIf="allowProfileChange$ | async">
-        <fa-icon [icon]="icons.profile" />
-        <span class="sr-only">Change profile</span>
-      </button>
+      @if (allowProfileChange$ | async) {
+        <button class="mr-6">
+          <fa-icon [icon]="icons.profile" />
+          <span class="sr-only">Change profile</span>
+        </button>
+      }
       <button>
         <fa-icon [icon]="icons.config" />
         <span class="sr-only">Edit configuration</span>
@@ -30,9 +32,10 @@
       'bg-cyan-700': (navigating$ | async)
     }"
   >
-    <span
-      *ngIf="navigating$ | async"
-      class="bg-cyan-500 h-full w-1/2 absolute left-[-50%] animate-loading"
-    ></span>
+    @if (navigating$ | async) {
+      <span
+        class="bg-cyan-500 h-full w-1/2 absolute left-[-50%] animate-loading"
+      ></span>
+    }
   </div>
 </header>

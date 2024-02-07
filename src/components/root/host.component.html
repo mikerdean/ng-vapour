@@ -1,8 +1,6 @@
-<ng-container *ngIf="hasValidHost$ | async; else showHostForm">
+@if (hasValidHost$ | async) {
   <connection />
-</ng-container>
-
-<ng-template #showHostForm>
+} @else {
   <fullscreen-message>
     <form [formGroup]="hostForm" (ngSubmit)="onSubmit()">
       <heading [level]="1">Enter host details</heading>
@@ -34,4 +32,4 @@
       </div>
     </form>
   </fullscreen-message>
-</ng-template>
+}

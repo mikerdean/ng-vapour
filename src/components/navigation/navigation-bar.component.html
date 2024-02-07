@@ -1,16 +1,17 @@
 <footer
   class="fixed bottom-0 bg-fuchsia-600 text-slate-50 w-full flex justify-center z-10"
 >
-  <a
-    *ngFor="let link of links"
-    class="text-center px-4 py-2"
-    [routerLink]="link.path"
-    routerLinkActive="border-b-4 border-slate-50"
-    ariaCurrentWhenActive="page"
-  >
-    <fa-icon [icon]="link.icon" size="lg" />
-    <div class="text-sm mt-1">{{ link.title }}</div>
-  </a>
+  @for (link of links; track $index) {
+    <a
+      class="text-center px-4 py-2"
+      [routerLink]="link.path"
+      routerLinkActive="border-b-4 border-slate-50"
+      ariaCurrentWhenActive="page"
+    >
+      <fa-icon [icon]="link.icon" size="lg" />
+      <div class="text-sm mt-1">{{ link.title }}</div>
+    </a>
+  }
 </footer>
 
 <div class="h-20"></div>

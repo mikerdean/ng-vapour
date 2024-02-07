@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from "@angular/common";
+import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
   FormControl,
@@ -24,7 +24,6 @@ import { ConnectionComponent } from "./connection.component";
     FormInputComponent,
     FullscreenMessageComponent,
     HeadingComponent,
-    NgIf,
     ReactiveFormsModule,
   ],
   selector: "host",

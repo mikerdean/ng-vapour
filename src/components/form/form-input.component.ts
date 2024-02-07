@@ -1,4 +1,3 @@
-import { NgForOf, NgIf } from "@angular/common";
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { nanoid } from "nanoid";
@@ -7,7 +6,7 @@ import type { FormInputType } from "./form-input.types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, NgForOf, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   standalone: true,
   selector: "form-input",
   templateUrl: "form-input.component.html",

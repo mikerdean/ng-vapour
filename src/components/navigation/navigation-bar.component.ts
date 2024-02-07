@@ -1,4 +1,3 @@
-import { NgForOf } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 
@@ -13,7 +12,7 @@ const hasIcon = (route: RouteWithMetadata): route is NavigationBarItem => {
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FontawesomeIconComponent, NgForOf, RouterLink, RouterLinkActive],
+  imports: [FontawesomeIconComponent, RouterLink, RouterLinkActive],
   selector: "navigation-bar",
   standalone: true,
   templateUrl: "navigation-bar.component.html",

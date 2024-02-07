@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf, NgSwitch, NgSwitchCase } from "@angular/common";
+import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
@@ -27,9 +27,6 @@ import { NavigationBarComponent } from "../navigation/navigation-bar.component";
     FullscreenMessageComponent,
     HeadingComponent,
     NavigationBarComponent,
-    NgIf,
-    NgSwitch,
-    NgSwitchCase,
     OrderedListComponent,
     RouterOutlet,
   ],

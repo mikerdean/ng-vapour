@@ -1,22 +1,22 @@
-<ng-container [ngSwitch]="connectionState$ | async">
-  <ng-container *ngSwitchCase="'connected'">
+@switch (connectionState$ | async) {
+  @case ("connected") {
     <app-bar />
     <main class="p-3">
       <router-outlet />
     </main>
     <navigation-bar />
-  </ng-container>
+  }
 
-  <div *ngSwitchCase="'connecting'">
+  @case ("connecting") {
     <fullscreen-message>
       <div class="text-center">
         <fa-icon animation="spin" [icon]="icons.loading" size="6x" />
         <div class="mt-2">Connecting...</div>
       </div>
     </fullscreen-message>
-  </div>
+  }
 
-  <div *ngSwitchCase="'disconnected'">
+  @case ("disconnected") {
     <fullscreen-message>
       <heading [level]="1">Connection error</heading>
       <p class="mb-5">
@@ -37,5 +37,5 @@
         <form-button (click)="clear()">Try a different host</form-button>
       </div>
     </fullscreen-message>
-  </div>
-</ng-container>
+  }
+}

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from "@angular/common";
+import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import {
   faEllipsisVertical,
@@ -15,7 +15,7 @@ import { KodiLogoComponent } from "../images/kodi-logo.component";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, FontawesomeIconComponent, KodiLogoComponent, NgIf],
+  imports: [AsyncPipe, FontawesomeIconComponent, KodiLogoComponent],
   selector: "app-bar",
   standalone: true,
   templateUrl: "app-bar.component.html",

@@ -1,5 +1,7 @@
 <ul class="list-disc list-inside ml-2">
-  <li class="mb-1" *ngFor="let item of items; trackBy: trackByIndex">
-    {{ item }}
-  </li>
+  @for (item of items; track $index) {
+    <li class="mb-1">
+      {{ item }}
+    </li>
+  }
 </ul>
