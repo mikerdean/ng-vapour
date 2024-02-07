@@ -5,10 +5,10 @@
   <input
     class="px-2 py-1 w-full rounded border text-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-fuchsia-700"
     [class]="{
-      'bg-slate-400': !hasError,
-      'bg-fuchsia-200': hasError,
-      'border-fuchsia-500': hasError,
-      'border-slate-300': !hasError
+      'bg-slate-400': !(errors$ | async),
+      'bg-fuchsia-200': errors$ | async,
+      'border-fuchsia-500': errors$ | async,
+      'border-slate-300': !(errors$ | async)
     }"
     [formControlName]="name"
     [id]="id"
@@ -16,18 +16,17 @@
     [attr.min]="min"
     [attr.type]="type"
   />
-  @if (hasError) {
+  @if (errors$ | async; as errors) {
     <div class="mt-2 text-xs text-slate-300">
-      @if (errorRequired) {
+      @if (errors.required) {
         <span>This field is required.</span>
       }
-      @if (errorMin) {
+      @if (errors.min) {
         <span>This field has a minimum value of {{ min || "unknown" }}.</span>
       }
-      @if (errorMax) {
+      @if (errors.max) {
         <span>This field has a maximum value of {{ max || "unknown" }}.</span>
       }
-      >
     </div>
   }
 </ng-container>

@@ -1,17 +1,24 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { AsyncPipe } from "@angular/common";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from "@angular/core";
 import { FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { nanoid } from "nanoid";
+import { map, Observable } from "rxjs";
 
-import type { FormInputType } from "./form-input.types";
+import type { FormInputErrors, FormInputType } from "./form-input.types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule],
+  imports: [AsyncPipe, ReactiveFormsModule],
   standalone: true,
   selector: "form-input",
   templateUrl: "form-input.component.html",
 })
-export class FormInputComponent {
+export class FormInputComponent implements OnInit {
   @Input({ required: true }) form!: FormGroup;
   @Input() label?: string;
   @Input() max?: number;
@@ -21,26 +28,24 @@ export class FormInputComponent {
 
   readonly id: string = nanoid();
 
-  get hasError(): boolean {
-    return this.form.controls[this.name].invalid;
-  }
+  errors$!: Observable<FormInputErrors | null>;
 
-  get errorMax(): boolean {
-    const control = this.form.controls[this.name];
-    return control.invalid && control.errors !== null && control.errors["max"];
-  }
+  ngOnInit(): void {
+    this.errors$ = this.form.controls[this.name].statusChanges.pipe(
+      map((status) => {
+        const control = this.form.controls[this.name];
+        const errors = control.errors;
 
-  get errorMin(): boolean {
-    const control = this.form.controls[this.name];
-    return control.invalid && control.errors !== null && control.errors["min"];
-  }
+        if (status !== "INVALID" || errors === null) {
+          return null;
+        }
 
-  get errorRequired(): boolean {
-    const control = this.form.controls[this.name];
-    return (
-      control.invalid &&
-      control.errors !== null &&
-      control.errors["required"] === true
+        return {
+          max: errors["max"] ? true : false,
+          min: errors["min"] ? true : false,
+          required: errors["required"] === true,
+        };
+      }),
     );
   }
 }
