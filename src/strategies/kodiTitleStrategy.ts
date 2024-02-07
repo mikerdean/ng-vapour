@@ -10,8 +10,6 @@ export class KodiTitleStrategy extends TitleStrategy {
 
   override updateTitle(snapshot: RouterStateSnapshot): void {
     const title = this.buildTitle(snapshot);
-    if (title !== undefined) {
-      this.title.setTitle(`${title} | Kodi`);
-    }
+    this.title.setTitle(title ? `${title} | Kodi` : "Kodi");
   }
 }
