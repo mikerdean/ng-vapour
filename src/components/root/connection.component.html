@@ -1,9 +1,7 @@
 @switch (connectionState$ | async) {
   @case ("connected") {
     <app-bar />
-    <main class="p-3">
-      <router-outlet />
-    </main>
+    <router-outlet />
     <navigation-bar />
   }
 

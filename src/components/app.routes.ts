@@ -13,11 +13,19 @@ export const routes: RouteWithMetadata[] = [
   {
     path: "movies",
     loadComponent: () =>
-      import("./views/movies/recent-movies.component").then(
-        (x) => x.RecentMoviesComponent,
-      ),
+      import("./views/movies/movies.component").then((x) => x.MoviesComponent),
     icon: faFilm,
     title: "Movies",
+    children: [
+      {
+        path: "",
+        loadComponent: () =>
+          import("./views/movies/recent-movies.component").then(
+            (x) => x.RecentMoviesComponent,
+          ),
+        title: "Recent Movies",
+      },
+    ],
   },
   {
     path: "music",

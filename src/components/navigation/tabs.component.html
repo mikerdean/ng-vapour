@@ -1,0 +1,17 @@
+<div class="sticky top-[3.15rem] z-10 bg-slate-900">
+  <nav class="overflow-x-auto">
+    <ul role="tablist" class="flex">
+      @for (item of items; track item.path) {
+        <li role="tab" class="px-3 pb-2">
+          <a
+            class="pb-1"
+            [routerLink]="item.path"
+            routerLinkActive="border-b-2 border-fuchsia-500 text-slate-100"
+          >
+            {{ item.label }}
+          </a>
+        </li>
+      }
+    </ul>
+  </nav>
+</div>
