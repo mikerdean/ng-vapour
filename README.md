@@ -1,27 +1,48 @@
-# NgVapour
+# vapour
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.1.
+`vapour` is a web interface plugin for Kodi designed for use primarily with mobile devices (although other devices are also catered for).
 
-## Development server
+## Installation
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+1. [Download the `vapour` addon from the releases tab](https://github.com/mikerdean/ng-vapour/releases).
+2. Enable `Settings > Addons > Unknown resources` in Kodi
+3. Use `Addons > Install from zip` option within Kodi and select the downloaded zip file
 
-## Code scaffolding
+## Other information
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+To use this addon you will need to enable the following options in Kodi:
 
-## Build
+1. Enable `Settings > Services > Control > Allow Remote Control via HTTP`
+2. Enable `Settings > Services > Control > Allow Remote Control from applications on this system`
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+`vapour` will attempt to connect to the default ports:
 
-## Running unit tests
+- HTTP Port: `8080`
+- TCP Port: `9090`
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+You can change the default ports and host names if Kodi fails to connect to the defaults.
 
-## Running end-to-end tests
+## Development
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+This project is developed using:
 
-## Further help
+- AngularJS
+- TailwindCSS
+- Fontawesome
+- ...along with many other utility libraries!
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+To hack on this repo, you can clone the repository and then:
+
+```
+npm install
+```
+
+To run the development server you can use:
+
+```
+npm start
+```
+
+This will start a `vite` development server, the address for accessing this will be displayed in your shell. In order to develop successfully with this repository, you will need a running version of Kodi, with the aforementioned options enabled.
+
+For a better development experience with this repo, you can use [Volta](https://docs.volta.sh/guide/getting-started) to ensure nodeJS is the minimum version tested with this repository.
