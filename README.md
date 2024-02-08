@@ -26,7 +26,7 @@ You can change the default ports and host names if Kodi fails to connect to the 
 
 This project is developed using:
 
-- AngularJS
+- Angular
 - TailwindCSS
 - Fontawesome
 - ...along with many other utility libraries!
