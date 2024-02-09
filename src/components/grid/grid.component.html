@@ -7,10 +7,7 @@
         <a class="flex flex-row items-center" [routerLink]="item.url">
           <div
             class="w-20 min-w-[5rem] h-20 mr-3 border-2 border-cyan-900 rounded-lg overflow-hidden"
-            [class]="{
-              'h-20': !tallThumbnail,
-              'h-28': tallThumbnail
-            }"
+            [class]="tallThumbnail ? 'h-28' : 'h-20'"
           >
             <div class="flex items-center h-full">
               <thumbnail [uri]="item.thumbnail" [type]="thumbnailType" />
@@ -35,10 +32,7 @@
         <div class="flex flex-row items-center">
           <div
             class="w-20 min-w-[5rem] mr-3 border-2 border-cyan-900 rounded-lg overflow-hidden"
-            [class]="{
-              'h-20': !tallThumbnail,
-              'h-28': tallThumbnail
-            }"
+            [class]="tallThumbnail ? 'h-28' : 'h-20'"
           >
             <div class="h-full bg-slate-800 animate-pulse"></div>
           </div>
