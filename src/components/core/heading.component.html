@@ -1,13 +1,13 @@
 @switch (level) {
   @case (1) {
-    <h1 class="text-xl border-b-2 border-slate-600 text-cyan-400 mb-4">
+    <h1 class="mb-4 border-b-2 border-slate-600 text-xl text-cyan-400">
       <ng-container *ngTemplateOutlet="content" />
     </h1>
   }
 
   @case (2) {
     <h2
-      class="text-lg text-cyan-500 mb-3 underline underline-offset-4 decoration-2 decoration-cyan-900"
+      class="mb-3 text-lg text-cyan-500 underline decoration-cyan-900 decoration-2 underline-offset-4"
     >
       <ng-container *ngTemplateOutlet="content" />
     </h2>

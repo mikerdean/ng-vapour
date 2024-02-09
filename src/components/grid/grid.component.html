@@ -1,15 +1,15 @@
 <ol
-  class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3"
+  class="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
 >
   @for (item of gridItems$ | async; track $index) {
     <li>
       @if (item) {
         <a class="flex flex-row items-center" [routerLink]="item.url">
           <div
-            class="w-20 min-w-[5rem] h-20 mr-3 border-2 border-cyan-900 rounded-lg overflow-hidden"
+            class="mr-3 h-20 w-20 min-w-[5rem] overflow-hidden rounded-lg border-2 border-cyan-900"
             [class]="tallThumbnail ? 'h-28' : 'h-20'"
           >
-            <div class="flex items-center h-full">
+            <div class="flex h-full items-center">
               <thumbnail [uri]="item.thumbnail" [type]="thumbnailType" />
             </div>
           </div>
@@ -17,7 +17,7 @@
             <div class="line-clamp-2">{{ item.label }}</div>
             @for (detail of item.details; track $index) {
               @if (detail !== undefined && detail !== null) {
-                <div class="text-xs text-slate-400 mt-1">{{ detail }}</div>
+                <div class="mt-1 text-xs text-slate-400">{{ detail }}</div>
               }
             }
           </div>
@@ -31,15 +31,15 @@
       } @else {
         <div class="flex flex-row items-center">
           <div
-            class="w-20 min-w-[5rem] mr-3 border-2 border-cyan-900 rounded-lg overflow-hidden"
+            class="mr-3 w-20 min-w-[5rem] overflow-hidden rounded-lg border-2 border-cyan-900"
             [class]="tallThumbnail ? 'h-28' : 'h-20'"
           >
-            <div class="h-full bg-slate-800 animate-pulse"></div>
+            <div class="h-full animate-pulse bg-slate-800"></div>
           </div>
           <div class="flex-grow">
-            <div class="bg-slate-800 animate-pulse h-4 rounded mb-4"></div>
-            <div class="bg-slate-800 animate-pulse h-4 rounded mb-4"></div>
-            <div class="bg-slate-800 animate-pulse h-4 rounded"></div>
+            <div class="mb-4 h-4 animate-pulse rounded bg-slate-800"></div>
+            <div class="mb-4 h-4 animate-pulse rounded bg-slate-800"></div>
+            <div class="h-4 animate-pulse rounded bg-slate-800"></div>
           </div>
         </div>
       }

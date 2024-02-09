@@ -1,7 +1,7 @@
-<header class="sticky top-0 w-full bg-fuchsia-600 text-slate-50 z-10">
-  <div class="flex py-2 px-3 items-center">
+<header class="sticky top-0 z-10 w-full bg-fuchsia-600 text-slate-50">
+  <div class="flex items-center px-3 py-2">
     <kodi-logo />
-    <p class="grow ml-2 text-lg">
+    <p class="ml-2 grow text-lg">
       <span>Kodi</span>
     </p>
     <div>
@@ -26,7 +26,7 @@
     </div>
   </div>
   <div
-    class="h-1.5 relative"
+    class="relative h-1.5"
     [class]="{
       'bg-slate-900': !(navigating$ | async),
       'bg-cyan-700': (navigating$ | async)
@@ -34,7 +34,7 @@
   >
     @if (navigating$ | async) {
       <span
-        class="bg-cyan-500 h-full w-1/2 absolute left-[-50%] animate-loading"
+        class="absolute left-[-50%] h-full w-1/2 animate-loading bg-cyan-500"
       ></span>
     }
   </div>
