@@ -26,9 +26,11 @@ export class AppbarComponent {
     private profileService: ProfileService,
   ) {}
 
-  readonly allowProfileChange$ = this.profileService
-    .getProfiles()
-    .pipe(map((data) => data.limits.total > 1));
+  readonly profiles$ = this.profileService.getProfiles();
+
+  readonly allowProfileChange$ = this.profiles$.pipe(
+    map((data) => data.limits.total > 1),
+  );
 
   readonly currentUser$ = this.profileService.getCurrentProfile();
 
