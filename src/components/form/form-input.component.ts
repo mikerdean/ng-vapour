@@ -5,11 +5,15 @@ import {
   Input,
   OnInit,
 } from "@angular/core";
-import { FormGroup, ReactiveFormsModule } from "@angular/forms";
+import {
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+} from "@angular/forms";
 import { nanoid } from "nanoid";
 import { map, Observable } from "rxjs";
 
-import type { FormInputErrors, FormInputType } from "./form-input.types";
+import type { FormInputType } from "./form-input.types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,24 +32,22 @@ export class FormInputComponent implements OnInit {
 
   readonly id: string = nanoid();
 
-  errors$!: Observable<FormInputErrors | null>;
+  errorClasses$!: Observable<string[]>;
+  errors$!: Observable<ValidationErrors | null>;
 
   ngOnInit(): void {
     this.errors$ = this.form.controls[this.name].statusChanges.pipe(
-      map((status) => {
-        const control = this.form.controls[this.name];
-        const errors = control.errors;
+      map((status) =>
+        status === "INVALID"
+          ? this.form.controls[this.name]?.errors || null
+          : null,
+      ),
+    );
 
-        if (status !== "INVALID" || errors === null) {
-          return null;
-        }
-
-        return {
-          max: errors["max"] ? true : false,
-          min: errors["min"] ? true : false,
-          required: errors["required"] === true,
-        };
-      }),
+    this.errorClasses$ = this.form.controls[this.name].statusChanges.pipe(
+      map((status) =>
+        status === "INVALID" ? ["!bg-fuchsia-200", "!border-fuchsia-500"] : [],
+      ),
     );
   }
 }
