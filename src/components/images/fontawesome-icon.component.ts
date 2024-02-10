@@ -104,6 +104,7 @@ export class FontawesomeIconComponent implements OnChanges {
   }
 
   get viewBox() {
-    return `0 0 ${this.parsedIcon.icon[0]} ${this.parsedIcon.icon[1]}`;
+    const [width, height] = this.parsedIcon.icon;
+    return `0 0 ${width} ${height}`;
   }
 }
