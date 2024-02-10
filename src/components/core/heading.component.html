@@ -1,12 +1,16 @@
 @switch (level) {
   @case (1) {
-    <h1 class="mb-4 border-b-2 border-slate-600 text-xl text-cyan-400">
+    <h1
+      [id]="id"
+      class="mb-4 border-b-2 border-slate-600 text-xl text-cyan-400"
+    >
       <ng-container *ngTemplateOutlet="content" />
     </h1>
   }
 
   @case (2) {
     <h2
+      [id]="id"
       class="mb-3 text-lg text-cyan-500 underline decoration-cyan-900 decoration-2 underline-offset-4"
     >
       <ng-container *ngTemplateOutlet="content" />
@@ -14,19 +18,19 @@
   }
 
   @case (3) {
-    <h3><ng-container *ngTemplateOutlet="content" /></h3>
+    <h3 [id]="id"><ng-container *ngTemplateOutlet="content" /></h3>
   }
 
   @case (4) {
-    <h4><ng-container *ngTemplateOutlet="content" /></h4>
+    <h4 [id]="id"><ng-container *ngTemplateOutlet="content" /></h4>
   }
 
   @case (5) {
-    <h5><ng-container *ngTemplateOutlet="content" /></h5>
+    <h5 [id]="id"><ng-container *ngTemplateOutlet="content" /></h5>
   }
 
   @case (6) {
-    <h6><ng-container *ngTemplateOutlet="content" /></h6>
+    <h6 [id]="id"><ng-container *ngTemplateOutlet="content" /></h6>
   }
 }
 
