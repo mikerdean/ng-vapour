@@ -3,7 +3,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
+  OnChanges,
   OnInit,
+  type SimpleChanges,
 } from "@angular/core";
 import type { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import {
@@ -14,7 +16,7 @@ import {
   faUser,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import { map, Observable } from "rxjs";
+import { BehaviorSubject, combineLatest, map, Observable } from "rxjs";
 
 import { HideUntilIntersectedDirective } from "../../directives/hide-until-intersected.directive";
 import { HostService } from "../../services/host.service";
@@ -28,13 +30,15 @@ import type { ThumbnailType } from "./thumbnail.types";
   standalone: true,
   templateUrl: "thumbnail.component.html",
 })
-export class ThumbnailComponent implements OnInit {
+export class ThumbnailComponent implements OnChanges, OnInit {
   constructor(private hostService: HostService) {}
 
   @Input() alt?: string;
   @Input() played?: boolean;
   @Input({ required: true }) type!: ThumbnailType;
   @Input() uri?: string;
+
+  readonly #uriSubject = new BehaviorSubject(this.uri);
 
   get fallbackIcon(): IconDefinition {
     switch (this.type) {
@@ -61,14 +65,24 @@ export class ThumbnailComponent implements OnInit {
 
   imageUrl$!: Observable<string | undefined>;
 
+  ngOnChanges(changes: SimpleChanges) {
+    const uri = changes["uri"];
+    if (uri) {
+      this.#uriSubject.next(uri.currentValue);
+    }
+  }
+
   ngOnInit(): void {
-    this.imageUrl$ = this.hostService.httpUrl$.pipe(
-      map((baseUrl) => {
-        if (!baseUrl || !this.uri) {
+    this.imageUrl$ = combineLatest([
+      this.hostService.httpUrl$,
+      this.#uriSubject,
+    ]).pipe(
+      map(([baseUrl, uri]) => {
+        if (!baseUrl || !uri) {
           return;
         }
 
-        const encoded = encodeURIComponent(this.uri);
+        const encoded = encodeURIComponent(uri);
         const url = new URL(`image/${encoded}`, baseUrl);
         return url.toString();
       }),

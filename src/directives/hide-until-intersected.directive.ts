@@ -1,4 +1,11 @@
-import { Directive, ElementRef, Input, OnDestroy, OnInit } from "@angular/core";
+import {
+  Directive,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  type SimpleChanges,
+} from "@angular/core";
 
 import { ImageOberserverService } from "../services/image-observer.service";
 
@@ -6,7 +13,7 @@ import { ImageOberserverService } from "../services/image-observer.service";
   selector: "[hideUntilIntersected]",
   standalone: true,
 })
-export class HideUntilIntersectedDirective implements OnDestroy, OnInit {
+export class HideUntilIntersectedDirective implements OnChanges, OnDestroy {
   constructor(
     private element: ElementRef,
     private imageObserver: ImageOberserverService,
@@ -14,29 +21,38 @@ export class HideUntilIntersectedDirective implements OnDestroy, OnInit {
 
   @Input("hideUntilIntersected") src = "";
 
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     const element = this.element.nativeElement;
     if (!this.isImageElement(element)) {
       return;
     }
 
-    element.removeAttribute("src");
-    element.classList.add(
-      "transition-opacity",
-      "opacity-0",
-      "ease-in",
-      "duration-300",
-    );
-
-    this.imageObserver.add(element, (entry) => {
-      const currentSrc = element.getAttribute("src");
-      if (currentSrc || !entry.isIntersecting) {
-        return;
+    const src = changes["src"];
+    if (src) {
+      if (src.isFirstChange()) {
+        element.removeAttribute("src");
+        element.classList.add(
+          "transition-opacity",
+          "opacity-0",
+          "ease-in",
+          "duration-300",
+        );
+      } else {
+        element.classList.replace("opacity-100", "opacity-0");
       }
 
-      element.setAttribute("src", this.src);
-      element.classList.replace("opacity-0", "opacity-100");
-    });
+      this.imageObserver.remove(this.element.nativeElement);
+
+      this.imageObserver.add(element, (entry) => {
+        const currentSrc = element.getAttribute("src");
+        if (currentSrc === src.currentValue || !entry.isIntersecting) {
+          return;
+        }
+
+        element.setAttribute("src", src.currentValue);
+        element.classList.replace("opacity-0", "opacity-100");
+      });
+    }
   }
 
   ngOnDestroy(): void {
