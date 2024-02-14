@@ -23,7 +23,15 @@ export const routes: RouteWithMetadata[] = [
           import("./views/movies/recent-movies.component").then(
             (x) => x.RecentMoviesComponent,
           ),
-        title: "Recent Movies",
+        title: "Recent movies",
+      },
+      {
+        path: "titles",
+        loadComponent: () =>
+          import("./views/movies/movies-by-title.component").then(
+            (x) => x.MoviesByTitleComponent,
+          ),
+        title: "Movies by title",
       },
     ],
   },

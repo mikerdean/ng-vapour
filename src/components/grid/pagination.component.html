@@ -1,0 +1,63 @@
+@if (totalPages > 1) {
+  <nav class="sticky top-24 z-10 mb-3">
+    <ol class="flex justify-center" aria-label="Pagination">
+      <li>
+        <button
+          aria-label="Go back to first page (1)"
+          [class]="classesFirst"
+          (click)="changePage(1)"
+          [disabled]="currentPage <= 1"
+          type="button"
+        >
+          <fa-icon [icon]="icons.first" />
+        </button>
+      </li>
+      <li>
+        <button
+          [attr.aria-label]="labelPrevious"
+          [class]="classesPreviousNext"
+          (click)="changePage(currentPage - 1)"
+          [disabled]="currentPage <= 1"
+          type="button"
+        >
+          <fa-icon [icon]="icons.previous" />
+        </button>
+      </li>
+      @for (page of pages; track $index) {
+        <li>
+          <button
+            [attr.aria-current]="page.current"
+            [attr.aria-label]="page.label"
+            [class]="page.classes"
+            (click)="changePage(page.value)"
+            type="button"
+          >
+            {{ page.value }}
+          </button>
+        </li>
+      }
+      <li>
+        <button
+          [attr.aria-label]="labelNext"
+          [class]="classesPreviousNext"
+          (click)="changePage(currentPage + 1)"
+          [disabled]="currentPage + 1 > totalPages"
+          type="button"
+        >
+          <fa-icon [icon]="icons.next" />
+        </button>
+      </li>
+      <li>
+        <button
+          [attr.aria-label]="labelLast"
+          [class]="classesLast"
+          (click)="changePage(totalPages)"
+          [disabled]="currentPage + 1 > totalPages"
+          type="button"
+        >
+          <fa-icon [icon]="icons.last" />
+        </button>
+      </li>
+    </ol>
+  </nav>
+}
