@@ -16,7 +16,7 @@ export class MoviesComponent {
   constructor() {}
 
   readonly tabItems: TabItem[] = [
-    { label: "Recent", path: "/movies" },
+    { label: "Recent", path: "/movies/recent" },
     { label: "Titles", path: "/movies/titles" },
     { label: "Sets", path: "/movies/sets" },
     { label: "Genres", path: "/movies/genres" },

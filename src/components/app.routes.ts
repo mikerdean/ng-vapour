@@ -19,6 +19,11 @@ export const routes: RouteWithMetadata[] = [
     children: [
       {
         path: "",
+        pathMatch: "full",
+        redirectTo: "/movies/recent",
+      },
+      {
+        path: "recent",
         loadComponent: () =>
           import("./views/movies/recent-movies.component").then(
             (x) => x.RecentMoviesComponent,
