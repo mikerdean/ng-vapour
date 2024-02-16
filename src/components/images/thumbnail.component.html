@@ -1,6 +1,6 @@
 @if (imageUrl$ | async; as imageUrl) {
   <div class="relative">
-    <img [alt]="alt" class="h-auto w-full" [src]="imageUrl" loading="lazy" />
+    <img [alt]="alt" class="h-auto w-full" loading="lazy" [src]="imageUrl" />
   </div>
 } @else {
   <fa-icon
