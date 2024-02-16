@@ -18,14 +18,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { BehaviorSubject, combineLatest, map, Observable } from "rxjs";
 
-import { HideUntilIntersectedDirective } from "../../directives/hide-until-intersected.directive";
 import { HostService } from "../../services/host.service";
 import { FontawesomeIconComponent } from "./fontawesome-icon.component";
 import type { ThumbnailType } from "./thumbnail.types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, FontawesomeIconComponent, HideUntilIntersectedDirective],
+  imports: [AsyncPipe, FontawesomeIconComponent],
   selector: "thumbnail",
   standalone: true,
   templateUrl: "thumbnail.component.html",
