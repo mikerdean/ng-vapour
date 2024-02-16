@@ -38,6 +38,14 @@ export const routes: RouteWithMetadata[] = [
           ),
         title: "Movies by title",
       },
+      {
+        path: "sets",
+        loadComponent: () =>
+          import("./views/movies/movie-sets.component").then(
+            (x) => x.MovieSetsComponent,
+          ),
+        title: "Movies by title",
+      },
     ],
   },
   {

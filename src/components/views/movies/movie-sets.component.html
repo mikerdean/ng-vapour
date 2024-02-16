@@ -1,0 +1,7 @@
+@if (pagination$ | async; as pagination) {
+  @if (currentPage$ | async; as currentPage) {
+    <pagination [currentPage]="currentPage" [total]="pagination.total" />
+  }
+}
+
+<grid [expectedItems]="pageSize" [items$]="movies$" thumbnailType="movieSet" />
