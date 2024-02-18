@@ -36,7 +36,7 @@ export class GridComponent implements OnInit {
   grid$!: Observable<GridData>;
 
   ngOnInit(): void {
-    const emptyItems = of({
+    const emptyItems = of<GridData>({
       currentPage: 1,
       items: Array.from({ length: this.expectedItems }, () => null),
     });
