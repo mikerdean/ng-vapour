@@ -29,8 +29,8 @@ import { PaginationComponent } from "./pagination.component";
   templateUrl: "grid.component.html",
 })
 export class GridComponent implements OnInit {
+  @Input({ required: true }) data$!: Observable<GridData>;
   @Input({ required: true }) expectedItems!: number;
-  @Input({ required: true }) items$!: Observable<GridData>;
   @Input({ required: true }) thumbnailType!: ThumbnailType;
 
   grid$!: Observable<GridData>;
@@ -41,10 +41,7 @@ export class GridComponent implements OnInit {
       items: Array.from({ length: this.expectedItems }, () => null),
     });
 
-    this.grid$ = emptyItems.pipe(
-      takeUntil(this.items$),
-      concatWith(this.items$),
-    );
+    this.grid$ = emptyItems.pipe(takeUntil(this.data$), concatWith(this.data$));
   }
 
   readonly icons = {
