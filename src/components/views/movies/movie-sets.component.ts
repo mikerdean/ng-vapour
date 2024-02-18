@@ -8,7 +8,7 @@ import { ConfigurationService } from "services/configuration.service";
 import { MoviesService } from "../../../services/movies.service";
 import { mapSetToGridItem } from "../../../shared/mapping";
 import { GridComponent } from "../../grid/grid.component";
-import type { GridItem } from "../../grid/grid.types";
+import type { GridData } from "../../grid/grid.types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,24 +24,24 @@ export class MovieSetsComponent {
     private route: ActivatedRoute,
   ) {}
 
-  readonly currentPage$ = this.route.queryParams.pipe(
+  readonly movies$: Observable<GridData> = this.route.queryParams.pipe(
     map((query) => {
       const queryPage = parseInt(query["page"], 10);
       return queryPage || 1;
     }),
-  );
-
-  readonly movieSets = this.currentPage$.pipe(
     switchMap((page) =>
       combineLatest([
         this.moviesService.getMovieSets(page),
         this.moviesService.getMoviesInSets(),
-      ]),
+      ]).pipe(
+        map(([data, moviesInSets]) => ({
+          data,
+          moviesInSets,
+          page,
+        })),
+      ),
     ),
-  );
-
-  readonly movies$: Observable<GridItem[]> = this.movieSets.pipe(
-    map(([data, moviesInSets]) => {
+    map(({ data, moviesInSets, page }) => {
       const sets: Record<string, number> = {};
       moviesInSets.movies.forEach((movie) => {
         const setName = movie.set || "__UNKNOWN__";
@@ -57,13 +57,11 @@ export class MovieSetsComponent {
         details: [this.getMovieSetTitle(set.title, sets)],
       }));
 
-      return items;
+      return { currentPage: page, items, limits: data.limits };
     }),
   );
 
   readonly pageSize = this.configurationService.pageSize;
-
-  readonly pagination$ = this.movieSets.pipe(map(([data]) => data.limits));
 
   private getMovieSetTitle(
     title: string | undefined,

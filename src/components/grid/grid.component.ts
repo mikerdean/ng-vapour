@@ -12,13 +12,15 @@ import { concatWith, Observable, of, takeUntil } from "rxjs";
 import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
 import { ThumbnailComponent } from "../images/thumbnail.component";
 import { ThumbnailType } from "../images/thumbnail.types";
-import type { GridItem } from "./grid.types";
+import type { GridData } from "./grid.types";
+import { PaginationComponent } from "./pagination.component";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
     FontawesomeIconComponent,
+    PaginationComponent,
     RouterLink,
     ThumbnailComponent,
   ],
@@ -28,17 +30,18 @@ import type { GridItem } from "./grid.types";
 })
 export class GridComponent implements OnInit {
   @Input({ required: true }) expectedItems!: number;
-  @Input({ required: true }) items$!: Observable<(GridItem | null)[]>;
+  @Input({ required: true }) items$!: Observable<GridData>;
   @Input({ required: true }) thumbnailType!: ThumbnailType;
 
-  gridItems$!: Observable<(GridItem | null)[]>;
+  grid$!: Observable<GridData>;
 
   ngOnInit(): void {
-    const emptyItems = of(
-      Array.from({ length: this.expectedItems }, () => null),
-    );
+    const emptyItems = of({
+      currentPage: 1,
+      items: Array.from({ length: this.expectedItems }, () => null),
+    });
 
-    this.gridItems$ = emptyItems.pipe(
+    this.grid$ = emptyItems.pipe(
       takeUntil(this.items$),
       concatWith(this.items$),
     );

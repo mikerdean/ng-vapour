@@ -1,48 +1,54 @@
-<ol
-  class="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
->
-  @for (item of gridItems$ | async; track $index) {
-    <li>
-      @if (item) {
-        <a class="flex flex-row items-center" [routerLink]="item.url">
-          <div
-            class="mr-3 h-20 w-20 min-w-[5rem] overflow-hidden rounded-lg border-2 border-cyan-900"
-            [class]="tallThumbnail ? 'h-28' : 'h-20'"
-          >
-            <div class="flex h-full items-center">
-              <thumbnail [uri]="item.thumbnail" [type]="thumbnailType" />
+@if (grid$ | async; as grid) {
+  @if (grid.limits) {
+    <pagination [currentPage]="grid.currentPage" [total]="grid.limits.total" />
+  }
+
+  <ol
+    class="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+  >
+    @for (item of grid.items; track $index) {
+      <li>
+        @if (item) {
+          <a class="flex flex-row items-center" [routerLink]="item.url">
+            <div
+              class="mr-3 h-20 w-20 min-w-[5rem] overflow-hidden rounded-lg border-2 border-cyan-900"
+              [class]="tallThumbnail ? 'h-28' : 'h-20'"
+            >
+              <div class="flex h-full items-center">
+                <thumbnail [uri]="item.thumbnail" [type]="thumbnailType" />
+              </div>
+            </div>
+            <div class="flex-grow">
+              <div class="line-clamp-2">{{ item.label }}</div>
+              @for (detail of item.details; track $index) {
+                @if (detail !== undefined && detail !== null) {
+                  <div class="mt-1 text-xs text-slate-400">{{ detail }}</div>
+                }
+              }
+            </div>
+            <div>
+              <button type="button" class="p-2">
+                <fa-icon [icon]="icons.options" />
+                <span class="sr-only">Options for {{ item.label }}</span>
+              </button>
+            </div>
+          </a>
+        } @else {
+          <div class="flex flex-row items-center">
+            <div
+              class="mr-3 w-20 min-w-[5rem] overflow-hidden rounded-lg border-2 border-cyan-900"
+              [class]="tallThumbnail ? 'h-28' : 'h-20'"
+            >
+              <div class="h-full animate-pulse bg-slate-800"></div>
+            </div>
+            <div class="flex-grow">
+              <div class="mb-4 h-4 animate-pulse rounded bg-slate-800"></div>
+              <div class="mb-4 h-4 animate-pulse rounded bg-slate-800"></div>
+              <div class="h-4 animate-pulse rounded bg-slate-800"></div>
             </div>
           </div>
-          <div class="flex-grow">
-            <div class="line-clamp-2">{{ item.label }}</div>
-            @for (detail of item.details; track $index) {
-              @if (detail !== undefined && detail !== null) {
-                <div class="mt-1 text-xs text-slate-400">{{ detail }}</div>
-              }
-            }
-          </div>
-          <div>
-            <button type="button" class="p-2">
-              <fa-icon [icon]="icons.options" />
-              <span class="sr-only">Options for {{ item.label }}</span>
-            </button>
-          </div>
-        </a>
-      } @else {
-        <div class="flex flex-row items-center">
-          <div
-            class="mr-3 w-20 min-w-[5rem] overflow-hidden rounded-lg border-2 border-cyan-900"
-            [class]="tallThumbnail ? 'h-28' : 'h-20'"
-          >
-            <div class="h-full animate-pulse bg-slate-800"></div>
-          </div>
-          <div class="flex-grow">
-            <div class="mb-4 h-4 animate-pulse rounded bg-slate-800"></div>
-            <div class="mb-4 h-4 animate-pulse rounded bg-slate-800"></div>
-            <div class="h-4 animate-pulse rounded bg-slate-800"></div>
-          </div>
-        </div>
-      }
-    </li>
-  }
-</ol>
+        }
+      </li>
+    }
+  </ol>
+}

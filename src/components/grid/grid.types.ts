@@ -1,3 +1,11 @@
+import type { KodiMessageLimitsReturned } from "shared/kodi";
+
+export type GridData = {
+  currentPage: number;
+  items: (GridItem | null)[];
+  limits?: KodiMessageLimitsReturned;
+};
+
 export type GridItem = {
   id: string | number;
   details: GridItemDetail[];
