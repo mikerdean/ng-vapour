@@ -67,7 +67,10 @@ export class ThumbnailComponent implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges) {
     const uri = changes["uri"];
     if (uri) {
-      this.#uriSubject.next(uri.currentValue);
+      this.#uriSubject.next(undefined);
+      requestAnimationFrame(() => {
+        this.#uriSubject.next(uri.currentValue);
+      });
     }
   }
 
