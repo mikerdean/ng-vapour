@@ -1,7 +1,6 @@
-import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { map, Observable, switchMap } from "rxjs";
+import { debounceTime, map, Observable, switchMap } from "rxjs";
 import { ConfigurationService } from "services/configuration.service";
 
 import { MoviesService } from "../../../services/movies.service";
@@ -11,7 +10,7 @@ import type { GridData } from "../../grid/grid.types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, GridComponent],
+  imports: [GridComponent],
   selector: "movies-by-title",
   standalone: true,
   templateUrl: "movies-by-title.component.html",
@@ -24,18 +23,17 @@ export class MoviesByTitleComponent {
   ) {}
 
   readonly movies$: Observable<GridData> = this.route.queryParams.pipe(
-    map((query) => {
-      const queryPage = parseInt(query["page"], 10);
-      return queryPage || 1;
-    }),
+    debounceTime(25),
+    map((query) => parseInt(query["page"], 10) || 1),
     switchMap((page) =>
-      this.moviesService.getMovies(page).pipe(map((data) => ({ data, page }))),
+      this.moviesService.getMovies(page).pipe(
+        map(({ movies, limits }) => ({
+          currentPage: page,
+          items: movies.map(mapMovieToGridItem),
+          limits,
+        })),
+      ),
     ),
-    map(({ data: { movies, limits }, page }) => ({
-      currentPage: page,
-      items: movies.map(mapMovieToGridItem),
-      limits,
-    })),
   );
 
   readonly pageSize = this.configurationService.pageSize;

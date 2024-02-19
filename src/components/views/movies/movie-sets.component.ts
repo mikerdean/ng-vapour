@@ -2,7 +2,7 @@ import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { PaginationComponent } from "components/grid/pagination.component";
-import { combineLatest, map, Observable, switchMap } from "rxjs";
+import { combineLatest, debounceTime, map, Observable, switchMap } from "rxjs";
 import { ConfigurationService } from "services/configuration.service";
 
 import { MoviesService } from "../../../services/movies.service";
@@ -25,6 +25,7 @@ export class MovieSetsComponent {
   ) {}
 
   readonly movies$: Observable<GridData> = this.route.queryParams.pipe(
+    debounceTime(25),
     map((query) => {
       const queryPage = parseInt(query["page"], 10);
       return queryPage || 1;
@@ -34,31 +35,26 @@ export class MovieSetsComponent {
         this.moviesService.getMovieSets(page),
         this.moviesService.getMoviesInSets(),
       ]).pipe(
-        map(([data, moviesInSets]) => ({
-          data,
-          moviesInSets,
-          page,
-        })),
+        map(([data, moviesInSets]) => {
+          const sets: Record<string, number> = {};
+          moviesInSets.movies.forEach((movie) => {
+            const setName = movie.set || "__UNKNOWN__";
+            if (!sets[setName]) {
+              sets[setName] = 0;
+            }
+
+            sets[setName] += 1;
+          });
+
+          const items = data.sets.map((set) => ({
+            ...mapSetToGridItem(set),
+            details: [this.getMovieSetTitle(set.title, sets)],
+          }));
+
+          return { currentPage: page, items, limits: data.limits };
+        }),
       ),
     ),
-    map(({ data, moviesInSets, page }) => {
-      const sets: Record<string, number> = {};
-      moviesInSets.movies.forEach((movie) => {
-        const setName = movie.set || "__UNKNOWN__";
-        if (!sets[setName]) {
-          sets[setName] = 0;
-        }
-
-        sets[setName] += 1;
-      });
-
-      const items = data.sets.map((set) => ({
-        ...mapSetToGridItem(set),
-        details: [this.getMovieSetTitle(set.title, sets)],
-      }));
-
-      return { currentPage: page, items, limits: data.limits };
-    }),
   );
 
   readonly pageSize = this.configurationService.pageSize;
