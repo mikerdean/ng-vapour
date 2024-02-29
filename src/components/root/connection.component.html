@@ -29,7 +29,7 @@
       <p class="mb-2">We tried to connect you to:</p>
       <definition-list
         label="Host details"
-        [items]="(hostSummaryItems | async) || []"
+        [items]="(hostSummaryItems$ | async) || []"
       />
       <div class="my-5">
         <form-button (click)="clear()">Try a different host</form-button>

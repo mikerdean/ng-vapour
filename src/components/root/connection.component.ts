@@ -48,7 +48,7 @@ export class ConnectionComponent {
     "You have enabled Settings > Services > Control > Allow Remote Control from applications on this system",
   ];
 
-  readonly hostSummaryItems: Observable<DefinitionListItem[]> =
+  readonly hostSummaryItems$: Observable<DefinitionListItem[]> =
     this.hostService.host$.pipe(
       map((host) => [
         { header: "Hostname", description: host?.hostname || "Unknown" },
