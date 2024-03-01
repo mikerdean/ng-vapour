@@ -1,6 +1,12 @@
 @if (imageUrl$ | async; as imageUrl) {
   <div class="relative">
-    <img [alt]="alt" class="h-auto w-full" loading="lazy" [src]="imageUrl" />
+    <img
+      [alt]="alt"
+      class="h-auto w-full opacity-0 transition-opacity duration-300"
+      [src]="imageUrl"
+      (load)="onImageLoaded(thumbnail)"
+      #thumbnail
+    />
   </div>
 } @else {
   <fa-icon

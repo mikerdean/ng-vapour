@@ -90,4 +90,11 @@ export class ThumbnailComponent implements OnChanges, OnInit {
       }),
     );
   }
+
+  onImageLoaded(element: HTMLImageElement) {
+    element.classList.remove("opacity-0");
+    requestAnimationFrame(() => {
+      element.classList.add("opacity-100");
+    });
+  }
 }
