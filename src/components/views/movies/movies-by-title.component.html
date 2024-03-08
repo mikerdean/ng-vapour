@@ -1,1 +1,1 @@
-<grid [data$]="movies$" [expectedItems]="pageSize" thumbnailType="movie" />
+<grid [data]="movies$ | async" thumbnailType="movie" />

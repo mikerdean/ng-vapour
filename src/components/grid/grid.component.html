@@ -1,12 +1,12 @@
-@if (grid$ | async; as grid) {
-  @if (grid.limits) {
-    <pagination [currentPage]="grid.currentPage" [total]="grid.limits.total" />
+@if (data) {
+  @if (data.limits) {
+    <pagination [currentPage]="data.currentPage" [total]="data.limits.total" />
   }
 
   <ol
     class="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
   >
-    @for (item of grid.items; track $index) {
+    @for (item of data.items; track $index) {
       <li>
         @if (item) {
           <a class="group flex flex-row items-center" [routerLink]="item.url">

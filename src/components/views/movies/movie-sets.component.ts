@@ -1,14 +1,14 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { prepareGrid } from "components/grid/grid.utils";
 import { PaginationComponent } from "components/grid/pagination.component";
-import { combineLatest, debounceTime, map, Observable, switchMap } from "rxjs";
+import { combineLatest, map } from "rxjs";
 import { ConfigurationService } from "services/configuration.service";
 
 import { MoviesService } from "../../../services/movies.service";
 import { mapSetToGridItem } from "../../../shared/mapping";
 import { GridComponent } from "../../grid/grid.component";
-import type { GridData } from "../../grid/grid.types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,13 +24,10 @@ export class MovieSetsComponent {
     private route: ActivatedRoute,
   ) {}
 
-  readonly movies$: Observable<GridData> = this.route.queryParams.pipe(
-    debounceTime(25),
-    map((query) => {
-      const queryPage = parseInt(query["page"], 10);
-      return queryPage || 1;
-    }),
-    switchMap((page) =>
+  readonly movies$ = prepareGrid(
+    this.route,
+    this.configurationService.pageSize,
+    (page) =>
       combineLatest([
         this.moviesService.getMovieSets(page),
         this.moviesService.getMoviesInSets(),
@@ -54,10 +51,7 @@ export class MovieSetsComponent {
           return { currentPage: page, items, limits: data.limits };
         }),
       ),
-    ),
   );
-
-  readonly pageSize = this.configurationService.pageSize;
 
   private getMovieSetTitle(
     title: string | undefined,
