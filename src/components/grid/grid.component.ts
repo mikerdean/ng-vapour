@@ -58,4 +58,9 @@ export class GridComponent implements OnInit {
       type === "tvShow"
     );
   }
+
+  onItemClick(ev: Event) {
+    ev.preventDefault();
+    ev.stopPropagation();
+  }
 }
