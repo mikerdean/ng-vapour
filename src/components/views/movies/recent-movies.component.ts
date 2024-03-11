@@ -26,6 +26,7 @@ export class RecentMoviesComponent {
       map(({ movies }) => ({
         currentPage: 1,
         items: movies.map(mapMovieToGridItem),
+        limits: { total: 25 },
       })),
     ),
   );

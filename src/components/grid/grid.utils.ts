@@ -30,6 +30,7 @@ export const prepareGrid = (
         return of<GridData>({
           currentPage: page,
           items: Array.from({ length: expectedItems }, () => null),
+          limits: { total: expectedItems },
         }).pipe(takeUntil(gridData), concatWith(gridData));
       }
 
