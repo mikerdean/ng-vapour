@@ -35,6 +35,4 @@ export class MoviesByTitleComponent {
         })),
       ),
   );
-
-  readonly pageSize = this.configurationService.pageSize;
 }
