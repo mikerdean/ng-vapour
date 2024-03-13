@@ -15,16 +15,19 @@
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "outDir": "./dist/out-tsc",
+    "paths": {
+      "@vapour/*": ["./*"]
+    },
     "strict": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "target": "ES2022",
-    "useDefineForClassFields": false,
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true,
-  },
+    "strictTemplates": true
+  }
 }

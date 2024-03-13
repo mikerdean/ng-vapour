@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 
-import { TabsComponent } from "../../navigation/tabs.component";
-import type { TabItem } from "../../navigation/tabs.types";
-import { MainContentComponent } from "../../root/main-content.component";
+import { TabsComponent } from "@vapour/components/navigation/tabs.component";
+import type { TabItem } from "@vapour/components/navigation/tabs.types";
+import { MainContentComponent } from "@vapour/components/root/main-content.component";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

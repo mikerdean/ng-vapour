@@ -8,12 +8,12 @@ import {
 } from "@angular/forms";
 import { map, Observable } from "rxjs";
 
-import { HostService } from "../../services/host.service";
-import { FullscreenMessageComponent } from "../core/fullscreen-message.component";
-import { HeadingComponent } from "../core/heading.component";
-import { FormButtonComponent } from "../form/form-button.component";
-import { FormInputComponent } from "../form/form-input.component";
-import { ConnectionComponent } from "./connection.component";
+import { FullscreenMessageComponent } from "@vapour/components/core/fullscreen-message.component";
+import { HeadingComponent } from "@vapour/components/core/heading.component";
+import { FormButtonComponent } from "@vapour/components/form/form-button.component";
+import { FormInputComponent } from "@vapour/components/form/form-input.component";
+import { ConnectionComponent } from "@vapour/components/root/connection.component";
+import { HostService } from "@vapour/services/host.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

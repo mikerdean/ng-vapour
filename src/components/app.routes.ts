@@ -6,8 +6,8 @@ import {
   faMusic,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { RouteWithMetadata } from "./app.routes.types";
-import { Error404Component } from "./views/error/error404.component";
+import { RouteWithMetadata } from "@vapour/components/app.routes.types";
+import { Error404Component } from "@vapour/components/views/error/error404.component";
 
 export const routes: RouteWithMetadata[] = [
   {

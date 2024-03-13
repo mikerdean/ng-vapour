@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 
-import { AlertComponent } from "../../core/alert.component";
-import { MainContentComponent } from "../../root/main-content.component";
+import { AlertComponent } from "@vapour/components/core/alert.component";
+import { MainContentComponent } from "@vapour/components/root/main-content.component";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

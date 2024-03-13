@@ -13,7 +13,7 @@ import {
 import { nanoid } from "nanoid";
 import { map, Observable } from "rxjs";
 
-import type { FormInputType } from "./form-input.types";
+import { FormInputType } from "@vapour/components/form/form-input.types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

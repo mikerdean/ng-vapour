@@ -6,8 +6,9 @@ import {
   faAnglesLeft,
   faAnglesRight,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontawesomeIconComponent } from "components/images/fontawesome-icon.component";
-import { ConfigurationService } from "services/configuration.service";
+
+import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
+import { ConfigurationService } from "@vapour/services/configuration.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
+import { ConfigurationService } from "@vapour/services/configuration.service";
+import { SocketService } from "@vapour/services/socket.service";
 import type {
   GetMovie,
   GetMovieQuery,
@@ -12,9 +14,7 @@ import type {
   GetMoviesQuery,
   GetVideoGenresQuery,
   VideoGenresPaged,
-} from "../shared/kodi";
-import { ConfigurationService } from "./configuration.service";
-import { SocketService } from "./socket.service";
+} from "@vapour/shared/kodi";
 
 @Injectable({ providedIn: "root" })
 export class MoviesService {

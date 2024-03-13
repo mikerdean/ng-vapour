@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
-import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
-import { ThumbnailComponent } from "../images/thumbnail.component";
-import { ThumbnailType } from "../images/thumbnail.types";
-import type { GridData } from "./grid.types";
-import { PaginationComponent } from "./pagination.component";
+import { GridData } from "@vapour/components/grid/grid.types";
+import { PaginationComponent } from "@vapour/components/grid/pagination.component";
+import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
+import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
+import { ThumbnailType } from "@vapour/components/images/thumbnail.types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

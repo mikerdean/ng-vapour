@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
+import { SocketService } from "@vapour/services/socket.service";
 import type {
   ProfileDetails,
   ProfileDetailsPaged,
   ProfileDetailsQuery,
   ProfilesQuery,
-} from "../shared/kodi";
-import { SocketService } from "./socket.service";
+} from "@vapour/shared/kodi";
 
 @Injectable({ providedIn: "root" })
 export class ProfileService {

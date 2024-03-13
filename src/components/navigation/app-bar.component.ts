@@ -8,10 +8,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { map } from "rxjs";
 
-import { NavigationService } from "../../services/navigation.service";
-import { ProfileService } from "../../services/profile.service";
-import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
-import { KodiLogoComponent } from "../images/kodi-logo.component";
+import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
+import { KodiLogoComponent } from "@vapour/components/images/kodi-logo.component";
+import { NavigationService } from "@vapour/services/navigation.service";
+import { ProfileService } from "@vapour/services/profile.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

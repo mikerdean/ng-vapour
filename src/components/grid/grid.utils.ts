@@ -1,7 +1,7 @@
 import { ActivatedRoute } from "@angular/router";
 import { concatWith, map, Observable, of, switchMap, takeUntil } from "rxjs";
 
-import type { GridData } from "./grid.types";
+import { GridData } from "@vapour/components/grid/grid.types";
 
 export const prepareGrid = (
   route: ActivatedRoute,

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, map } from "rxjs";
 
-import type { Host } from "./host.service.types";
+import { Host } from "@vapour/services/host.service.types";
 
 @Injectable({ providedIn: "root" })
 export class HostService {

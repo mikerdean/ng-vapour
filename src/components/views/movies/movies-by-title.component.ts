@@ -1,13 +1,13 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { prepareGrid } from "components/grid/grid.utils";
 import { map } from "rxjs";
-import { ConfigurationService } from "services/configuration.service";
 
-import { MoviesService } from "../../../services/movies.service";
-import { mapMovieToGridItem } from "../../../shared/mapping";
-import { GridComponent } from "../../grid/grid.component";
+import { GridComponent } from "@vapour/components/grid/grid.component";
+import { prepareGrid } from "@vapour/components/grid/grid.utils";
+import { ConfigurationService } from "@vapour/services/configuration.service";
+import { MoviesService } from "@vapour/services/movies.service";
+import { mapMovieToGridItem } from "@vapour/shared/mapping";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,6 +1,9 @@
-import type { GridItem } from "../components/grid/grid.types";
-import { getVideoDuration } from "./duration";
-import type { VideoDetailsMovie, VideoDetailsMovieSet } from "./kodi";
+import type { GridItem } from "@vapour/components/grid/grid.types";
+import { getVideoDuration } from "@vapour/shared/duration";
+import type {
+  VideoDetailsMovie,
+  VideoDetailsMovieSet,
+} from "@vapour/shared/kodi";
 
 export const mapMovieToGridItem = (movie: VideoDetailsMovie): GridItem => ({
   id: movie.movieid,

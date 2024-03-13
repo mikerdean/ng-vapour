@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 
-import { routes } from "../app.routes";
-import type { RouteWithMetadata } from "../app.routes.types";
-import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
-import type { NavigationBarItem } from "./navigation-bar.types";
+import { routes } from "@vapour/components/app.routes";
+import { RouteWithMetadata } from "@vapour/components/app.routes.types";
+import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
+import { NavigationBarItem } from "@vapour/components/navigation/navigation-bar.types";
 
 const hasIcon = (route: RouteWithMetadata): route is NavigationBarItem => {
   return "icon" in route;

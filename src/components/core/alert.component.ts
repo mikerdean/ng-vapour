@@ -14,7 +14,7 @@ import {
   faWarning,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
+import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

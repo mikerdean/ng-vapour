@@ -17,7 +17,7 @@ import type {
   ClassOrStyle,
   FontAwesomeAnimation,
   FontAwesomeRotation,
-} from "./fontawesome.types";
+} from "@vapour/components/images/fontawesome.types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

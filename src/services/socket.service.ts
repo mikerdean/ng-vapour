@@ -10,14 +10,14 @@ import {
   timeout,
 } from "rxjs";
 
+import { HostService } from "@vapour/services/host.service";
+import type { ConnectionState } from "@vapour/services/socket.service.types";
 import {
   isKodiError,
   isKodiNotification,
   isKodiResponse,
   type KodiMessageBase,
-} from "../shared/kodi";
-import { HostService } from "./host.service";
-import type { ConnectionState } from "./socket.service.types";
+} from "@vapour/shared/kodi";
 
 @Injectable({ providedIn: "root" })
 export class SocketService implements OnDestroy {

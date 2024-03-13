@@ -6,8 +6,8 @@ import {
   withInMemoryScrolling,
 } from "@angular/router";
 
-import { KodiTitleStrategy } from "../strategies/kodiTitleStrategy";
-import { routes } from "./app.routes";
+import { routes } from "@vapour/components/app.routes";
+import { KodiTitleStrategy } from "@vapour/strategies/kodiTitleStrategy";
 
 export const appConfig: ApplicationConfig = {
   providers: [

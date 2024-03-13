@@ -18,9 +18,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { BehaviorSubject, combineLatest, map, Observable } from "rxjs";
 
-import { HostService } from "../../services/host.service";
-import { FontawesomeIconComponent } from "./fontawesome-icon.component";
-import type { ThumbnailType } from "./thumbnail.types";
+import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
+import { ThumbnailType } from "@vapour/components/images/thumbnail.types";
+import { HostService } from "@vapour/services/host.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

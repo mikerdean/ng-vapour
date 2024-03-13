@@ -4,17 +4,17 @@ import { RouterOutlet } from "@angular/router";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { map, Observable } from "rxjs";
 
-import { HostService } from "../../services/host.service";
-import { SocketService } from "../../services/socket.service";
-import { DefinitionListComponent } from "../core/definition-list.component";
-import type { DefinitionListItem } from "../core/definition-list.types";
-import { FullscreenMessageComponent } from "../core/fullscreen-message.component";
-import { HeadingComponent } from "../core/heading.component";
-import { OrderedListComponent } from "../core/ordered-list.component";
-import { FormButtonComponent } from "../form/form-button.component";
-import { FontawesomeIconComponent } from "../images/fontawesome-icon.component";
-import { AppbarComponent } from "../navigation/app-bar.component";
-import { NavigationBarComponent } from "../navigation/navigation-bar.component";
+import { DefinitionListComponent } from "@vapour/components/core/definition-list.component";
+import { DefinitionListItem } from "@vapour/components/core/definition-list.types";
+import { FullscreenMessageComponent } from "@vapour/components/core/fullscreen-message.component";
+import { HeadingComponent } from "@vapour/components/core/heading.component";
+import { OrderedListComponent } from "@vapour/components/core/ordered-list.component";
+import { FormButtonComponent } from "@vapour/components/form/form-button.component";
+import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
+import { AppbarComponent } from "@vapour/components/navigation/app-bar.component";
+import { NavigationBarComponent } from "@vapour/components/navigation/navigation-bar.component";
+import { HostService } from "@vapour/services/host.service";
+import { SocketService } from "@vapour/services/socket.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

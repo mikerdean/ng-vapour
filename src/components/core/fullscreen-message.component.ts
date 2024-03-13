@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 
-import type { AriaRole } from "../../shared/types";
+import { AriaRole } from "@vapour/shared/types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

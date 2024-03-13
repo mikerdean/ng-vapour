@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 
-import type { DefinitionListItem } from "./definition-list.types";
+import { DefinitionListItem } from "@vapour/components/core/definition-list.types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
