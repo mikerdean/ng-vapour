@@ -1,13 +1,5 @@
 import { ActivatedRoute } from "@angular/router";
-import {
-  concatWith,
-  debounceTime,
-  map,
-  Observable,
-  of,
-  switchMap,
-  takeUntil,
-} from "rxjs";
+import { concatWith, map, Observable, of, switchMap, takeUntil } from "rxjs";
 
 import type { GridData } from "./grid.types";
 
@@ -17,7 +9,6 @@ export const prepareGrid = (
   query: (page: number) => Observable<GridData>,
 ) =>
   route.queryParams.pipe(
-    debounceTime(25),
     map((query) => {
       const queryPage = parseInt(query["page"], 10);
       return queryPage || 1;
