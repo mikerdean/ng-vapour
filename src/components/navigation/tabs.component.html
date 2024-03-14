@@ -1,7 +1,7 @@
 <div class="sticky top-[3.15rem] z-10 bg-slate-900">
   <nav class="overflow-x-auto">
     <ul role="tablist" class="flex">
-      @for (item of items; track item.path) {
+      @for (item of items(); track item.path) {
         <li role="tab" class="px-3 pb-2">
           <a
             class="pb-1"
