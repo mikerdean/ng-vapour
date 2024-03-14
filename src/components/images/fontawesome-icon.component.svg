@@ -1,12 +1,14 @@
-<svg
-  aria-hidden="true"
-  [class]="classList"
-  [attr.data-prefix]="parsedIcon.prefix"
-  [attr.data-icon]="parsedIcon.iconName"
-  role="img"
-  [style]="styleList"
-  [attr.viewBox]="viewBox"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <path fill="currentColor" [attr.d]="parsedIcon.icon[4].toString()" />
-</svg>
+@if (parsedIcon(); as icon) {
+  <svg
+    aria-hidden="true"
+    [class]="classList()"
+    [attr.data-prefix]="icon.prefix"
+    [attr.data-icon]="icon.iconName"
+    role="img"
+    [style]="styleList()"
+    [attr.viewBox]="viewBox()"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path fill="currentColor" [attr.d]="icon.icon[4].toString()" />
+  </svg>
+}
