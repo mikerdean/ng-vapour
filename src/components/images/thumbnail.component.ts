@@ -2,11 +2,10 @@ import { AsyncPipe } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
-  OnChanges,
-  OnInit,
-  type SimpleChanges,
+  computed,
+  input,
 } from "@angular/core";
+import { toObservable } from "@angular/core/rxjs-interop";
 import type { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import {
   faCompactDisc,
@@ -16,7 +15,7 @@ import {
   faUser,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import { BehaviorSubject, combineLatest, map, Observable } from "rxjs";
+import { combineLatest, delay, map, Observable, of, switchMap } from "rxjs";
 
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { ThumbnailType } from "@vapour/components/images/thumbnail.types";
@@ -29,18 +28,40 @@ import { HostService } from "@vapour/services/host.service";
   standalone: true,
   templateUrl: "thumbnail.component.html",
 })
-export class ThumbnailComponent implements OnChanges, OnInit {
-  constructor(private hostService: HostService) {}
+export class ThumbnailComponent {
+  constructor(private hostService: HostService) {
+    this.imageUrl$ = combineLatest([
+      this.hostService.httpUrl$,
+      toObservable(this.uri).pipe(
+        switchMap((uri, i) => {
+          if (i === 0) {
+            return of(uri);
+          } else {
+            return of(undefined, uri).pipe(delay(25));
+          }
+        }),
+      ),
+    ]).pipe(
+      map(([baseUrl, uri]) => {
+        if (!baseUrl || !uri) {
+          return;
+        }
 
-  @Input() alt?: string;
-  @Input() played?: boolean;
-  @Input({ required: true }) type!: ThumbnailType;
-  @Input() uri?: string;
+        const encoded = encodeURIComponent(uri);
+        const url = new URL(`image/${encoded}`, baseUrl);
+        return url.toString();
+      }),
+    );
+  }
 
-  readonly #uriSubject = new BehaviorSubject(this.uri);
+  alt = input<string>();
+  imageUrl$: Observable<string | undefined>;
+  played = input<boolean>();
+  type = input.required<ThumbnailType>();
+  uri = input<string>();
 
-  get fallbackIcon(): IconDefinition {
-    switch (this.type) {
+  fallbackIcon = computed<IconDefinition>(() => {
+    switch (this.type()) {
       case "album":
         return faCompactDisc;
       case "actor":
@@ -60,36 +81,7 @@ export class ThumbnailComponent implements OnChanges, OnInit {
       case "episode":
         return faTv;
     }
-  }
-
-  imageUrl$!: Observable<string | undefined>;
-
-  ngOnChanges(changes: SimpleChanges) {
-    const uri = changes["uri"];
-    if (uri) {
-      this.#uriSubject.next(undefined);
-      requestAnimationFrame(() => {
-        this.#uriSubject.next(uri.currentValue);
-      });
-    }
-  }
-
-  ngOnInit(): void {
-    this.imageUrl$ = combineLatest([
-      this.hostService.httpUrl$,
-      this.#uriSubject,
-    ]).pipe(
-      map(([baseUrl, uri]) => {
-        if (!baseUrl || !uri) {
-          return;
-        }
-
-        const encoded = encodeURIComponent(uri);
-        const url = new URL(`image/${encoded}`, baseUrl);
-        return url.toString();
-      }),
-    );
-  }
+  });
 
   onImageLoaded(element: HTMLImageElement) {
     element.classList.remove("opacity-0");

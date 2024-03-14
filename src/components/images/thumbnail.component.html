@@ -1,7 +1,7 @@
 @if (imageUrl$ | async; as imageUrl) {
   <div class="relative">
     <img
-      [alt]="alt"
+      [alt]="alt()"
       class="h-auto w-full opacity-0 transition-opacity duration-300"
       [src]="imageUrl"
       (load)="onImageLoaded(thumbnail)"
@@ -11,6 +11,6 @@
 } @else {
   <fa-icon
     [class]="{ 'max-w-full': true, 'h-auto': true, 'p-2': true }"
-    [icon]="fallbackIcon"
+    [icon]="fallbackIcon()"
   />
 }
