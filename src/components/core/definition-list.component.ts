@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
 import { DefinitionListItem } from "@vapour/components/core/definition-list.types";
 
@@ -9,6 +9,6 @@ import { DefinitionListItem } from "@vapour/components/core/definition-list.type
   templateUrl: "definition-list.component.html",
 })
 export class DefinitionListComponent {
-  @Input({ required: true }) label!: string;
-  @Input({ required: true }) items!: DefinitionListItem[];
+  readonly label = input.required<string>();
+  readonly items = input.required<DefinitionListItem[]>();
 }
