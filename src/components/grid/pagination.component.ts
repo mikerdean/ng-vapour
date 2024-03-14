@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from "@angular/core";
 import { Router } from "@angular/router";
 import {
   faAngleLeft,
@@ -9,6 +14,16 @@ import {
 
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { ConfigurationService } from "@vapour/services/configuration.service";
+
+const defaultButtonClasses = [
+  "px-2",
+  "py-1",
+  "text-center",
+  "border-t",
+  "border-b",
+  "border-sky-900",
+  "text-slate-300",
+];
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,19 +38,9 @@ export class PaginationComponent {
     private router: Router,
   ) {}
 
-  @Input({ required: true }) currentPage!: number;
-  @Input() maxPages?: number;
-  @Input({ required: true }) total!: number;
-
-  readonly defaultButtonClasses = [
-    "px-2",
-    "py-1",
-    "text-center",
-    "border-t",
-    "border-b",
-    "border-sky-900",
-    "text-slate-300",
-  ];
+  readonly currentPage = input.required<number>();
+  readonly maxPages = input<number>();
+  readonly total = input.required<number>();
 
   readonly icons = {
     first: faAnglesLeft,
@@ -44,67 +49,62 @@ export class PaginationComponent {
     last: faAnglesRight,
   };
 
-  get classesFirst() {
-    return [
-      ...this.defaultButtonClasses,
-      "bg-slate-800",
-      "border-l",
-      "rounded-l",
-    ];
-  }
+  readonly classesFirst = [
+    ...defaultButtonClasses,
+    "bg-slate-800",
+    "border-l",
+    "rounded-l",
+  ];
 
-  get classesPreviousNext() {
-    return [...this.defaultButtonClasses, "bg-slate-800"];
-  }
+  readonly classesPreviousNext = [...defaultButtonClasses, "bg-slate-800"];
 
-  get classesLast() {
-    return [
-      ...this.defaultButtonClasses,
-      "bg-slate-800",
-      "border-r",
-      "rounded-r",
-    ];
-  }
+  readonly classesLast = [
+    ...defaultButtonClasses,
+    "bg-slate-800",
+    "border-r",
+    "rounded-r",
+  ];
 
-  get labelPrevious() {
-    return `Go back to previous page (${this.currentPage - 1})`;
-  }
+  readonly labelPrevious = computed(
+    () => `Go back to previous page (${this.currentPage() - 1})`,
+  );
 
-  get labelNext() {
-    return `Go to the next page (${this.currentPage + 1})`;
-  }
+  readonly labelNext = computed(
+    () => `Go to the next page (${this.currentPage() + 1})`,
+  );
 
-  get labelLast() {
-    return `Go to the last page (${this.totalPages})`;
-  }
+  readonly labelLast = computed(
+    () => `Go to the last page (${this.totalPages()})`,
+  );
 
-  get pages() {
-    const total = this.totalPages;
-    const maxPages = this.maxPages || 5;
+  readonly totalPages = computed(() =>
+    Math.ceil(this.total() / this.configurationService.pageSize),
+  );
+
+  readonly pages = computed(() => {
+    const current = this.currentPage();
+    const total = this.totalPages();
+    const maxPages = this.maxPages() || 5;
 
     const length = total > maxPages ? maxPages : total;
-    const start = this.calculateStart(this.currentPage, total, maxPages);
+    const start = this.calculateStart(current, total, maxPages);
 
     return Array.from({ length }, (_, i) => {
       const page = start + i;
 
       return {
         classes: [
-          ...this.defaultButtonClasses,
-          ...(page === this.currentPage
+          ...defaultButtonClasses,
+          ...(page === current
             ? ["bg-fuchsia-600", "text-slate-50"]
             : ["bg-slate-900"]),
         ],
-        current: this.currentPage === page ? "page" : undefined,
+        current: current === page ? "page" : undefined,
         label: `Change to page ${page}`,
         value: page,
       };
     });
-  }
-
-  get totalPages() {
-    return Math.ceil(this.total / this.configurationService.pageSize);
-  }
+  });
 
   private calculateStart(
     currentPage: number,

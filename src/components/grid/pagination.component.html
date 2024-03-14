@@ -5,7 +5,7 @@
         aria-label="Go back to first page (1)"
         [class]="classesFirst"
         (click)="changePage(1)"
-        [disabled]="currentPage <= 1"
+        [disabled]="currentPage() <= 1"
         type="button"
       >
         <fa-icon [icon]="icons.first" />
@@ -15,14 +15,14 @@
       <button
         [attr.aria-label]="labelPrevious"
         [class]="classesPreviousNext"
-        (click)="changePage(currentPage - 1)"
-        [disabled]="currentPage <= 1"
+        (click)="changePage(currentPage() - 1)"
+        [disabled]="currentPage() <= 1"
         type="button"
       >
         <fa-icon [icon]="icons.previous" />
       </button>
     </li>
-    @for (page of pages; track $index) {
+    @for (page of pages(); track $index) {
       <li>
         <button
           [attr.aria-current]="page.current"
@@ -39,8 +39,8 @@
       <button
         [attr.aria-label]="labelNext"
         [class]="classesPreviousNext"
-        (click)="changePage(currentPage + 1)"
-        [disabled]="currentPage + 1 > totalPages"
+        (click)="changePage(currentPage() + 1)"
+        [disabled]="currentPage() + 1 > totalPages()"
         type="button"
       >
         <fa-icon [icon]="icons.next" />
@@ -50,8 +50,8 @@
       <button
         [attr.aria-label]="labelLast"
         [class]="classesLast"
-        (click)="changePage(totalPages)"
-        [disabled]="currentPage + 1 > totalPages"
+        (click)="changePage(totalPages())"
+        [disabled]="currentPage() + 1 > totalPages()"
         type="button"
       >
         <fa-icon [icon]="icons.last" />

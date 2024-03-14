@@ -1,21 +1,24 @@
-@if (data) {
-  @if (data.limits) {
-    <pagination [currentPage]="data.currentPage" [total]="data.limits.total" />
+@if (data(); as gridData) {
+  @if (gridData.limits) {
+    <pagination
+      [currentPage]="gridData.currentPage"
+      [total]="gridData.limits.total"
+    />
   }
 
   <ol
     class="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
   >
-    @for (item of data.items; track $index) {
+    @for (item of gridData.items; track $index) {
       <li>
         @if (item) {
           <a class="group flex flex-row items-center" [routerLink]="item.url">
             <div
               class="mr-3 h-20 w-20 min-w-[5rem] overflow-hidden rounded-lg border-2 border-cyan-900 transition-colors duration-200 group-hover:border-cyan-500"
-              [class]="tallThumbnail ? 'h-28' : 'h-20'"
+              [class]="tallThumbnail() ? 'h-28' : 'h-20'"
             >
               <div class="flex h-full items-center">
-                <thumbnail [uri]="item.thumbnail" [type]="thumbnailType" />
+                <thumbnail [uri]="item.thumbnail" [type]="thumbnailType()" />
               </div>
             </div>
             <div class="flex-grow">
@@ -41,7 +44,7 @@
           <div class="flex flex-row items-center">
             <div
               class="mr-3 w-20 min-w-[5rem] overflow-hidden rounded-lg border-2 border-cyan-900"
-              [class]="tallThumbnail ? 'h-28' : 'h-20'"
+              [class]="tallThumbnail() ? 'h-28' : 'h-20'"
             >
               <div class="h-full animate-pulse bg-slate-800"></div>
             </div>

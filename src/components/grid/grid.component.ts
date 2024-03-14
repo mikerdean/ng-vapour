@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
@@ -21,15 +26,15 @@ import { ThumbnailType } from "@vapour/components/images/thumbnail.types";
   templateUrl: "grid.component.html",
 })
 export class GridComponent {
-  @Input({ required: true }) data!: GridData | null;
-  @Input({ required: true }) thumbnailType!: ThumbnailType;
+  readonly data = input.required<GridData | null>();
+  readonly thumbnailType = input.required<ThumbnailType>();
 
   readonly icons = {
     options: faEllipsisVertical,
   };
 
-  get tallThumbnail() {
-    const type = this.thumbnailType;
+  readonly tallThumbnail = computed(() => {
+    const type = this.thumbnailType();
 
     return (
       type === "movie" ||
@@ -37,7 +42,7 @@ export class GridComponent {
       type === "season" ||
       type === "tvShow"
     );
-  }
+  });
 
   onItemClick(ev: Event) {
     ev.preventDefault();

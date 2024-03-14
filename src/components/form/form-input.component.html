@@ -1,6 +1,6 @@
 <ng-container [formGroup]="form()">
-  @if (label()) {
-    <label [attr.for]="id">{{ label() }}</label>
+  @if (label(); as formLabel) {
+    <label [attr.for]="id">{{ formLabel }}</label>
   }
   <input
     class="w-full rounded border border-slate-300 bg-slate-400 px-2 py-1 text-slate-900 focus:outline-none focus:ring-2 focus:ring-fuchsia-700 focus:ring-offset-2 focus:ring-offset-slate-800"
