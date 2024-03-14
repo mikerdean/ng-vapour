@@ -1,5 +1,5 @@
 <ol class="ml-2 list-inside list-decimal">
-  @for (item of items; track $index) {
+  @for (item of items(); track $index) {
     <li class="mb-1">
       {{ item }}
     </li>
