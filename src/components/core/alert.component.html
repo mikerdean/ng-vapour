@@ -1,20 +1,23 @@
-@if (!dismissed) {
-  <aside class="flex items-center rounded-lg border-2 p-3" [class]="cssClasses">
+@if (!dismissed()) {
+  <aside
+    class="flex items-center rounded-lg border-2 p-3"
+    [class]="cssClasses()"
+  >
     <div class="mr-3">
-      <fa-icon [icon]="icon" size="2x" />
+      <fa-icon [icon]="icons.header()" size="2x" />
     </div>
     <div class="flex-grow">
-      @if (title) {
+      @if (title()) {
         <h1 class="mb-1 border-b-2 border-slate-900 pb-1 font-bold">
-          {{ title }}
+          {{ title() }}
         </h1>
       }
       <ng-content />
     </div>
-    @if (dismissable) {
-      <div class="ml-3">
+    @if (dismissable()) {
+      <div class="ml-3 self-start">
         <button class="text-slate-900" (click)="onDismissed()">
-          <fa-icon [icon]="dismissableIcon" />
+          <fa-icon [icon]="icons.dismiss" />
         </button>
       </div>
     }
