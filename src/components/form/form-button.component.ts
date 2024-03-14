@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -7,6 +7,6 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
   templateUrl: "form-button.component.html",
 })
 export class FormButtonComponent {
-  @Input() disabled = false;
-  @Input() type: "button" | "submit" | "reset" = "button";
+  readonly disabled = input(false);
+  readonly type = input<"button" | "submit" | "reset">("button");
 }
