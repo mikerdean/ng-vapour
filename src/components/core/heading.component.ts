@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from "@angular/common";
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
 import { HeadingLevel } from "@vapour/components/core/heading.types";
 
@@ -11,6 +11,6 @@ import { HeadingLevel } from "@vapour/components/core/heading.types";
   templateUrl: "heading.component.html",
 })
 export class HeadingComponent {
-  @Input() id?: string;
-  @Input() level: HeadingLevel = 1;
+  readonly id = input<string>();
+  readonly level = input<HeadingLevel>(1);
 }
