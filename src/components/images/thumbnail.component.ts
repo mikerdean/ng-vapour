@@ -54,13 +54,13 @@ export class ThumbnailComponent {
     );
   }
 
-  alt = input<string>();
-  imageUrl$: Observable<string | undefined>;
-  played = input<boolean>();
-  type = input.required<ThumbnailType>();
-  uri = input<string>();
+  readonly alt = input<string>();
+  readonly imageUrl$: Observable<string | undefined>;
+  readonly played = input<boolean>();
+  readonly type = input.required<ThumbnailType>();
+  readonly uri = input<string>();
 
-  fallbackIcon = computed<IconDefinition>(() => {
+  readonly fallbackIcon = computed<IconDefinition>(() => {
     switch (this.type()) {
       case "album":
         return faCompactDisc;
