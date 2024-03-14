@@ -1,5 +1,5 @@
 <ul class="ml-2 list-inside list-disc">
-  @for (item of items; track $index) {
+  @for (item of items(); track $index) {
     <li class="mb-1">
       {{ item }}
     </li>

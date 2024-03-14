@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -7,5 +7,5 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
   templateUrl: "unordered-list.component.html",
 })
 export class UnorderedListComponent {
-  @Input() items: string[] = [];
+  readonly items = input<string[]>([]);
 }
