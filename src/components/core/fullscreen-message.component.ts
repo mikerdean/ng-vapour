@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
 import { AriaRole } from "@vapour/shared/types";
 
@@ -9,5 +9,5 @@ import { AriaRole } from "@vapour/shared/types";
   templateUrl: "fullscreen-message.component.html",
 })
 export class FullscreenMessageComponent {
-  @Input() role: AriaRole | undefined;
+  readonly role = input<AriaRole>();
 }
