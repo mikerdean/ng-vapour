@@ -9,30 +9,42 @@
     <fullscreen-message>
       <div class="text-center">
         <fa-icon animation="spin" [icon]="icons.loading" size="6x" />
-        <div class="mt-2">Connecting...</div>
+        <div class="mt-2">
+          {{ "root.connection.connecting" | translate }}
+        </div>
       </div>
     </fullscreen-message>
   }
 
   @case ("disconnected") {
     <fullscreen-message>
-      <heading [level]="1">Connection error</heading>
+      <heading [level]="1">{{ "root.connection.title" | translate }}</heading>
       <p class="mb-5">
-        <strong>The connection to Kodi failed.</strong>
+        <strong>{{ "root.connection.subtitle" | translate }}</strong>
       </p>
-      <p class="mb-2">Please ensure that:</p>
-      <ordered-list [items]="errorListItems" />
+      <p class="mb-2">
+        {{ "root.connection.errorList.introduction" | translate }}
+      </p>
+      @if (errorListItems$ | async; as errors) {
+        <ordered-list [items]="errors" />
+      }
       <div class="my-5">
-        <form-button (click)="reconnect()">Retry connection</form-button>
+        <form-button (click)="reconnect()">{{
+          "root.connection.buttons.retry" | translate
+        }}</form-button>
       </div>
       <hr class="mb-5" />
-      <p class="mb-2">We tried to connect you to:</p>
+      <p class="mb-2">
+        {{ "root.connection.hostSummary.introduction" | translate }}
+      </p>
       <definition-list
-        label="Host details"
+        [label]="('root.connection.hostSummary.label' | translate) || ''"
         [items]="(hostSummaryItems$ | async) || []"
       />
       <div class="my-5">
-        <form-button (click)="clear()">Try a different host</form-button>
+        <form-button (click)="clear()">{{
+          "root.connection.buttons.changeHost" | translate
+        }}</form-button>
       </div>
     </fullscreen-message>
   }

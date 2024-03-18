@@ -10,12 +10,18 @@ import { map } from "rxjs";
 
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { KodiLogoComponent } from "@vapour/components/images/kodi-logo.component";
+import { TranslatePipe } from "@vapour/pipes/translate";
 import { NavigationService } from "@vapour/services/navigation.service";
 import { ProfileService } from "@vapour/services/profile.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, FontawesomeIconComponent, KodiLogoComponent],
+  imports: [
+    AsyncPipe,
+    FontawesomeIconComponent,
+    KodiLogoComponent,
+    TranslatePipe,
+  ],
   selector: "app-bar",
   standalone: true,
   templateUrl: "app-bar.component.html",

@@ -7,21 +7,25 @@
     <div>
       <button class="mr-6">
         <fa-icon [icon]="icons.remote" />
-        <span class="sr-only">Remote</span>
+        <span class="sr-only">{{ "common:remote" | translate }}</span>
       </button>
       <button class="mr-6">
         <fa-icon [icon]="icons.search" />
-        <span class="sr-only">Search</span>
+        <span class="sr-only">{{ "common:search" | translate }}</span>
       </button>
       @if (allowProfileChange$ | async) {
         <button class="mr-6">
           <fa-icon [icon]="icons.profile" />
-          <span class="sr-only">Change profile</span>
+          <span class="sr-only">{{
+            "navigation.appbar.buttons.profile" | translate
+          }}</span>
         </button>
       }
       <button>
         <fa-icon [icon]="icons.config" />
-        <span class="sr-only">Edit configuration</span>
+        <span class="sr-only">{{
+          "navigation.appbar.buttons.config" | translate
+        }}</span>
       </button>
     </div>
   </div>

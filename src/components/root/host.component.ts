@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import { map, Observable } from "rxjs";
+import { combineLatest, map, Observable } from "rxjs";
 
 import { FullscreenMessageComponent } from "@vapour/components/core/fullscreen-message.component";
 import { HeadingComponent } from "@vapour/components/core/heading.component";
@@ -14,6 +14,7 @@ import { FormButtonComponent } from "@vapour/components/form/form-button.compone
 import { FormInputComponent } from "@vapour/components/form/form-input.component";
 import { ConnectionComponent } from "@vapour/components/root/connection.component";
 import { HostService } from "@vapour/services/host.service";
+import { TranslationService } from "@vapour/services/translation.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,10 +32,29 @@ import { HostService } from "@vapour/services/host.service";
   templateUrl: "host.component.html",
 })
 export class HostComponent {
-  constructor(private hostService: HostService) {}
+  constructor(
+    private hostService: HostService,
+    private translationService: TranslationService,
+  ) {}
 
   readonly portMin = 1000;
   readonly portMax = 9999;
+
+  readonly translations$ = combineLatest([
+    this.translationService.translate("root.host.title"),
+    this.translationService.translate("root.host.form.hostname"),
+    this.translationService.translate("root.host.form.tcpPort"),
+    this.translationService.translate("root.host.form.httpPort"),
+    this.translationService.translate("common:save"),
+  ]).pipe(
+    map(([title, hostname, tcpPort, httpPort, save]) => ({
+      hostname,
+      tcpPort,
+      httpPort,
+      title,
+      save,
+    })),
+  );
 
   readonly hasValidHost$: Observable<boolean> = this.hostService.host$.pipe(
     map((host) => (host ? true : false)),

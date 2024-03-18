@@ -1,0 +1,11 @@
+{
+  "pageTitle": {
+    "main": "Kodi",
+    "combined": "{{ pageTitle }} | Kodi"
+  },
+  "remote": "Remote control",
+  "save": "Save",
+  "saving": "Saving...",
+  "search": "Search",
+  "unknown": "Unknown"
+}

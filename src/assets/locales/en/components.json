@@ -1,0 +1,50 @@
+{
+  "grid": {
+    "pagination": {
+      "first": "Go back to first page (1)",
+      "previous": "Go back to previous page ({{ page }})",
+      "next": "Go to the next page ({{ page }})",
+      "last": "Go to the last page ({{ page }})",
+      "change": "Change to page {{ page }}"
+    }
+  },
+  "navigation": {
+    "appbar": {
+      "buttons": {
+        "config": "Edit configuration",
+        "profile": "Change profile"
+      }
+    }
+  },
+  "root": {
+    "connection": {
+      "errorList": {
+        "introduction": "Please ensure that:",
+        "1": "Kodi is running",
+        "2": "You have enabled Settings > Services > Control > Allow Remote Control via HTTP",
+        "3": "You have enabled Settings > Services > Control > Allow Remote Control from applications on this system"
+      },
+      "hostSummary": {
+        "introduction": "We tried to connect you to:",
+        "label": "Host details",
+        "hostName": "Host name",
+        "port": "Port"
+      },
+      "buttons": {
+        "retry": "Retry connection",
+        "changeHost": "Try a different host"
+      },
+      "connecting": "Connecting...",
+      "title": "Connection error",
+      "subtitle": "The connection to Kodi failed."
+    },
+    "host": {
+      "title": "Enter host details",
+      "form": {
+        "hostname": "Hostname",
+        "tcpPort": "TCP Port",
+        "httpPort": "HTTP Port"
+      }
+    }
+  }
+}

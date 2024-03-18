@@ -1,13 +1,14 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { combineLatest, map } from "rxjs";
+import { combineLatest, map, switchMap } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
 import { PaginationComponent } from "@vapour/components/grid/pagination.component";
 import { ConfigurationService } from "@vapour/services/configuration.service";
 import { MoviesService } from "@vapour/services/movies.service";
+import { TranslationService } from "@vapour/services/translation.service";
 import { mapSetToGridItem } from "@vapour/shared/mapping";
 
 @Component({
@@ -22,6 +23,7 @@ export class MovieSetsComponent {
     private configurationService: ConfigurationService,
     private moviesService: MoviesService,
     private route: ActivatedRoute,
+    private translationService: TranslationService,
   ) {}
 
   readonly movies$ = prepareGrid(
@@ -32,7 +34,7 @@ export class MovieSetsComponent {
         this.moviesService.getMovieSets(page),
         this.moviesService.getMoviesInSets(),
       ]).pipe(
-        map(([data, moviesInSets]) => {
+        switchMap(([data, moviesInSets]) => {
           const sets: Record<string, number> = {};
           moviesInSets.movies.forEach((movie) => {
             const setName = movie.set || "__UNKNOWN__";
@@ -43,33 +45,24 @@ export class MovieSetsComponent {
             sets[setName] += 1;
           });
 
-          const items = data.sets.map((set) => ({
-            ...mapSetToGridItem(set),
-            details: [this.getMovieSetTitle(set.title, sets)],
-          }));
-
-          return { currentPage: page, items, limits: data.limits };
+          return combineLatest(
+            data.sets.map((set) => {
+              const count = sets[set.title || ""] || 0;
+              return this.translationService
+                .translate("movies:movieCount", { count })
+                .pipe(map((label) => ({ set, label })));
+            }),
+          ).pipe(
+            map((items) => ({
+              currentPage: page,
+              items: items.map(({ set, label }) => ({
+                ...mapSetToGridItem(set),
+                details: [label],
+              })),
+              limits: data.limits,
+            })),
+          );
         }),
       ),
   );
-
-  private getMovieSetTitle(
-    title: string | undefined,
-    sets: Record<string, number>,
-  ): string | undefined {
-    if (!title) {
-      return undefined;
-    }
-
-    const total = sets[title] || 0;
-    if (total < 1) {
-      return undefined;
-    }
-
-    if (total === 1) {
-      return "1 movie";
-    }
-
-    return `${total} movies`;
-  }
 }

@@ -1,24 +1,34 @@
+import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
+import { combineLatest, map, Observable } from "rxjs";
 
 import { TabsComponent } from "@vapour/components/navigation/tabs.component";
 import type { TabItem } from "@vapour/components/navigation/tabs.types";
 import { MainContentComponent } from "@vapour/components/root/main-content.component";
+import { TranslationService } from "@vapour/services/translation.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MainContentComponent, RouterOutlet, TabsComponent],
+  imports: [AsyncPipe, MainContentComponent, RouterOutlet, TabsComponent],
   selector: "movies",
   standalone: true,
   templateUrl: "movies.component.html",
 })
 export class MoviesComponent {
-  constructor() {}
+  constructor(private translationService: TranslationService) {}
 
-  readonly tabItems: TabItem[] = [
-    { label: "Recent", path: "/movies/recent" },
-    { label: "Titles", path: "/movies/titles" },
-    { label: "Sets", path: "/movies/sets" },
-    { label: "Genres", path: "/movies/genres" },
-  ];
+  readonly tabItems$: Observable<TabItem[]> = combineLatest([
+    this.translationService.translate("movies:tabs.recent"),
+    this.translationService.translate("movies:tabs.titles"),
+    this.translationService.translate("movies:tabs.sets"),
+    this.translationService.translate("movies:tabs.genres"),
+  ]).pipe(
+    map(([recent, titles, sets, genres]) => [
+      { label: recent, path: "/movies/recent" },
+      { label: titles, path: "/movies/titles" },
+      { label: sets, path: "/movies/sets" },
+      { label: genres, path: "/movies/genres" },
+    ]),
+  );
 }

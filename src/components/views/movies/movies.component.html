@@ -1,5 +1,7 @@
-<tabs [items]="tabItems" />
+@if (tabItems$ | async; as tabItems) {
+  <tabs [items]="tabItems" />
 
-<main-content>
-  <router-outlet />
-</main-content>
+  <main-content>
+    <router-outlet />
+  </main-content>
+}

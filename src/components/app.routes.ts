@@ -15,7 +15,7 @@ export const routes: RouteWithMetadata[] = [
     loadComponent: () =>
       import("./views/movies/movies.component").then((x) => x.MoviesComponent),
     icon: faFilm,
-    title: "Movies",
+    title: "routes:movies.root",
     children: [
       {
         path: "",
@@ -28,7 +28,7 @@ export const routes: RouteWithMetadata[] = [
           import("./views/movies/recent-movies.component").then(
             (x) => x.RecentMoviesComponent,
           ),
-        title: "Recent movies",
+        title: "routes:movies.recent",
       },
       {
         path: "titles",
@@ -36,7 +36,7 @@ export const routes: RouteWithMetadata[] = [
           import("./views/movies/movies-by-title.component").then(
             (x) => x.MoviesByTitleComponent,
           ),
-        title: "Movies by title",
+        title: "routes:movies.titles",
       },
       {
         path: "sets",
@@ -44,7 +44,7 @@ export const routes: RouteWithMetadata[] = [
           import("./views/movies/movie-sets.component").then(
             (x) => x.MovieSetsComponent,
           ),
-        title: "Movies by title",
+        title: "routes:movies.sets",
       },
     ],
   },
@@ -55,14 +55,14 @@ export const routes: RouteWithMetadata[] = [
         (x) => x.RecentMusicComponent,
       ),
     icon: faMusic,
-    title: "Music",
+    title: "routes:music.root",
   },
   {
     path: "tv",
     loadComponent: () =>
       import("./views/tv/recent-tv.component").then((x) => x.RecentTvComponent),
     icon: faDisplay,
-    title: "TV",
+    title: "routes:tv.root",
   },
   {
     path: "addons",
@@ -71,7 +71,7 @@ export const routes: RouteWithMetadata[] = [
         (x) => x.InstalledAddonsComponent,
       ),
     icon: faCubes,
-    title: "Addons",
+    title: "routes:addons.root",
   },
   {
     path: "settings",
@@ -80,7 +80,7 @@ export const routes: RouteWithMetadata[] = [
         (x) => x.SettingsComponent,
       ),
     icon: faCog,
-    title: "Settings",
+    title: "routes:settings.root",
   },
   {
     path: "",

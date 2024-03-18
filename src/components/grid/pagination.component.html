@@ -2,7 +2,7 @@
   <ol class="flex justify-center" aria-label="Pagination">
     <li>
       <button
-        aria-label="Go back to first page (1)"
+        [attr.aria-label]="'grid.pagination.first' | translate"
         [class]="classesFirst"
         (click)="changePage(1)"
         [disabled]="currentPage() <= 1"
@@ -13,7 +13,9 @@
     </li>
     <li>
       <button
-        [attr.aria-label]="labelPrevious"
+        [attr.aria-label]="
+          'grid.pagination.previous' | translate: { page: previousPage() }
+        "
         [class]="classesPreviousNext"
         (click)="changePage(currentPage() - 1)"
         [disabled]="currentPage() <= 1"
@@ -22,7 +24,7 @@
         <fa-icon [icon]="icons.previous" />
       </button>
     </li>
-    @for (page of pages(); track $index) {
+    @for (page of pages$ | async; track $index) {
       <li>
         <button
           [attr.aria-current]="page.current"
@@ -37,7 +39,9 @@
     }
     <li>
       <button
-        [attr.aria-label]="labelNext"
+        [attr.aria-label]="
+          'grid.pagination.next' | translate: { page: nextPage() }
+        "
         [class]="classesPreviousNext"
         (click)="changePage(currentPage() + 1)"
         [disabled]="currentPage() + 1 > totalPages()"
@@ -48,7 +52,9 @@
     </li>
     <li>
       <button
-        [attr.aria-label]="labelLast"
+        [attr.aria-label]="
+          'grid.pagination.last' | translate: { page: totalPages() }
+        "
         [class]="classesLast"
         (click)="changePage(totalPages())"
         [disabled]="currentPage() + 1 > totalPages()"

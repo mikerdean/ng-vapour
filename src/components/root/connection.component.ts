@@ -2,7 +2,7 @@ import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import { map, Observable } from "rxjs";
+import { combineLatest, map, Observable } from "rxjs";
 
 import { DefinitionListComponent } from "@vapour/components/core/definition-list.component";
 import { DefinitionListItem } from "@vapour/components/core/definition-list.types";
@@ -13,8 +13,10 @@ import { FormButtonComponent } from "@vapour/components/form/form-button.compone
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { AppbarComponent } from "@vapour/components/navigation/app-bar.component";
 import { NavigationBarComponent } from "@vapour/components/navigation/navigation-bar.component";
+import { TranslatePipe } from "@vapour/pipes/translate";
 import { HostService } from "@vapour/services/host.service";
 import { SocketService } from "@vapour/services/socket.service";
+import { TranslationService } from "@vapour/services/translation.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,6 +31,7 @@ import { SocketService } from "@vapour/services/socket.service";
     NavigationBarComponent,
     OrderedListComponent,
     RouterOutlet,
+    TranslatePipe,
   ],
   selector: "connection",
   standalone: true,
@@ -38,23 +41,28 @@ export class ConnectionComponent {
   constructor(
     private hostService: HostService,
     private socketService: SocketService,
+    private translationService: TranslationService,
   ) {}
 
   readonly connectionState$ = this.socketService.connectionState$;
 
-  readonly errorListItems = [
-    "Kodi is running",
-    "You have enabled Settings > Services > Control > Allow Remote Control via HTTP",
-    "You have enabled Settings > Services > Control > Allow Remote Control from applications on this system",
-  ];
+  readonly errorListItems$ = combineLatest([
+    this.translationService.translate("root.connection.errorList.1"),
+    this.translationService.translate("root.connection.errorList.2"),
+    this.translationService.translate("root.connection.errorList.3"),
+  ]);
 
-  readonly hostSummaryItems$: Observable<DefinitionListItem[]> =
-    this.hostService.host$.pipe(
-      map((host) => [
-        { header: "Hostname", description: host?.hostname || "Unknown" },
-        { header: "Port", description: host?.tcpPort.toString() || "Unknown" },
-      ]),
-    );
+  readonly hostSummaryItems$: Observable<DefinitionListItem[]> = combineLatest([
+    this.hostService.host$,
+    this.translationService.translate("root.connection.hostSummary.hostName"),
+    this.translationService.translate("root.connection.hostSummary.port"),
+    this.translationService.translate("common:unknown"),
+  ]).pipe(
+    map(([host, hostname, port, unknown]) => [
+      { header: hostname, description: host?.hostname || unknown },
+      { header: port, description: host?.tcpPort.toString() || unknown },
+    ]),
+  );
 
   readonly icons = {
     loading: faCircleNotch,

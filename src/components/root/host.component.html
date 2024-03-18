@@ -1,35 +1,41 @@
 @if (hasValidHost$ | async) {
   <connection />
 } @else {
-  <fullscreen-message>
-    <form [formGroup]="hostForm" (ngSubmit)="onSubmit()">
-      <heading [level]="1">Enter host details</heading>
-      <div class="mb-5">
-        <form-input [form]="hostForm" label="Hostname" name="hostname" />
-      </div>
-      <div class="mb-5">
-        <form-input
-          [form]="hostForm"
-          label="HTTP Port"
-          [max]="portMax"
-          [min]="portMin"
-          name="httpPort"
-          type="number"
-        />
-      </div>
-      <div class="mb-5">
-        <form-input
-          [form]="hostForm"
-          label="TCP Port"
-          [max]="portMax"
-          [min]="portMin"
-          name="tcpPort"
-          type="number"
-        />
-      </div>
-      <div>
-        <form-button type="submit">Save</form-button>
-      </div>
-    </form>
-  </fullscreen-message>
+  @if (translations$ | async; as translations) {
+    <fullscreen-message>
+      <form [formGroup]="hostForm" (ngSubmit)="onSubmit()">
+        <heading [level]="1">{{ translations.title }}</heading>
+        <div class="mb-5">
+          <form-input
+            [form]="hostForm"
+            [label]="translations.hostname"
+            name="hostname"
+          />
+        </div>
+        <div class="mb-5">
+          <form-input
+            [form]="hostForm"
+            [label]="translations.httpPort"
+            [max]="portMax"
+            [min]="portMin"
+            name="httpPort"
+            type="number"
+          />
+        </div>
+        <div class="mb-5">
+          <form-input
+            [form]="hostForm"
+            [label]="translations.tcpPort"
+            [max]="portMax"
+            [min]="portMin"
+            name="tcpPort"
+            type="number"
+          />
+        </div>
+        <div>
+          <form-button type="submit">{{ translations.save }}</form-button>
+        </div>
+      </form>
+    </fullscreen-message>
+  }
 }

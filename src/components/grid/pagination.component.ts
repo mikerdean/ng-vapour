@@ -1,9 +1,11 @@
+import { AsyncPipe } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
   input,
 } from "@angular/core";
+import { toObservable } from "@angular/core/rxjs-interop";
 import { Router } from "@angular/router";
 import {
   faAngleLeft,
@@ -11,9 +13,12 @@ import {
   faAnglesLeft,
   faAnglesRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { combineLatest, map, switchMap } from "rxjs";
 
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
+import { TranslatePipe } from "@vapour/pipes/translate";
 import { ConfigurationService } from "@vapour/services/configuration.service";
+import { TranslationService } from "@vapour/services/translation.service";
 
 const defaultButtonClasses = [
   "px-2",
@@ -27,7 +32,7 @@ const defaultButtonClasses = [
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FontawesomeIconComponent],
+  imports: [AsyncPipe, FontawesomeIconComponent, TranslatePipe],
   selector: "pagination",
   standalone: true,
   templateUrl: "pagination.component.html",
@@ -36,6 +41,7 @@ export class PaginationComponent {
   constructor(
     private configurationService: ConfigurationService,
     private router: Router,
+    private translationService: TranslationService,
   ) {}
 
   readonly currentPage = input.required<number>();
@@ -65,46 +71,49 @@ export class PaginationComponent {
     "rounded-r",
   ];
 
-  readonly labelPrevious = computed(
-    () => `Go back to previous page (${this.currentPage() - 1})`,
-  );
-
-  readonly labelNext = computed(
-    () => `Go to the next page (${this.currentPage() + 1})`,
-  );
-
-  readonly labelLast = computed(
-    () => `Go to the last page (${this.totalPages()})`,
-  );
+  readonly nextPage = computed(() => this.currentPage() + 1);
+  readonly previousPage = computed(() => this.currentPage() - 1);
 
   readonly totalPages = computed(() =>
     Math.ceil(this.total() / this.configurationService.pageSize),
   );
 
-  readonly pages = computed(() => {
-    const current = this.currentPage();
-    const total = this.totalPages();
-    const maxPages = this.maxPages() || 5;
+  readonly pages$ = combineLatest([
+    toObservable(this.currentPage),
+    toObservable(this.totalPages),
+    toObservable(this.maxPages),
+  ]).pipe(
+    switchMap(([current, total, maxPages]) => {
+      const max = maxPages || 5;
+      const length = total > max ? max : total;
+      const start = this.calculateStart(current, total, max);
 
-    const length = total > maxPages ? maxPages : total;
-    const start = this.calculateStart(current, total, maxPages);
-
-    return Array.from({ length }, (_, i) => {
-      const page = start + i;
-
-      return {
-        classes: [
-          ...defaultButtonClasses,
-          ...(page === current
-            ? ["bg-fuchsia-600", "text-slate-50"]
-            : ["bg-slate-900"]),
-        ],
-        current: current === page ? "page" : undefined,
-        label: `Change to page ${page}`,
-        value: page,
-      };
-    });
-  });
+      return combineLatest(
+        Array.from({ length }, (_, i) => {
+          return this.translationService.translate("grid.pagination.change", {
+            page: start + i,
+          });
+        }),
+      ).pipe(
+        map((pages) =>
+          pages.map((label, i) => {
+            const page = i + 1;
+            return {
+              classes: [
+                ...defaultButtonClasses,
+                ...(page === current
+                  ? ["bg-fuchsia-600", "text-slate-50"]
+                  : ["bg-slate-900"]),
+              ],
+              current: current === page ? "page" : undefined,
+              label,
+              value: page,
+            };
+          }),
+        ),
+      );
+    }),
+  );
 
   private calculateStart(
     currentPage: number,

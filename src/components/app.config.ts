@@ -7,7 +7,7 @@ import {
 } from "@angular/router";
 
 import { routes } from "@vapour/components/app.routes";
-import { KodiTitleStrategy } from "@vapour/strategies/kodiTitleStrategy";
+import { TranslatedTitleStrategy } from "@vapour/strategies/translatedTitleStrategy";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,6 +16,6 @@ export const appConfig: ApplicationConfig = {
       withHashLocation(),
       withInMemoryScrolling({ scrollPositionRestoration: "enabled" }),
     ),
-    { provide: TitleStrategy, useClass: KodiTitleStrategy },
+    { provide: TitleStrategy, useClass: TranslatedTitleStrategy },
   ],
 };

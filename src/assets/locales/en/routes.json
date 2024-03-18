@@ -1,0 +1,20 @@
+{
+  "movies": {
+    "root": "Movies",
+    "recent": "Recent movies",
+    "titles": "Movies by title",
+    "sets": "Movie sets"
+  },
+  "music": {
+    "root": "Music"
+  },
+  "tv": {
+    "root": "TV"
+  },
+  "addons": {
+    "root": "Addons"
+  },
+  "settings": {
+    "root": "Settings"
+  }
+}

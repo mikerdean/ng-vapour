@@ -1,0 +1,10 @@
+{
+  "movieCount_one": "{{ count }} movie",
+  "movieCount_other": "{{ count }} movies",
+  "tabs": {
+    "recent": "Recent",
+    "titles": "Titles",
+    "sets": "Sets",
+    "genres": "Genres"
+  }
+}
