@@ -1,5 +1,8 @@
 <main-content>
-  <alert title="Page not found" type="warning">
-    <p>Some message about being unable to find the specified page.</p>
+  <alert
+    [title]="('common:pageNotFound.title' | translate) || undefined"
+    type="warning"
+  >
+    <p>{{ "common:pageNotFound.details" | translate }}</p>
   </alert>
 </main-content>

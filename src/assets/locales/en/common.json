@@ -1,4 +1,8 @@
 {
+  "pageNotFound": {
+    "title": "Page not found",
+    "details": "Unable to find the specified page."
+  },
   "pageTitle": {
     "main": "Kodi",
     "combined": "{{ pageTitle }} | Kodi"
