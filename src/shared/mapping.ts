@@ -1,6 +1,7 @@
 import type { GridItem } from "@vapour/components/grid/grid.types";
 import { getVideoDuration } from "@vapour/shared/duration";
 import type {
+  LibraryDetailsGenre,
   VideoDetailsMovie,
   VideoDetailsMovieSet,
 } from "@vapour/shared/kodi";
@@ -21,4 +22,14 @@ export const mapSetToGridItem = (set: VideoDetailsMovieSet): GridItem => ({
   played: set.playcount !== undefined && set.playcount > 0,
   thumbnail: set.art?.poster,
   url: `/movies/sets/${set.setid}`,
+});
+
+export const mapGenreToGridItem = (
+  genre: LibraryDetailsGenre,
+  type: string,
+): GridItem => ({
+  id: genre.genreid,
+  details: [],
+  label: genre.label,
+  url: `/${type}/genres/${genre.genreid}`,
 });

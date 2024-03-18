@@ -46,6 +46,14 @@ export const routes: RouteWithMetadata[] = [
           ),
         title: "routes:movies.sets",
       },
+      {
+        path: "genres",
+        loadComponent: () =>
+          import("./views/movies/movie-genres.component").then(
+            (x) => x.MovieGenresComponent,
+          ),
+        title: "routes:movies.genres",
+      },
     ],
   },
   {

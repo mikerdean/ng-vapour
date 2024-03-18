@@ -3,7 +3,8 @@
     "root": "Movies",
     "recent": "Recent movies",
     "titles": "Movies by title",
-    "sets": "Movie sets"
+    "sets": "Movie sets",
+    "genres": "Movie genres"
   },
   "music": {
     "root": "Music"
