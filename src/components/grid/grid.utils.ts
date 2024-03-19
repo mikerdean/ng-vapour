@@ -1,20 +1,20 @@
 import { ActivatedRoute } from "@angular/router";
 import { concatWith, map, Observable, of, switchMap, takeUntil } from "rxjs";
+import { parse, type BaseSchema } from "valibot";
 
-import { GridData } from "@vapour/components/grid/grid.types";
+import type { GridData, GridQuery } from "@vapour/components/grid/grid.types";
 
-export const prepareGrid = (
+export const prepareGrid = <T extends GridQuery>(
+  schema: BaseSchema<T>,
   route: ActivatedRoute,
   expectedItems: number,
-  query: (page: number) => Observable<GridData>,
+  query: (queryParams: T) => Observable<GridData>,
 ) =>
   route.queryParams.pipe(
-    map((query) => {
-      const queryPage = parseInt(query["page"], 10);
-      return queryPage || 1;
-    }),
-    switchMap((page, i) => {
-      const gridData = query(page);
+    map((queryParams) => parse(schema, queryParams)),
+    switchMap((queryParams, i) => {
+      const { page } = queryParams;
+      const gridData = query(queryParams);
       const firstTime = i === 0;
 
       if (firstTime) {

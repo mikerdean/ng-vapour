@@ -10,6 +10,7 @@ import { ConfigurationService } from "@vapour/services/configuration.service";
 import { MoviesService } from "@vapour/services/movies.service";
 import { TranslationService } from "@vapour/services/translation.service";
 import { mapSetToGridItem } from "@vapour/shared/mapping";
+import { pageValidator } from "@vapour/validators";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,9 +28,10 @@ export class MovieSetsComponent {
   ) {}
 
   readonly movies$ = prepareGrid(
+    pageValidator,
     this.route,
     this.configurationService.pageSize,
-    (page) =>
+    ({ page }) =>
       combineLatest([
         this.moviesService.getMovieSets(page),
         this.moviesService.getMoviesInSets(),

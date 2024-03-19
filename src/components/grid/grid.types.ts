@@ -16,3 +16,7 @@ export type GridItem = {
 };
 
 export type GridItemDetail = string | number | boolean | undefined | null;
+
+export type GridQuery = {
+  page: number;
+};

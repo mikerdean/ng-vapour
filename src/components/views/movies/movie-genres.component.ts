@@ -8,6 +8,7 @@ import { prepareGrid } from "@vapour/components/grid/grid.utils";
 import { ConfigurationService } from "@vapour/services/configuration.service";
 import { MoviesService } from "@vapour/services/movies.service";
 import { mapGenreToGridItem } from "@vapour/shared/mapping";
+import { pageValidator } from "@vapour/validators";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,9 +25,10 @@ export class MovieGenresComponent {
   ) {}
 
   readonly genres$ = prepareGrid(
+    pageValidator,
     this.route,
     this.configurationService.pageSize,
-    (page) =>
+    ({ page }) =>
       this.moviesService.getMovieGenres(page).pipe(
         map(({ genres, limits }) => ({
           currentPage: page,
