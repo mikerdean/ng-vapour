@@ -1,4 +1,4 @@
-import { AsyncPipe } from "@angular/common";
+import { AsyncPipe, NgTemplateOutlet } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,6 +8,8 @@ import {
 import { toObservable } from "@angular/core/rxjs-interop";
 import type { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import {
+  faCheckCircle,
+  faCircle,
   faCompactDisc,
   faFilm,
   faMusic,
@@ -23,7 +25,7 @@ import { HostService } from "@vapour/services/host.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, FontawesomeIconComponent],
+  imports: [AsyncPipe, FontawesomeIconComponent, NgTemplateOutlet],
   selector: "thumbnail",
   standalone: true,
   templateUrl: "thumbnail.component.html",
@@ -60,28 +62,32 @@ export class ThumbnailComponent {
   readonly type = input.required<ThumbnailType>();
   readonly uri = input<string>();
 
-  readonly fallbackIcon = computed<IconDefinition>(() => {
-    switch (this.type()) {
-      case "album":
-        return faCompactDisc;
-      case "actor":
-        return faUser;
-      case "artist":
-        return faUsers;
-      case "song":
-      case "musicGenre":
-        return faMusic;
-      case "movie":
-      case "movieGenre":
-      case "movieSet":
-        return faFilm;
-      case "tvShow":
-      case "tvShowGenre":
-      case "season":
-      case "episode":
-        return faTv;
-    }
-  });
+  readonly icons = {
+    fallback: computed<IconDefinition>(() => {
+      switch (this.type()) {
+        case "album":
+          return faCompactDisc;
+        case "actor":
+          return faUser;
+        case "artist":
+          return faUsers;
+        case "song":
+        case "musicGenre":
+          return faMusic;
+        case "movie":
+        case "movieGenre":
+        case "movieSet":
+          return faFilm;
+        case "tvShow":
+        case "tvShowGenre":
+        case "season":
+        case "episode":
+          return faTv;
+      }
+    }),
+    checkCircle: faCheckCircle,
+    circle: faCircle,
+  };
 
   onImageLoaded(element: HTMLImageElement) {
     element.classList.remove("opacity-0");

@@ -7,12 +7,43 @@
       (load)="onImageLoaded(thumbnail)"
       #thumbnail
     />
+    @if (played()) {
+      <ng-container *ngTemplateOutlet="playedIcon" />
+    }
   </div>
 } @else {
   <div class="p-2">
     <fa-icon
       [class]="{ 'w-full': true, 'h-auto': true }"
-      [icon]="fallbackIcon()"
+      [icon]="icons.fallback()"
     />
   </div>
+  @if (played()) {
+    <div class="relative h-full w-full" title="Played">
+      <ng-container *ngTemplateOutlet="playedIcon" />
+    </div>
+  }
 }
+
+<ng-template #playedIcon>
+  <fa-icon
+    [class]="{
+      absolute: true,
+      'right-1': true,
+      'bottom-1': true,
+      'text-fuchsia-500': true,
+      'z-[3]': true
+    }"
+    [icon]="icons.checkCircle"
+  />
+  <fa-icon
+    [class]="{
+      absolute: true,
+      'right-1': true,
+      'bottom-1': true,
+      'text-slate-900': true,
+      'z-[2]': true
+    }"
+    [icon]="icons.circle"
+  />
+</ng-template>
