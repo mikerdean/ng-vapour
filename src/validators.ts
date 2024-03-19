@@ -20,37 +20,30 @@ export const albumValidator = object({
 
 export const artistValidator = object({
   artistId: positiveInteger,
-  page: minimumOneInteger,
 });
 
 export const genreValidator = object({
   genre: string([minLength(1)]),
-  page: minimumOneInteger,
 });
 
 export const movieValidator = object({
   movieId: positiveInteger,
-  page: minimumOneInteger,
 });
 
 export const movieSetValidator = object({
   page: minimumOneInteger,
-  setId: positiveInteger,
 });
 
 export const tvShowValidator = object({
   page: minimumOneInteger,
-  tvShowId: positiveInteger,
 });
 
 export const seasonValidator = object({
   page: minimumOneInteger,
-  seasonId: positiveInteger,
 });
 
 export const episodeValidator = object({
   episodeId: positiveInteger,
-  page: minimumOneInteger,
 });
 
 export const pageValidator = object({
