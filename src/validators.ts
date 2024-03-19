@@ -13,6 +13,8 @@ const positiveInteger = coerce(number([integer(), minValue(1)]), Number);
 
 const minimumOneInteger = fallback(positiveInteger, 1);
 
+export const emptyParamsValidator = object({});
+
 export const albumValidator = object({
   albumId: positiveInteger,
   page: minimumOneInteger,

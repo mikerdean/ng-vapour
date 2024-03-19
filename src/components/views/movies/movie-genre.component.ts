@@ -1,8 +1,7 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { map, switchMap } from "rxjs";
-import { parse } from "valibot";
+import { map } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
@@ -26,22 +25,17 @@ export class MovieGenreComponent {
   ) {}
 
   readonly movies$ = prepareGrid(
+    genreValidator,
     pageValidator,
     this.route,
     this.configurationService.pageSize,
-    ({ page }) =>
-      this.route.params.pipe(
-        switchMap((params) => {
-          const { genre } = parse(genreValidator, params);
-
-          return this.moviesService.getMoviesByGenre({ genre, page }).pipe(
-            map(({ movies, limits }) => ({
-              currentPage: page,
-              items: movies.map(mapMovieToGridItem),
-              limits,
-            })),
-          );
-        }),
+    ({ genre }, { page }) =>
+      this.moviesService.getMoviesByGenre({ genre, page }).pipe(
+        map(({ movies, limits }) => ({
+          currentPage: page,
+          items: movies.map(mapMovieToGridItem),
+          limits,
+        })),
       ),
   );
 }

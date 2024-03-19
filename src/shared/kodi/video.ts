@@ -191,7 +191,6 @@ export type GetMovieSetDetailsQuery = Properties<VideoDetailsMovieSet> & {
 };
 
 export type GetMovieSet = {
-  limits: KodiMessageLimitsReturned;
   setdetails: VideoDetailsMovieSet & {
     movies: VideoDetailsMovie[];
   };

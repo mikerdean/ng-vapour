@@ -1,8 +1,7 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { map, switchMap } from "rxjs";
-import { parse } from "valibot";
+import { map } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
@@ -26,22 +25,17 @@ export class MovieSetComponent {
   ) {}
 
   readonly movies$ = prepareGrid(
+    movieSetValidator,
     pageValidator,
     this.route,
     this.configurationService.pageSize,
-    ({ page }) =>
-      this.route.params.pipe(
-        switchMap((params) => {
-          const { movieSetId } = parse(movieSetValidator, params);
-
-          return this.moviesService.getMovieSetById(movieSetId).pipe(
-            map(({ setdetails: { movies }, limits }) => ({
-              currentPage: page,
-              items: movies.map(mapMovieToGridItem),
-              limits,
-            })),
-          );
-        }),
+    ({ movieSetId }, { page }) =>
+      this.moviesService.getMovieSetById(movieSetId).pipe(
+        map(({ setdetails: { movies } }) => ({
+          currentPage: page,
+          items: movies.map(mapMovieToGridItem),
+          limits: { total: movies.length },
+        })),
       ),
   );
 }

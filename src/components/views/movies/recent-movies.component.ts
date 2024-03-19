@@ -7,7 +7,7 @@ import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
 import { MoviesService } from "@vapour/services/movies.service";
 import { mapMovieToGridItem } from "@vapour/shared/mapping";
-import { pageValidator } from "@vapour/validators";
+import { emptyParamsValidator, pageValidator } from "@vapour/validators";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,13 +22,18 @@ export class RecentMoviesComponent {
     private route: ActivatedRoute,
   ) {}
 
-  readonly movies$ = prepareGrid(pageValidator, this.route, 25, ({ page }) =>
-    this.moviesService.getRecentlyAddedMovies().pipe(
-      map(({ movies }) => ({
-        currentPage: page,
-        items: movies.map(mapMovieToGridItem),
-        limits: { total: 25 },
-      })),
-    ),
+  readonly movies$ = prepareGrid(
+    emptyParamsValidator,
+    pageValidator,
+    this.route,
+    25,
+    (_, { page }) =>
+      this.moviesService.getRecentlyAddedMovies().pipe(
+        map(({ movies }) => ({
+          currentPage: page,
+          items: movies.map(mapMovieToGridItem),
+          limits: { total: 25 },
+        })),
+      ),
   );
 }
