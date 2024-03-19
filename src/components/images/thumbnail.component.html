@@ -9,8 +9,10 @@
     />
   </div>
 } @else {
-  <fa-icon
-    [class]="{ 'max-w-full': true, 'h-auto': true, 'p-2': true }"
-    [icon]="fallbackIcon()"
-  />
+  <div class="p-2">
+    <fa-icon
+      [class]="{ 'w-full': true, 'h-auto': true }"
+      [icon]="fallbackIcon()"
+    />
+  </div>
 }
