@@ -19,7 +19,7 @@
     />
   </div>
   @if (played()) {
-    <div class="relative h-full w-full" title="Played">
+    <div class="relative h-full w-full" [title]="'common:played' | translate">
       <ng-container *ngTemplateOutlet="playedIcon" />
     </div>
   }

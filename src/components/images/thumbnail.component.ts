@@ -21,11 +21,17 @@ import { combineLatest, delay, map, Observable, of, switchMap } from "rxjs";
 
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { ThumbnailType } from "@vapour/components/images/thumbnail.types";
+import { TranslatePipe } from "@vapour/pipes/translate";
 import { HostService } from "@vapour/services/host.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, FontawesomeIconComponent, NgTemplateOutlet],
+  imports: [
+    AsyncPipe,
+    FontawesomeIconComponent,
+    NgTemplateOutlet,
+    TranslatePipe,
+  ],
   selector: "thumbnail",
   standalone: true,
   templateUrl: "thumbnail.component.html",
