@@ -31,5 +31,5 @@ export const mapGenreToGridItem = (
   id: genre.genreid,
   details: [],
   label: genre.label,
-  url: `/${type}/genres/${genre.genreid}`,
+  url: `/${type}/genres/${genre.label}`,
 });
