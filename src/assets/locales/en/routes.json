@@ -3,6 +3,7 @@
     "root": "Movies",
     "recent": "Recent movies",
     "titles": "Movies by title",
+    "set": "Movie set",
     "sets": "Movie sets",
     "genre": "Movie genre",
     "genres": "Movie genres"

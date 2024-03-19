@@ -47,6 +47,14 @@ export const routes: RouteWithMetadata[] = [
         title: "routes:movies.sets",
       },
       {
+        path: "sets/:movieSetId",
+        loadComponent: () =>
+          import("./views/movies/movie-set.component").then(
+            (x) => x.MovieSetComponent,
+          ),
+        title: "routes:movies.set",
+      },
+      {
         path: "genres",
         loadComponent: () =>
           import("./views/movies/movie-genres.component").then(

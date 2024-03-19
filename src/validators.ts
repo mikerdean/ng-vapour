@@ -31,7 +31,7 @@ export const movieValidator = object({
 });
 
 export const movieSetValidator = object({
-  page: minimumOneInteger,
+  movieSetId: minimumOneInteger,
 });
 
 export const tvShowValidator = object({
