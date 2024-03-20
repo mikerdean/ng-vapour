@@ -90,26 +90,27 @@ export class PaginationComponent {
 
       return combineLatest(
         Array.from({ length }, (_, i) => {
-          return this.translationService.translate("grid.pagination.change", {
-            page: start + i,
-          });
+          const page = start + i;
+
+          return this.translationService
+            .translate("grid.pagination.change", {
+              page,
+            })
+            .pipe(map((label) => ({ label, page })));
         }),
       ).pipe(
         map((pages) =>
-          pages.map((label, i) => {
-            const page = i + 1;
-            return {
-              classes: [
-                ...defaultButtonClasses,
-                ...(page === current
-                  ? ["bg-fuchsia-600", "text-slate-50"]
-                  : ["bg-slate-900"]),
-              ],
-              current: current === page ? "page" : undefined,
-              label,
-              value: page,
-            };
-          }),
+          pages.map(({ label, page }) => ({
+            classes: [
+              ...defaultButtonClasses,
+              ...(page === current
+                ? ["bg-fuchsia-600", "text-slate-50"]
+                : ["bg-slate-900"]),
+            ],
+            current: current === page ? "page" : undefined,
+            label,
+            value: page,
+          })),
         ),
       );
     }),
