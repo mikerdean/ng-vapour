@@ -116,6 +116,14 @@ export const routes: RouteWithMetadata[] = [
           ),
         title: "routes:music.genres",
       },
+      {
+        path: "genres/:genre",
+        loadComponent: () =>
+          import("./views/music/music-genre.component").then(
+            (x) => x.MusicGenreComponent,
+          ),
+        title: "routes:music.genre",
+      },
     ],
   },
   {

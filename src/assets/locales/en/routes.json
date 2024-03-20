@@ -12,8 +12,10 @@
     "root": "Music",
     "recent": "Recent albums",
     "artists": "Artists",
+    "artist": "Artist",
     "albums": "Albums",
-    "genres": "Music genres"
+    "genres": "Music genres",
+    "genre": "Music genre"
   },
   "tv": {
     "root": "TV"
