@@ -27,13 +27,19 @@
             </div>
             <div class="flex-grow">
               <div
-                class="line-clamp-2 group-hover:underline group-hover:underline-offset-4"
+                [class]="[
+                  tallThumbnail() ? 'line-clamp-2' : 'line-clamp-1',
+                  'group-hover:underline',
+                  'group-hover:underline-offset-4'
+                ]"
               >
                 {{ item.label }}
               </div>
               @for (detail of item.details; track $index) {
                 @if (detail !== undefined && detail !== null) {
-                  <div class="mt-1 text-xs text-slate-400">{{ detail }}</div>
+                  <div class="mt-1 line-clamp-1 text-xs text-slate-400">
+                    {{ detail }}
+                  </div>
                 }
               }
             </div>
