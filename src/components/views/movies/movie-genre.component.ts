@@ -30,7 +30,7 @@ export class MovieGenreComponent {
     this.route,
     this.configurationService.pageSize,
     ({ genre }, { page }) =>
-      this.moviesService.getMoviesByGenre({ genre, page }).pipe(
+      this.moviesService.getMoviesByGenre(genre, page).pipe(
         map(({ movies, limits }) => ({
           currentPage: page,
           items: movies.map(mapMovieToGridItem),

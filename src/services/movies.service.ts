@@ -32,7 +32,7 @@ export class MoviesService {
     );
   }
 
-  getMovieById(id: number) {
+  getMovieById(id: number): Observable<GetMovie> {
     return this.socketService.send<GetMovieQuery, GetMovie>(
       "VideoLibrary.GetMovieDetails",
       {
@@ -56,7 +56,7 @@ export class MoviesService {
     );
   }
 
-  getMovieGenres(page = 1) {
+  getMovieGenres(page = 1): Observable<VideoGenresPaged> {
     return this.socketService.send<GetVideoGenresQuery, VideoGenresPaged>(
       "VideoLibrary.GetGenres",
       {
@@ -68,7 +68,7 @@ export class MoviesService {
     );
   }
 
-  getMovies(page = 1) {
+  getMovies(page = 1): Observable<GetMovies> {
     return this.socketService.send<GetMoviesQuery, GetMovies>(
       "VideoLibrary.GetMovies",
       {
@@ -79,7 +79,7 @@ export class MoviesService {
     );
   }
 
-  getMoviesByGenre({ genre, page = 1 }: { genre: string; page: number }) {
+  getMoviesByGenre(genre: string, page = 1): Observable<GetMovies> {
     return this.socketService.send<GetMoviesQuery, GetMovies>(
       "VideoLibrary.GetMovies",
       {
@@ -91,7 +91,7 @@ export class MoviesService {
     );
   }
 
-  getMoviesInSets() {
+  getMoviesInSets(): Observable<GetMovies> {
     return this.socketService.send<GetMoviesQuery, GetMovies>(
       "VideoLibrary.GetMovies",
       {
@@ -106,7 +106,7 @@ export class MoviesService {
     );
   }
 
-  getMovieSetById(id: number) {
+  getMovieSetById(id: number): Observable<GetMovieSet> {
     return this.socketService.send<GetMovieSetDetailsQuery, GetMovieSet>(
       "VideoLibrary.GetMovieSetDetails",
       {
@@ -120,7 +120,7 @@ export class MoviesService {
     );
   }
 
-  getMovieSets(page = 1) {
+  getMovieSets(page = 1): Observable<GetMovieSets> {
     return this.socketService.send<GetMovieSetsQuery, GetMovieSets>(
       "VideoLibrary.GetMovieSets",
       {
