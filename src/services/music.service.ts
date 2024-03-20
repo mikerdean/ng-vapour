@@ -12,10 +12,12 @@ import type {
   GetArtist,
   GetArtistQuery,
   GetArtistsQuery,
+  GetMusicGenresQuery,
   GetSong,
   GetSongQuery,
   GetSongsQuery,
   KodiMessageFilterOfType,
+  MusicGenresPaged,
   RecentlyAddedAlbumsQuery,
   SongsPaged,
 } from "@vapour/shared/kodi";
@@ -102,6 +104,17 @@ export class MusicService {
       {
         artistid: id,
         properties: ["description", "thumbnail"],
+      },
+    );
+  }
+
+  getMusicGenres(page = 1): Observable<MusicGenresPaged> {
+    return this.socketService.send<GetMusicGenresQuery, MusicGenresPaged>(
+      "AudioLibrary.GetGenres",
+      {
+        limits: this.configurationService.getPageLimits(page),
+        properties: ["thumbnail"],
+        sort: { method: "label", order: "ascending" },
       },
     );
   }

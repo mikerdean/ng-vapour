@@ -1,6 +1,8 @@
 import type { GridItem } from "@vapour/components/grid/grid.types";
 import { getVideoDuration } from "@vapour/shared/duration";
 import type {
+  AudioDetailsAlbum,
+  AudioDetailsArtist,
   LibraryDetailsGenre,
   VideoDetailsMovie,
   VideoDetailsMovieSet,
@@ -32,4 +34,20 @@ export const mapGenreToGridItem = (
   details: [],
   label: genre.label,
   url: `/${type}/genres/${genre.label}`,
+});
+
+export const mapAlbumToGridItem = (album: AudioDetailsAlbum): GridItem => ({
+  id: album.albumid,
+  details: [album.artist?.join(", "), album.year],
+  label: album.label,
+  thumbnail: album.thumbnail,
+  url: `/music/albums/${album.albumid}`,
+});
+
+export const mapArtistToGridItem = (artist: AudioDetailsArtist): GridItem => ({
+  id: artist.artistid,
+  details: [artist.songgenres?.map(({ title }) => title).join(", ")],
+  label: artist.label,
+  thumbnail: artist.thumbnail,
+  url: `/music/artists/${artist.artistid}`,
 });

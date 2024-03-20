@@ -9,7 +9,11 @@
     "genres": "Movie genres"
   },
   "music": {
-    "root": "Music"
+    "root": "Music",
+    "recent": "Recent albums",
+    "artists": "Artists",
+    "albums": "Albums",
+    "genres": "Music genres"
   },
   "tv": {
     "root": "TV"

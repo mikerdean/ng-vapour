@@ -75,11 +75,48 @@ export const routes: RouteWithMetadata[] = [
   {
     path: "music",
     loadComponent: () =>
-      import("./views/music/recent-music.component").then(
-        (x) => x.RecentMusicComponent,
-      ),
+      import("./views/music/music.component").then((x) => x.MusicComponent),
     icon: faMusic,
     title: "routes:music.root",
+    children: [
+      {
+        path: "",
+        pathMatch: "full",
+        redirectTo: "/music/recent",
+      },
+      {
+        path: "recent",
+        loadComponent: () =>
+          import("./views/music/recent-albums.component").then(
+            (x) => x.RecentAlbumsComponent,
+          ),
+        title: "routes:music.recent",
+      },
+      {
+        path: "artists",
+        loadComponent: () =>
+          import("./views/music/artists.component").then(
+            (x) => x.ArtistsComponent,
+          ),
+        title: "routes:music.artists",
+      },
+      {
+        path: "albums",
+        loadComponent: () =>
+          import("./views/music/albums.component").then(
+            (x) => x.AlbumsComponent,
+          ),
+        title: "routes:music.albums",
+      },
+      {
+        path: "genres",
+        loadComponent: () =>
+          import("./views/music/music-genres.component").then(
+            (x) => x.MusicGenresComponent,
+          ),
+        title: "routes:music.genres",
+      },
+    ],
   },
   {
     path: "tv",
