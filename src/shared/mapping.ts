@@ -40,7 +40,7 @@ export const mapAlbumToGridItem = (album: AudioDetailsAlbum): GridItem => ({
   id: album.albumid,
   details: [album.artist?.join(", "), album.year],
   label: album.label,
-  thumbnail: album.thumbnail,
+  thumbnail: album.art?.thumb,
   url: `/music/albums/${album.albumid}`,
 });
 
@@ -48,6 +48,6 @@ export const mapArtistToGridItem = (artist: AudioDetailsArtist): GridItem => ({
   id: artist.artistid,
   details: [artist.songgenres?.map(({ title }) => title).join(", ")],
   label: artist.label,
-  thumbnail: artist.thumbnail,
+  thumbnail: artist.art?.thumb,
   url: `/music/artists/${artist.artistid}`,
 });

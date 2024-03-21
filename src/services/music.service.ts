@@ -34,7 +34,7 @@ export class MusicService {
       "AudioLibrary.GetAlbums",
       {
         limits: this.configurationService.getPageLimits(page),
-        properties: ["artist", "genre", "thumbnail", "title", "year"],
+        properties: ["art", "artist", "genre", "title", "year"],
         sort: { method: "title", order: "ascending" },
       },
     );
@@ -45,7 +45,7 @@ export class MusicService {
       "AudioLibrary.GetAlbums",
       {
         filter: { field: "albumartist", operator: "is", value: albumartist },
-        properties: ["artist", "genre", "thumbnail", "title", "year"],
+        properties: ["art", "artist", "genre", "title", "year"],
         sort: { method: "year", order: "ascending" },
       },
     );
@@ -57,11 +57,11 @@ export class MusicService {
       {
         albumid: id,
         properties: [
+          "art",
           "artist",
           "description",
           "genre",
           "rating",
-          "thumbnail",
           "title",
           "year",
         ],
@@ -75,7 +75,7 @@ export class MusicService {
       {
         albumartistsonly: true,
         limits: this.configurationService.getPageLimits(page),
-        properties: ["songgenres", "thumbnail"],
+        properties: ["art", "songgenres"],
         sort: { method: "label", order: "ascending", ignorearticle: true },
       },
     );
@@ -92,7 +92,7 @@ export class MusicService {
           value: genre,
         },
         limits: this.configurationService.getPageLimits(page),
-        properties: ["songgenres", "thumbnail"],
+        properties: ["art", "songgenres"],
         sort: { method: "label", order: "ascending", ignorearticle: true },
       },
     );
@@ -103,7 +103,7 @@ export class MusicService {
       "AudioLibrary.GetArtistDetails",
       {
         artistid: id,
-        properties: ["description", "thumbnail"],
+        properties: ["art", "description"],
       },
     );
   }
@@ -123,7 +123,7 @@ export class MusicService {
     return this.socketService.send<RecentlyAddedAlbumsQuery, AlbumsPaged>(
       "AudioLibrary.GetRecentlyAddedAlbums",
       {
-        properties: ["artist", "genre", "thumbnail", "title", "year"],
+        properties: ["art", "artist", "genre", "title", "year"],
       },
     );
   }
@@ -153,7 +153,7 @@ export class MusicService {
       "AudioLibrary.GetSongs",
       {
         limits: this.configurationService.getPageLimits(page),
-        properties: ["disc", "duration", "track", "title", "year"],
+        properties: ["art", "disc", "duration", "track", "title", "year"],
         sort: { method: "track", order: "ascending" },
       },
     );
@@ -190,7 +190,7 @@ export class MusicService {
       "AudioLibrary.GetSongs",
       {
         filter: { and },
-        properties: ["disc", "duration", "track", "title", "year"],
+        properties: ["art", "disc", "duration", "track", "title", "year"],
         sort: { method: "year", order: "ascending" },
       },
     );
