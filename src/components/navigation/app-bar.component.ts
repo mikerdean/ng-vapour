@@ -42,6 +42,8 @@ export class AppbarComponent {
 
   readonly navigating$ = this.navigationService.navigating$;
 
+  readonly title$ = this.navigationService.currentRouteTitle$;
+
   readonly icons = {
     config: faEllipsisVertical,
     profile: faUserCircle,
