@@ -14,9 +14,9 @@ import { movieSetValidator, pageValidator } from "@vapour/validators";
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, GridComponent],
-  selector: "movie-genre",
+  selector: "movie-set",
   standalone: true,
-  templateUrl: "movie-genre.component.html",
+  templateUrl: "movie-set.component.html",
 })
 export class MovieSetComponent {
   constructor(
