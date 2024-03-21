@@ -6,6 +6,7 @@ import { map } from "rxjs";
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
 import { MusicService } from "@vapour/services/music.service";
+import { TitleService } from "@vapour/services/title.service";
 import { mapArtistToGridItem } from "@vapour/shared/mapping";
 import { emptyParamsValidator, pageValidator } from "@vapour/validators";
 
@@ -20,7 +21,10 @@ export class ArtistsComponent {
   constructor(
     private musicService: MusicService,
     private route: ActivatedRoute,
-  ) {}
+    titleService: TitleService,
+  ) {
+    titleService.setTranslatedTitle("music:titles.artists");
+  }
 
   readonly artists$ = prepareGrid(
     emptyParamsValidator,

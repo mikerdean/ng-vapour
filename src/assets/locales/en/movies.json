@@ -6,5 +6,12 @@
     "titles": "Titles",
     "sets": "Sets",
     "genres": "Genres"
+  },
+  "titles": {
+    "recent": "Recent movies",
+    "titles": "Movies by title",
+    "sets": "Movies sets",
+    "genres": "Movies by genre",
+    "genre": "Movies by genre: {{ genre }}"
   }
 }

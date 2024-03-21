@@ -25,7 +25,7 @@ export class TranslationService {
       fallbackLng: "en",
       fallbackNS: "components",
       lng: "en",
-      ns: ["common", "components", "movies", "music", "routes"],
+      ns: ["common", "components", "movies", "music"],
     });
 
     i18n.use(HttpBackend);

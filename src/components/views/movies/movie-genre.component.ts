@@ -1,12 +1,13 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { map } from "rxjs";
+import { map, tap } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
 import { ConfigurationService } from "@vapour/services/configuration.service";
 import { MoviesService } from "@vapour/services/movies.service";
+import { TitleService } from "@vapour/services/title.service";
 import { mapMovieToGridItem } from "@vapour/shared/mapping";
 import { genreValidator, pageValidator } from "@vapour/validators";
 
@@ -22,6 +23,7 @@ export class MovieGenreComponent {
     private configurationService: ConfigurationService,
     private moviesService: MoviesService,
     private route: ActivatedRoute,
+    private titleService: TitleService,
   ) {}
 
   readonly movies$ = prepareGrid(
@@ -31,6 +33,11 @@ export class MovieGenreComponent {
     this.configurationService.pageSize,
     ({ genre }, { page }) =>
       this.moviesService.getMoviesByGenre(genre, page).pipe(
+        tap(() =>
+          this.titleService.setTranslatedTitle("movies:titles.genre", {
+            genre,
+          }),
+        ),
         map(({ movies, limits }) => ({
           currentPage: page,
           items: movies.map(mapMovieToGridItem),

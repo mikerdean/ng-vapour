@@ -6,6 +6,7 @@ import { map } from "rxjs";
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
 import { MoviesService } from "@vapour/services/movies.service";
+import { TitleService } from "@vapour/services/title.service";
 import { mapMovieToGridItem } from "@vapour/shared/mapping";
 import { emptyParamsValidator, pageValidator } from "@vapour/validators";
 
@@ -20,7 +21,10 @@ export class RecentMoviesComponent {
   constructor(
     private moviesService: MoviesService,
     private route: ActivatedRoute,
-  ) {}
+    titleService: TitleService,
+  ) {
+    titleService.setTranslatedTitle("movies:titles.recent");
+  }
 
   readonly movies$ = prepareGrid(
     emptyParamsValidator,

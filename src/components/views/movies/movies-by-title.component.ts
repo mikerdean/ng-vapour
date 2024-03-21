@@ -7,6 +7,7 @@ import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
 import { ConfigurationService } from "@vapour/services/configuration.service";
 import { MoviesService } from "@vapour/services/movies.service";
+import { TitleService } from "@vapour/services/title.service";
 import { mapMovieToGridItem } from "@vapour/shared/mapping";
 import { emptyParamsValidator, pageValidator } from "@vapour/validators";
 
@@ -22,7 +23,10 @@ export class MoviesByTitleComponent {
     private configurationService: ConfigurationService,
     private moviesService: MoviesService,
     private route: ActivatedRoute,
-  ) {}
+    titleService: TitleService,
+  ) {
+    titleService.setTranslatedTitle("movies:titles.titles");
+  }
 
   readonly movies$ = prepareGrid(
     emptyParamsValidator,

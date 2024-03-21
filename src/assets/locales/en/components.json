@@ -14,6 +14,13 @@
         "config": "Edit configuration",
         "profile": "Change profile"
       }
+    },
+    "navbar": {
+      "movies": "Movies",
+      "music": "Music",
+      "tv": "TV",
+      "addons": "Addons",
+      "settings": "Settings"
     }
   },
   "root": {

@@ -8,6 +8,7 @@ import { prepareGrid } from "@vapour/components/grid/grid.utils";
 import { PaginationComponent } from "@vapour/components/grid/pagination.component";
 import { ConfigurationService } from "@vapour/services/configuration.service";
 import { MoviesService } from "@vapour/services/movies.service";
+import { TitleService } from "@vapour/services/title.service";
 import { TranslationService } from "@vapour/services/translation.service";
 import { mapSetToGridItem } from "@vapour/shared/mapping";
 import { emptyParamsValidator, pageValidator } from "@vapour/validators";
@@ -25,7 +26,10 @@ export class MovieSetsComponent {
     private moviesService: MoviesService,
     private route: ActivatedRoute,
     private translationService: TranslationService,
-  ) {}
+    titleService: TitleService,
+  ) {
+    titleService.setTranslatedTitle("movies:titles.sets");
+  }
 
   readonly movies$ = prepareGrid(
     emptyParamsValidator,

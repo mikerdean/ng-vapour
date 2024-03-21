@@ -1,34 +1,33 @@
 <header class="sticky top-0 z-10 w-full bg-fuchsia-600 text-slate-50">
   <div class="flex items-center px-3 py-2">
     <kodi-logo />
-    <p class="ml-2 text-lg">
-      <span>Kodi</span>
-    </p>
-    <h1 class="grow truncate text-center text-lg">{{ title$ | async }}</h1>
-    <div>
+    <div class="mx-3 grow">
+      <h1 class="line-clamp-1 text-lg">
+        {{ title$ | async }}
+      </h1>
+    </div>
+    <button class="mr-6">
+      <fa-icon [icon]="icons.remote" />
+      <span class="sr-only">{{ "common:remote" | translate }}</span>
+    </button>
+    <button class="mr-6">
+      <fa-icon [icon]="icons.search" />
+      <span class="sr-only">{{ "common:search" | translate }}</span>
+    </button>
+    @if (allowProfileChange$ | async) {
       <button class="mr-6">
-        <fa-icon [icon]="icons.remote" />
-        <span class="sr-only">{{ "common:remote" | translate }}</span>
-      </button>
-      <button class="mr-6">
-        <fa-icon [icon]="icons.search" />
-        <span class="sr-only">{{ "common:search" | translate }}</span>
-      </button>
-      @if (allowProfileChange$ | async) {
-        <button class="mr-6">
-          <fa-icon [icon]="icons.profile" />
-          <span class="sr-only">{{
-            "navigation.appbar.buttons.profile" | translate
-          }}</span>
-        </button>
-      }
-      <button>
-        <fa-icon [icon]="icons.config" />
+        <fa-icon [icon]="icons.profile" />
         <span class="sr-only">{{
-          "navigation.appbar.buttons.config" | translate
+          "navigation.appbar.buttons.profile" | translate
         }}</span>
       </button>
-    </div>
+    }
+    <button>
+      <fa-icon [icon]="icons.config" />
+      <span class="sr-only">{{
+        "navigation.appbar.buttons.config" | translate
+      }}</span>
+    </button>
   </div>
   <div
     class="relative h-1.5"

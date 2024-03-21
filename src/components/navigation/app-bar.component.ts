@@ -13,6 +13,7 @@ import { KodiLogoComponent } from "@vapour/components/images/kodi-logo.component
 import { TranslatePipe } from "@vapour/pipes/translate";
 import { NavigationService } from "@vapour/services/navigation.service";
 import { ProfileService } from "@vapour/services/profile.service";
+import { TitleService } from "@vapour/services/title.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,6 +31,7 @@ export class AppbarComponent {
   constructor(
     private navigationService: NavigationService,
     private profileService: ProfileService,
+    private titleService: TitleService,
   ) {}
 
   readonly profiles$ = this.profileService.getProfiles();
@@ -42,7 +44,7 @@ export class AppbarComponent {
 
   readonly navigating$ = this.navigationService.navigating$;
 
-  readonly title$ = this.navigationService.currentRouteTitle$;
+  readonly title$ = this.titleService.title$;
 
   readonly icons = {
     config: faEllipsisVertical,

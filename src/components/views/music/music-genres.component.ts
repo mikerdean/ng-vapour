@@ -7,6 +7,7 @@ import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
 import { ConfigurationService } from "@vapour/services/configuration.service";
 import { MusicService } from "@vapour/services/music.service";
+import { TitleService } from "@vapour/services/title.service";
 import { mapGenreToGridItem } from "@vapour/shared/mapping";
 import { emptyParamsValidator, pageValidator } from "@vapour/validators";
 
@@ -22,7 +23,10 @@ export class MusicGenresComponent {
     private configurationService: ConfigurationService,
     private musicService: MusicService,
     private route: ActivatedRoute,
-  ) {}
+    titleService: TitleService,
+  ) {
+    titleService.setTranslatedTitle("music:titles.genres");
+  }
 
   readonly genres$ = prepareGrid(
     emptyParamsValidator,

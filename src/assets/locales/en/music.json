@@ -4,5 +4,12 @@
     "artists": "Artists",
     "albums": "Albums",
     "genres": "Genres"
+  },
+  "titles": {
+    "recent": "Recent albums",
+    "artists": "Artists",
+    "albums": "Albums",
+    "genres": "Music genres",
+    "genre": "Music genre: {{ genre }}"
   }
 }

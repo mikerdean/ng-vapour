@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
+import {
+  faCog,
+  faCubes,
+  faDisplay,
+  faFilm,
+  faMusic,
+} from "@fortawesome/free-solid-svg-icons";
 
-import { routes } from "@vapour/components/app.routes";
-import { RouteWithMetadata } from "@vapour/components/app.routes.types";
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { NavigationBarItem } from "@vapour/components/navigation/navigation-bar.types";
 import { TranslatePipe } from "@vapour/pipes/translate";
-
-const hasIcon = (route: RouteWithMetadata): route is NavigationBarItem => {
-  return "icon" in route;
-};
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,5 +25,11 @@ const hasIcon = (route: RouteWithMetadata): route is NavigationBarItem => {
   templateUrl: "navigation-bar.component.html",
 })
 export class NavigationBarComponent {
-  readonly links: NavigationBarItem[] = routes.filter(hasIcon);
+  readonly links: NavigationBarItem[] = [
+    { path: "/movies", icon: faFilm, title: "navigation.navbar.movies" },
+    { path: "/music", icon: faMusic, title: "navigation.navbar.music" },
+    { path: "/tv", icon: faDisplay, title: "navigation.navbar.tv" },
+    { path: "/addons", icon: faCubes, title: "navigation.navbar.addons" },
+    { path: "/settings", icon: faCog, title: "navigation.navbar.settings" },
+  ];
 }
