@@ -82,6 +82,13 @@ export const routes: Route[] = [
           ),
       },
       {
+        path: "artists/:artistId",
+        loadComponent: () =>
+          import("./views/music/artist.component").then(
+            (x) => x.ArtistComponent,
+          ),
+      },
+      {
         path: "albums",
         loadComponent: () =>
           import("./views/music/albums.component").then(
