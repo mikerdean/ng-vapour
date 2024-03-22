@@ -4,8 +4,10 @@ import type {
   AudioDetailsAlbum,
   AudioDetailsArtist,
   LibraryDetailsGenre,
+  VideoDetailsEpisode,
   VideoDetailsMovie,
   VideoDetailsMovieSet,
+  VideoDetailsTVShow,
 } from "@vapour/shared/kodi";
 
 export const mapMovieToGridItem = (movie: VideoDetailsMovie): GridItem => ({
@@ -50,4 +52,22 @@ export const mapArtistToGridItem = (artist: AudioDetailsArtist): GridItem => ({
   label: artist.label,
   thumbnail: artist.art?.thumb,
   url: `/music/artists/${artist.artistid}`,
+});
+
+export const mapEpisodeToGridItem = (
+  episode: VideoDetailsEpisode,
+): GridItem => ({
+  id: episode.episodeid,
+  details: [episode.showtitle, episode.season],
+  label: episode.label,
+  thumbnail: episode.art?.thumb,
+  url: `/tv/episodes/${episode.episodeid}`,
+});
+
+export const mapTvShowToGridItem = (tvshow: VideoDetailsTVShow): GridItem => ({
+  id: tvshow.tvshowid,
+  details: [tvshow.watchedepisodes || 0, tvshow.year],
+  label: tvshow.label,
+  thumbnail: tvshow.art?.poster,
+  url: `tv/${tvshow.tvshowid}`,
 });

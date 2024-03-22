@@ -1,0 +1,19 @@
+{
+  "episode": "Episode",
+  "season": "Season",
+  "seasonNumber": "Season {{ season }}",
+
+  "tabs": {
+    "inprogress": "In Progress",
+    "recent": "Recent",
+    "titles": "Titles",
+    "genres": "Genres"
+  },
+  "titles": {
+    "inprogress": "TV shows in progress",
+    "recent": "TV shows recently added ",
+    "titles": "TV shows by title",
+    "genres": "TV show genres",
+    "genre": "TV show genre: {{ genre }}"
+  }
+}

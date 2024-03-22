@@ -114,8 +114,28 @@ export const routes: Route[] = [
   {
     path: "tv",
     loadComponent: () =>
-      import("./views/tv/recent-tv.component").then((x) => x.RecentTvComponent),
-    title: "routes:tv.root",
+      import("./views/tv/tv.component").then((x) => x.TvComponent),
+    children: [
+      {
+        path: "",
+        pathMatch: "full",
+        redirectTo: "/tv/in-progress",
+      },
+      {
+        path: "in-progress",
+        loadComponent: () =>
+          import("./views/tv/tv-in-progress.component").then(
+            (x) => x.TvInProgressComponent,
+          ),
+      },
+      {
+        path: "recent",
+        loadComponent: () =>
+          import("./views/tv/tv-recent.component").then(
+            (x) => x.TvRecentComponent,
+          ),
+      },
+    ],
   },
   {
     path: "addons",
