@@ -1,8 +1,11 @@
 {
   "episode": "Episode",
+  "episodeCount_one": "{{ count }} episode",
+  "episodeCount_other": "{{ count }} episodes",
   "season": "Season",
   "seasonNumber": "Season {{ season }}",
-  "watchedEpisodes": "Watched {{ watched }} of {{ total }} episodes",
+  "watchedEpisodes_one": "Watched {{ watched }} of {{ count }} episode",
+  "watchedEpisodes_other": "Watched {{ watched }} of {{ count }} episodes",
   "unwatched": "Unwatched",
 
   "tabs": {

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { map, Observable } from "rxjs";
+import { combineLatest, map, Observable } from "rxjs";
 
 import type { GridItem } from "@vapour/components/grid/grid.types";
 import { TranslationService } from "@vapour/services/translation.service";
@@ -11,6 +11,7 @@ import type {
   VideoDetailsEpisode,
   VideoDetailsMovie,
   VideoDetailsMovieSet,
+  VideoDetailsSeason,
   VideoDetailsTVShow,
 } from "@vapour/shared/kodi";
 
@@ -77,11 +78,35 @@ export class MappingService {
       );
   }
 
+  mapSeasonToGridItem(season: VideoDetailsSeason): Observable<GridItem> {
+    return combineLatest([
+      this.translationService.translate("tv:episodeCount", {
+        count: season.episode,
+      }),
+      this.translationService.translate("tv:seasonNumber", {
+        season: season.season,
+      }),
+      this.translationService.translate("tv:watchedEpisodes", {
+        watched: season.watchedepisodes || 0,
+        count: season.episode,
+      }),
+    ]).pipe(
+      map(([episodeCount, label, watchedEpisodes]) => ({
+        id: season.seasonid,
+        details: [episodeCount, watchedEpisodes],
+        label,
+        played: season.episode === season.watchedepisodes,
+        thumbnail: season.art?.poster,
+        url: `/tv/seasons/${season.seasonid}`,
+      })),
+    );
+  }
+
   mapTvShowToGridItem(tvshow: VideoDetailsTVShow): Observable<GridItem> {
     return this.translationService
       .translate("tv:watchedEpisodes", {
         watched: tvshow.watchedepisodes || 0,
-        total: tvshow.episode,
+        count: tvshow.episode,
       })
       .pipe(
         map((watchedEpisodes) => ({

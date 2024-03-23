@@ -121,6 +121,7 @@ export class TvService {
         properties: [
           "art",
           "episode",
+          "season",
           "title",
           "userrating",
           "watchedepisodes",

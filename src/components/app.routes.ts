@@ -156,6 +156,11 @@ export const routes: Route[] = [
             (x) => x.TvGenreComponent,
           ),
       },
+      {
+        path: ":tvShowId",
+        loadComponent: () =>
+          import("./views/tv/tv-show.component").then((x) => x.TvShowComponent),
+      },
     ],
   },
   {

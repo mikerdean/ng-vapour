@@ -37,11 +37,12 @@ export const movieSetValidator = object({
 });
 
 export const tvShowValidator = object({
-  page: minimumOneInteger,
+  tvShowId: minimumOneInteger,
 });
 
 export const seasonValidator = object({
-  page: minimumOneInteger,
+  tvShowId: minimumOneInteger,
+  season: minimumOneInteger,
 });
 
 export const episodeValidator = object({
