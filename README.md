@@ -20,7 +20,7 @@ To use this addon you will need to enable the following options in Kodi:
 - HTTP Port: `8080`
 - TCP Port: `9090`
 
-You can change the default ports and host names if Kodi fails to connect to the defaults.
+You can change the default ports and host names if `vapour` fails to connect to the defaults.
 
 ## Development
 
