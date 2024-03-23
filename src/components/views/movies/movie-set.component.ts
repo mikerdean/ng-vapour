@@ -6,9 +6,9 @@ import { map, tap } from "rxjs";
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
 import { ConfigurationService } from "@vapour/services/configuration.service";
+import { MappingService } from "@vapour/services/mapping.service";
 import { MoviesService } from "@vapour/services/movies.service";
 import { TitleService } from "@vapour/services/title.service";
-import { mapMovieToGridItem } from "@vapour/shared/mapping";
 import { movieSetValidator, pageValidator } from "@vapour/validators";
 
 @Component({
@@ -21,6 +21,7 @@ import { movieSetValidator, pageValidator } from "@vapour/validators";
 export class MovieSetComponent {
   constructor(
     private configurationService: ConfigurationService,
+    private mappingService: MappingService,
     private moviesService: MoviesService,
     private route: ActivatedRoute,
     private titleService: TitleService,
@@ -38,7 +39,9 @@ export class MovieSetComponent {
         ),
         map(({ setdetails: { movies } }) => ({
           currentPage: page,
-          items: movies.map(mapMovieToGridItem),
+          items: movies.map((movie) =>
+            this.mappingService.mapMovieToGridItem(movie),
+          ),
           limits: { total: movies.length },
         })),
       ),

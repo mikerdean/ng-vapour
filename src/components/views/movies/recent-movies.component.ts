@@ -5,9 +5,9 @@ import { map } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
+import { MappingService } from "@vapour/services/mapping.service";
 import { MoviesService } from "@vapour/services/movies.service";
 import { TitleService } from "@vapour/services/title.service";
-import { mapMovieToGridItem } from "@vapour/shared/mapping";
 import { emptyParamsValidator, pageValidator } from "@vapour/validators";
 
 @Component({
@@ -19,6 +19,7 @@ import { emptyParamsValidator, pageValidator } from "@vapour/validators";
 })
 export class RecentMoviesComponent {
   constructor(
+    private mappingService: MappingService,
     private moviesService: MoviesService,
     private route: ActivatedRoute,
     titleService: TitleService,
@@ -35,7 +36,9 @@ export class RecentMoviesComponent {
       this.moviesService.getRecentlyAddedMovies().pipe(
         map(({ movies }) => ({
           currentPage: page,
-          items: movies.map(mapMovieToGridItem),
+          items: movies.map((movie) =>
+            this.mappingService.mapMovieToGridItem(movie),
+          ),
           limits: { total: 25 },
         })),
       ),

@@ -7,10 +7,9 @@ import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
 import { PaginationComponent } from "@vapour/components/grid/pagination.component";
 import { ConfigurationService } from "@vapour/services/configuration.service";
+import { MappingService } from "@vapour/services/mapping.service";
 import { MoviesService } from "@vapour/services/movies.service";
 import { TitleService } from "@vapour/services/title.service";
-import { TranslationService } from "@vapour/services/translation.service";
-import { mapSetToGridItem } from "@vapour/shared/mapping";
 import { emptyParamsValidator, pageValidator } from "@vapour/validators";
 
 @Component({
@@ -23,9 +22,9 @@ import { emptyParamsValidator, pageValidator } from "@vapour/validators";
 export class MovieSetsComponent {
   constructor(
     private configurationService: ConfigurationService,
+    private mappingService: MappingService,
     private moviesService: MoviesService,
     private route: ActivatedRoute,
-    private translationService: TranslationService,
     titleService: TitleService,
   ) {
     titleService.setTranslatedTitle("movies:titles.sets");
@@ -55,17 +54,12 @@ export class MovieSetsComponent {
           return combineLatest(
             data.sets.map((set) => {
               const count = sets[set.title || ""] || 0;
-              return this.translationService
-                .translate("movies:movieCount", { count })
-                .pipe(map((label) => ({ set, label })));
+              return this.mappingService.mapMovieSetToGridItem(set, count);
             }),
           ).pipe(
             map((items) => ({
               currentPage: page,
-              items: items.map(({ set, label }) => ({
-                ...mapSetToGridItem(set),
-                details: [label],
-              })),
+              items: items,
               limits: data.limits,
             })),
           );

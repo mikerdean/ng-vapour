@@ -2,6 +2,7 @@
   "episode": "Episode",
   "season": "Season",
   "seasonNumber": "Season {{ season }}",
+  "watchedEpisodes": "Watched {{ watched }} of {{ total }} episodes",
 
   "tabs": {
     "inprogress": "In Progress",

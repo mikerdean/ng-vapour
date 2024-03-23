@@ -5,9 +5,9 @@ import { map, switchMap, tap } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
+import { MappingService } from "@vapour/services/mapping.service";
 import { MusicService } from "@vapour/services/music.service";
 import { TitleService } from "@vapour/services/title.service";
-import { mapAlbumToGridItem } from "@vapour/shared/mapping";
 import { artistValidator, pageValidator } from "@vapour/validators";
 
 @Component({
@@ -19,6 +19,7 @@ import { artistValidator, pageValidator } from "@vapour/validators";
 })
 export class ArtistComponent {
   constructor(
+    private mappingService: MappingService,
     private musicService: MusicService,
     private route: ActivatedRoute,
     private titleService: TitleService,
@@ -39,7 +40,9 @@ export class ArtistComponent {
         ),
         map(({ albums, limits }) => ({
           currentPage: page,
-          items: albums.map(mapAlbumToGridItem),
+          items: albums.map((album) =>
+            this.mappingService.mapAlbumToGridItem(album),
+          ),
           limits,
         })),
       ),
