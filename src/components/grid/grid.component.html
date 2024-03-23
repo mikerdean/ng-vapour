@@ -14,7 +14,7 @@
         @if (item) {
           <a class="group flex items-center" [routerLink]="item.url">
             <div
-              class="mr-3 w-20 shrink-0 overflow-hidden rounded-lg border-2 border-cyan-900 transition-colors duration-200 group-hover:border-cyan-500"
+              class="mr-3 w-20 flex-none overflow-hidden rounded-lg border-2 border-cyan-900 transition-colors duration-200 group-hover:border-cyan-500"
               [class]="tallThumbnail() ? 'h-28' : 'h-20'"
             >
               <div class="flex h-full items-center">
@@ -50,7 +50,7 @@
         } @else {
           <div class="flex flex-row items-center">
             <div
-              class="mr-3 w-20 shrink-0 overflow-hidden rounded-lg border-2 border-cyan-900"
+              class="mr-3 w-20 flex-none overflow-hidden rounded-lg border-2 border-cyan-900"
               [class]="tallThumbnail() ? 'h-28' : 'h-20'"
             >
               <div class="h-full animate-pulse bg-slate-800"></div>
