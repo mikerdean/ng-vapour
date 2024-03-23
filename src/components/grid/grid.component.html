@@ -12,9 +12,9 @@
     @for (item of gridData.items; track $index) {
       <li>
         @if (item) {
-          <a class="group flex flex-row items-center" [routerLink]="item.url">
+          <a class="group flex items-center" [routerLink]="item.url">
             <div
-              class="mr-3 h-20 w-20 min-w-[5rem] overflow-hidden rounded-lg border-2 border-cyan-900 transition-colors duration-200 group-hover:border-cyan-500"
+              class="mr-3 w-20 shrink-0 overflow-hidden rounded-lg border-2 border-cyan-900 transition-colors duration-200 group-hover:border-cyan-500"
               [class]="tallThumbnail() ? 'h-28' : 'h-20'"
             >
               <div class="flex h-full items-center">
@@ -27,11 +27,8 @@
             </div>
             <div class="flex-grow">
               <div
-                [class]="[
-                  tallThumbnail() ? 'line-clamp-2' : 'line-clamp-1',
-                  'group-hover:underline',
-                  'group-hover:underline-offset-4'
-                ]"
+                class="group-hover:underline group-hover:underline-offset-4"
+                [class]="tallThumbnail() ? 'line-clamp-2' : 'line-clamp-1'"
               >
                 {{ item.label }}
               </div>
@@ -53,7 +50,7 @@
         } @else {
           <div class="flex flex-row items-center">
             <div
-              class="mr-3 w-20 min-w-[5rem] overflow-hidden rounded-lg border-2 border-cyan-900"
+              class="mr-3 w-20 shrink-0 overflow-hidden rounded-lg border-2 border-cyan-900"
               [class]="tallThumbnail() ? 'h-28' : 'h-20'"
             >
               <div class="h-full animate-pulse bg-slate-800"></div>
