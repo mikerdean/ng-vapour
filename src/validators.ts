@@ -41,8 +41,7 @@ export const tvShowValidator = object({
 });
 
 export const seasonValidator = object({
-  tvShowId: minimumOneInteger,
-  season: minimumOneInteger,
+  seasonId: minimumOneInteger,
 });
 
 export const episodeValidator = object({
