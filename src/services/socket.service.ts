@@ -4,12 +4,14 @@ import {
   BehaviorSubject,
   map,
   Observable,
+  of,
   Subject,
   Subscription,
   throwError,
   timeout,
 } from "rxjs";
 
+import { CachingService } from "@vapour/services/caching.service";
 import { HostService } from "@vapour/services/host.service";
 import type { ConnectionState } from "@vapour/services/socket.service.types";
 import {
@@ -32,7 +34,10 @@ export class SocketService implements OnDestroy {
   readonly connectionState$ = this.#connectionState.asObservable();
   readonly timeout = 5000;
 
-  constructor(hostService: HostService) {
+  constructor(
+    private cachingService: CachingService,
+    hostService: HostService,
+  ) {
     this.#hostSubscription = hostService.websocketUrl$.subscribe((url) => {
       if (this.#socket) {
         this.#socket.close();
@@ -97,6 +102,12 @@ export class SocketService implements OnDestroy {
       );
     }
 
+    const key = this.cachingService.key(params);
+    const cached = this.cachingService.get<TResponse>(key);
+    if (cached !== undefined) {
+      return of(cached);
+    }
+
     const id = nanoid();
     const subject = new Subject<KodiMessageBase>();
     this.#queue.set(id, subject);
@@ -126,6 +137,7 @@ export class SocketService implements OnDestroy {
             `Message ${id} response returned an error from JSONRPC: ${message.error.message}`,
           );
         } else if (isKodiResponse<TResponse>(message)) {
+          this.cachingService.set(key, message.result);
           return message.result;
         }
 
