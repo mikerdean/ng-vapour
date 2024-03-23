@@ -135,6 +135,27 @@ export const routes: Route[] = [
             (x) => x.TvRecentComponent,
           ),
       },
+      {
+        path: "titles",
+        loadComponent: () =>
+          import("./views/tv/tv-by-title.component").then(
+            (x) => x.TvByTitleComponent,
+          ),
+      },
+      {
+        path: "genres",
+        loadComponent: () =>
+          import("./views/tv/tv-genres.component").then(
+            (x) => x.TvGenresComponent,
+          ),
+      },
+      {
+        path: "genres/:genre",
+        loadComponent: () =>
+          import("./views/tv/tv-genre.component").then(
+            (x) => x.TvGenreComponent,
+          ),
+      },
     ],
   },
   {

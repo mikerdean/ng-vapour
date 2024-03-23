@@ -3,6 +3,7 @@
   "season": "Season",
   "seasonNumber": "Season {{ season }}",
   "watchedEpisodes": "Watched {{ watched }} of {{ total }} episodes",
+  "unwatched": "Unwatched",
 
   "tabs": {
     "inprogress": "In Progress",

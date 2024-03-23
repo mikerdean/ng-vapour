@@ -23,6 +23,7 @@ export class MappingService {
       id: album.albumid,
       details: [album.artist?.join(", "), album.year],
       label: album.label,
+      played: (album.playcount || 0) > 0,
       thumbnail: album.art?.thumb,
       url: `/music/albums/${album.albumid}`,
     };
@@ -87,6 +88,7 @@ export class MappingService {
           id: tvshow.tvshowid,
           details: [watchedEpisodes, tvshow.year],
           label: tvshow.label,
+          played: tvshow.watchedepisodes === tvshow.episode,
           thumbnail: tvshow.art?.poster,
           url: `/tv/${tvshow.tvshowid}`,
         })),
@@ -103,6 +105,7 @@ export class MappingService {
           id: episode.episodeid,
           details: [episode.showtitle, season],
           label: episode.label,
+          played: (episode.playcount || 0) > 0,
           thumbnail: episode.art?.thumb,
           url: `/tv/episodes/${episode.episodeid}`,
         })),
