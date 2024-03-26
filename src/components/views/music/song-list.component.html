@@ -1,0 +1,27 @@
+<ol>
+  @for (song of songs(); track $index) {
+    <li
+      class="hover:bg-slate-700"
+      [class]="{ 'bg-slate-800': $index % 2 !== 0 }"
+    >
+      <div class="flex items-center">
+        <button type="button" class="flex w-full p-2">
+          @if (song.disc) {
+            <span>{{ song.disc }}.</span>
+          }
+          @if (song.track !== undefined) {
+            <span class="mr-3">{{ song.track | padStart: 2 : "0" }}</span>
+          }
+          <span class="mr-3 grow text-left">{{ song.label }}</span>
+          @if (song.duration) {
+            <span>{{ song.duration | duration: "song" }}</span>
+          }
+        </button>
+        <button class="px-4 py-3">
+          <fa-icon [icon]="icons.menu" />
+          <span class="sr-only">Options for {{ song.label }}</span>
+        </button>
+      </div>
+    </li>
+  }
+</ol>

@@ -8,11 +8,12 @@ import { DefinitionListComponent } from "@vapour/components/core/definition-list
 import { HeadingComponent } from "@vapour/components/core/heading.component";
 import { RatingComponent } from "@vapour/components/core/rating.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
+import { SongListComponent } from "@vapour/components/views/music/song-list.component";
 import { TranslatePipe } from "@vapour/pipes/translate";
 import { MusicService } from "@vapour/services/music.service";
 import { TitleService } from "@vapour/services/title.service";
 import { TranslationService } from "@vapour/services/translation.service";
-import { getSongDuration } from "@vapour/shared/duration";
+import { getVideoDuration } from "@vapour/shared/duration";
 import { albumValidator } from "@vapour/validators";
 
 @Component({
@@ -22,6 +23,7 @@ import { albumValidator } from "@vapour/validators";
     DefinitionListComponent,
     HeadingComponent,
     RatingComponent,
+    SongListComponent,
     ThumbnailComponent,
     TranslatePipe,
   ],
@@ -39,20 +41,35 @@ export class AlbumComponent {
 
   readonly album$ = this.route.params.pipe(
     map((params) => parse(albumValidator, params)),
-    switchMap(({ albumId }) => this.musicService.getAlbumById(albumId)),
-    switchMap(({ albumdetails }) =>
+    switchMap(({ albumId }) =>
       combineLatest([
+        this.musicService.getAlbumById(albumId),
         this.translationService.translate("music:album"),
         this.translationService.translate("music:artist"),
         this.translationService.translate("common:duration"),
         this.translationService.translate("common:genre"),
         this.translationService.translate("common:year"),
         this.translationService.translate("common:unknown"),
-      ]).pipe(map((translations) => ({ albumdetails, translations }))),
+      ]).pipe(
+        map(([{ albumdetails }, ...translations]) => ({
+          albumdetails,
+          translations,
+        })),
+      ),
+    ),
+    switchMap(({ albumdetails, translations }) =>
+      this.musicService
+        .getSongsByAlbum({
+          artist: albumdetails.artist,
+          album: albumdetails.title,
+          year: albumdetails.year,
+        })
+        .pipe(map(({ songs }) => ({ albumdetails, songs, translations }))),
     ),
     map(
       ({
         albumdetails,
+        songs,
         translations: [
           albumLabel,
           artistLabel,
@@ -63,6 +80,7 @@ export class AlbumComponent {
         ],
       }) => ({
         ...albumdetails,
+        songs,
         details: [
           {
             header: albumLabel,
@@ -75,7 +93,9 @@ export class AlbumComponent {
           {
             header: durationLabel,
             description:
-              getSongDuration(albumdetails.albumduration || 0) || unknownLabel,
+              getVideoDuration(
+                songs.reduce((total, song) => total + (song.duration || 0), 0),
+              ) || unknownLabel,
           },
           {
             header: genreLabel,

@@ -160,8 +160,8 @@ export class MusicService {
   }
 
   getSongsByAlbum(filter: {
-    artist?: string;
-    album?: string | string[];
+    artist?: string | string[];
+    album?: string;
     year?: number;
   }): Observable<SongsPaged> {
     const and: KodiMessageFilterOfType[] = [];
