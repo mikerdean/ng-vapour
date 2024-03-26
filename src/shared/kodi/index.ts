@@ -1,3 +1,4 @@
+export * from "./addons";
 export * from "./application";
 export * from "./audio";
 export * from "./base";
