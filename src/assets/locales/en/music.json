@@ -1,4 +1,6 @@
 {
+  "album": "Album",
+  "artist": "Artist",
   "tabs": {
     "recent": "Recent",
     "artists": "Artists",

@@ -20,7 +20,6 @@ export class TranslationService {
       backend: {
         loadPath: "/assets/locales/{{lng}}/{{ns}}.json",
       },
-      debug: true,
       defaultNS: "components",
       fallbackLng: "en",
       fallbackNS: "components",

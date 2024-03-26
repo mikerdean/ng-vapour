@@ -7,10 +7,14 @@
     "main": "Kodi",
     "combined": "{{ pageTitle }} | Kodi"
   },
+  "duration": "Duration",
+  "genre": "Genre",
   "played": "Played",
+  "rating": "Rating",
   "remote": "Remote control",
   "save": "Save",
   "saving": "Saving...",
   "search": "Search",
-  "unknown": "Unknown"
+  "unknown": "Unknown",
+  "year": "Year"
 }

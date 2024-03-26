@@ -96,6 +96,11 @@ export const routes: Route[] = [
           ),
       },
       {
+        path: "albums/:albumId",
+        loadComponent: () =>
+          import("./views/music/album.component").then((x) => x.AlbumComponent),
+      },
+      {
         path: "genres",
         loadComponent: () =>
           import("./views/music/music-genres.component").then(

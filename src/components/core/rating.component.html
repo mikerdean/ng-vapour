@@ -1,0 +1,17 @@
+<div class="flex items-center">
+  @for (star of rating(); track $index) {
+    @switch (star) {
+      @case (1) {
+        <fa-icon [icon]="icons.star" />
+      }
+
+      @case (0.5) {
+        <fa-icon [icon]="icons.halfStar" />
+      }
+
+      @default {
+        <fa-icon [icon]="icons.starEmpty" />
+      }
+    }
+  }
+</div>
