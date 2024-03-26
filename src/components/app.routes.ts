@@ -166,10 +166,21 @@ export const routes: Route[] = [
   {
     path: "addons",
     loadComponent: () =>
-      import("./views/addons/installed-addons.component").then(
-        (x) => x.InstalledAddonsComponent,
-      ),
-    title: "routes:addons.root",
+      import("./views/addons/addons.component").then((x) => x.AddonsComponent),
+    children: [
+      {
+        path: "",
+        pathMatch: "full",
+        redirectTo: "/addons/installed",
+      },
+      {
+        path: "installed",
+        loadComponent: () =>
+          import("./views/addons/addons-installed.component").then(
+            (x) => x.AddonsInstalledComponent,
+          ),
+      },
+    ],
   },
   {
     path: "settings",
@@ -177,7 +188,6 @@ export const routes: Route[] = [
       import("./views/settings/settings.component").then(
         (x) => x.SettingsComponent,
       ),
-    title: "routes:settings.root",
   },
   {
     path: "",

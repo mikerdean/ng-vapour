@@ -5,6 +5,7 @@ import type { GridItem } from "@vapour/components/grid/grid.types";
 import { TranslationService } from "@vapour/services/translation.service";
 import { getVideoDuration } from "@vapour/shared/duration";
 import type {
+  AddonDetails,
   AudioDetailsAlbum,
   AudioDetailsArtist,
   LibraryDetailsGenre,
@@ -135,5 +136,16 @@ export class MappingService {
           url: `/tv/episodes/${episode.episodeid}`,
         })),
       );
+  }
+
+  mapAddonToGridItem(addon: AddonDetails): GridItem {
+    return {
+      id: addon.addonid,
+      details: [addon.author],
+      label: addon.name || "",
+      played: addon.enabled,
+      thumbnail: addon.thumbnail,
+      url: `/addon/${addon.addonid}`,
+    };
   }
 }

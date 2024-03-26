@@ -11,6 +11,7 @@ import {
   faCheckCircle,
   faCircle,
   faCompactDisc,
+  faCubes,
   faFilm,
   faMusic,
   faTv,
@@ -89,6 +90,8 @@ export class ThumbnailComponent {
         case "season":
         case "episode":
           return faTv;
+        case "addon":
+          return faCubes;
       }
     }),
     checkCircle: faCheckCircle,
