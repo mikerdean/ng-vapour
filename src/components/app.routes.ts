@@ -55,6 +55,13 @@ export const routes: Route[] = [
             (x) => x.MovieGenreComponent,
           ),
       },
+      {
+        path: ":movieId",
+        loadComponent: () =>
+          import("./views/movies/movie.component").then(
+            (x) => x.MovieComponent,
+          ),
+      },
     ],
   },
   {

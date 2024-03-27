@@ -1,0 +1,24 @@
+@if (movie$ | async; as movie) {
+  <fanart [uri]="movie.art?.fanart" />
+  <div class="sm:flex">
+    <figure class="mb-4 w-full sm:mr-4 sm:max-w-72 md:max-w-96">
+      <thumbnail [uri]="movie.art?.poster" type="album" />
+    </figure>
+    <section class="sm:flex-grow">
+      <div class="md:max-w-96">
+        <definition-list label="" [items]="movie.details" />
+      </div>
+      @if (movie.plot) {
+        <p class="mb-3">{{ movie.plot }}</p>
+      }
+      @if (movie.rating !== undefined) {
+        <div class="mb-8">
+          <div>
+            <strong>{{ "common:rating" | translate }}</strong>
+          </div>
+          <rating [value]="movie.rating" />
+        </div>
+      }
+    </section>
+  </div>
+}

@@ -7,6 +7,7 @@
     "main": "Kodi",
     "combined": "{{ pageTitle }} | Kodi"
   },
+  "director": "Director",
   "duration": "Duration",
   "genre": "Genre",
   "played": "Played",
@@ -16,5 +17,6 @@
   "saving": "Saving...",
   "search": "Search",
   "unknown": "Unknown",
+  "writer": "Writer",
   "year": "Year"
 }
