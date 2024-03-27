@@ -18,12 +18,12 @@ import {
   faUser,
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import { combineLatest, delay, map, Observable, of, switchMap } from "rxjs";
 
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { ThumbnailType } from "@vapour/components/images/thumbnail.types";
 import { TranslatePipe } from "@vapour/pipes/translate";
 import { HostService } from "@vapour/services/host.service";
+import { toImageUrl } from "@vapour/shared/images";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,36 +38,17 @@ import { HostService } from "@vapour/services/host.service";
   templateUrl: "thumbnail.component.html",
 })
 export class ThumbnailComponent {
-  constructor(private hostService: HostService) {
-    this.imageUrl$ = combineLatest([
-      this.hostService.httpUrl$,
-      toObservable(this.uri).pipe(
-        switchMap((uri, i) => {
-          if (i === 0) {
-            return of(uri);
-          } else {
-            return of(undefined, uri).pipe(delay(25));
-          }
-        }),
-      ),
-    ]).pipe(
-      map(([baseUrl, uri]) => {
-        if (!baseUrl || !uri) {
-          return;
-        }
-
-        const encoded = encodeURIComponent(uri);
-        const url = new URL(`image/${encoded}`, baseUrl);
-        return url.toString();
-      }),
-    );
-  }
+  constructor(private hostService: HostService) {}
 
   readonly alt = input<string>();
-  readonly imageUrl$: Observable<string | undefined>;
   readonly played = input<boolean>();
   readonly type = input.required<ThumbnailType>();
   readonly uri = input<string>();
+
+  readonly imageUrl$ = toImageUrl(
+    this.hostService.httpUrl$,
+    toObservable(this.uri),
+  );
 
   readonly icons = {
     fallback: computed<IconDefinition>(() => {

@@ -1,0 +1,13 @@
+@if (fanartUrl$ | async; as fanartUrl) {
+  <div
+    class="absolute left-0 top-0 -z-10 hidden h-screen w-screen opacity-10 sm:block"
+  >
+    <img
+      alt=""
+      class="h-full w-full object-cover opacity-0 transition-opacity duration-100 ease-in"
+      [src]="fanartUrl"
+      (load)="onImageLoaded(fanart)"
+      #fanart
+    />
+  </div>
+}
