@@ -4,13 +4,22 @@
       class="hover:bg-slate-700"
       [class]="{ 'bg-slate-800': $index % 2 !== 0 }"
     >
-      <div class="flex items-center">
-        <button type="button" class="flex w-full p-2">
+      <div class="mb-2 flex items-center">
+        <button type="button" class="flex w-full items-center p-2">
+          <div class="mr-2 w-16 flex-none sm:w-24 md:w-32">
+            <thumbnail
+              [played]="(episode.playcount || 0) > 0"
+              [uri]="episode.art?.thumb"
+              type="episode"
+            />
+          </div>
           @if (episode.episode !== undefined) {
             <span class="mr-3">{{ episode.episode | padStart: 2 : "0" }}</span>
           }
           <span class="mr-3 grow text-left">{{ episode.title }}</span>
-          <span>{{ episode.runtime | duration: "video" }}</span>
+          <span class="flex-none">{{
+            episode.runtime | duration: "video"
+          }}</span>
         </button>
         <button class="px-4 py-3">
           <fa-icon [icon]="icons.menu" />
