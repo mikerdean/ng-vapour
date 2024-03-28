@@ -173,6 +173,11 @@ export const routes: Route[] = [
         loadComponent: () =>
           import("./views/tv/tv-show.component").then((x) => x.TvShowComponent),
       },
+      {
+        path: "seasons/:seasonId",
+        loadComponent: () =>
+          import("./views/tv/season.component").then((x) => x.SeasonComponent),
+      },
     ],
   },
   {

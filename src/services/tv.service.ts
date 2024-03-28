@@ -104,6 +104,7 @@ export class TvService {
           "art",
           "episode",
           "season",
+          "showtitle",
           "title",
           "tvshowid",
           "userrating",

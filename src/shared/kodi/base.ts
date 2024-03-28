@@ -7,6 +7,7 @@ export type MediaArtwork = {
   fanart?: string;
   poster?: string;
   thumb?: string;
+  [key: string]: string | undefined;
 };
 
 export type MediaDetailsBase = ItemDetailsBase & {

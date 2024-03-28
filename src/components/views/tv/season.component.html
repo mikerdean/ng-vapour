@@ -1,0 +1,14 @@
+@if (season$ | async; as season) {
+  <fanart [uri]="season.art?.fanart || season.art?.['tvshow.fanart']" />
+  <div class="sm:flex">
+    <figure class="mb-4 w-full sm:mr-4 sm:max-w-72 md:max-w-96">
+      <thumbnail [uri]="season.art?.poster" type="album" />
+    </figure>
+    <section class="sm:flex-grow">
+      <div class="md:max-w-xl">
+        <definition-list label="" [items]="season.details" />
+        <episode-list [episodes]="season.episodes" />
+      </div>
+    </section>
+  </div>
+}
