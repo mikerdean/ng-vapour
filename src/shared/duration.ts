@@ -13,10 +13,8 @@ export const getSongDuration = (seconds: number): string | undefined => {
 
   if (d.hours > 0) {
     return d.toFormat("hh:mm:ss");
-  } else if (d.minutes > 0) {
-    return d.toFormat("mm:ss");
   } else {
-    return `${d.seconds}s`;
+    return d.toFormat("mm:ss");
   }
 };
 
