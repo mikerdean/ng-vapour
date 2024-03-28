@@ -1,6 +1,7 @@
 {
   "movieCount_one": "{{ count }} movie",
   "movieCount_other": "{{ count }} movies",
+  "showMoreCast": "Show more cast",
   "tabs": {
     "recent": "Recent",
     "titles": "Titles",

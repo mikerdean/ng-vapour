@@ -1,0 +1,15 @@
+<ul class="grid grid-cols-6 gap-3">
+  @for (actor of pagedCast(); track $index) {
+    <li class="overflow-hidden rounded-lg border-2 border-cyan-900">
+      <thumbnail [alt]="actor.name" type="actor" [uri]="actor.thumbnail" />
+    </li>
+  }
+</ul>
+
+@if (showMore()) {
+  <div class="my-5">
+    <form-button (click)="incrementPage()">
+      {{ "movies:showMoreCast" | translate }}
+    </form-button>
+  </div>
+}

@@ -8,6 +8,7 @@ import { DefinitionListComponent } from "@vapour/components/core/definition-list
 import { RatingComponent } from "@vapour/components/core/rating.component";
 import { FanartComponent } from "@vapour/components/images/fanart.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
+import { CastComponent } from "@vapour/components/views/movies/cast.component";
 import { TranslatePipe } from "@vapour/pipes/translate";
 import { MoviesService } from "@vapour/services/movies.service";
 import { TitleService } from "@vapour/services/title.service";
@@ -19,6 +20,7 @@ import { movieValidator } from "@vapour/validators";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
+    CastComponent,
     DefinitionListComponent,
     FanartComponent,
     RatingComponent,
