@@ -4,21 +4,22 @@
       <thumbnail [uri]="album.art?.thumb" type="album" />
     </figure>
     <section class="sm:flex-grow">
-      <div class="md:max-w-96">
+      <div class="md:max-w-xl">
         <definition-list label="" [items]="album.details" />
-      </div>
-      @if (album.description) {
-        <p>{{ album.description }}</p>
-      }
-      @if (album.rating !== undefined) {
-        <div class="mb-8">
-          <div>
-            <strong>{{ "common:rating" | translate }}</strong>
+
+        @if (album.description) {
+          <p>{{ album.description }}</p>
+        }
+        @if (album.rating !== undefined) {
+          <div class="mb-8">
+            <div>
+              <strong>{{ "common:rating" | translate }}</strong>
+            </div>
+            <rating [value]="album.rating" />
           </div>
-          <rating [value]="album.rating" />
-        </div>
-      }
-      <song-list [songs]="album.songs" />
+        }
+        <song-list [songs]="album.songs" />
+      </div>
     </section>
   </div>
 }
