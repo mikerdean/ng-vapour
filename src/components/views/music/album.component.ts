@@ -7,6 +7,7 @@ import { parse } from "valibot";
 import { DefinitionListComponent } from "@vapour/components/core/definition-list.component";
 import { HeadingComponent } from "@vapour/components/core/heading.component";
 import { RatingComponent } from "@vapour/components/core/rating.component";
+import { FanartComponent } from "@vapour/components/images/fanart.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
 import { SongListComponent } from "@vapour/components/views/music/song-list.component";
 import { TranslatePipe } from "@vapour/pipes/translate";
@@ -21,6 +22,7 @@ import { albumValidator } from "@vapour/validators";
   imports: [
     AsyncPipe,
     DefinitionListComponent,
+    FanartComponent,
     HeadingComponent,
     RatingComponent,
     SongListComponent,
