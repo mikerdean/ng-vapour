@@ -145,7 +145,7 @@ export class MappingService {
       label: addon.name || "",
       played: addon.enabled,
       thumbnail: addon.thumbnail,
-      url: `/addon/${addon.addonid}`,
+      url: `/addons/${addon.addonid}`,
     };
   }
 }
