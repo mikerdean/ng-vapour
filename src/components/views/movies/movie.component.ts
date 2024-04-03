@@ -1,11 +1,16 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { faPlayCircle } from "@fortawesome/free-solid-svg-icons";
 import { combineLatest, map, switchMap, tap } from "rxjs";
 import { parse } from "valibot";
 
 import { DefinitionListComponent } from "@vapour/components/core/definition-list.component";
 import { RatingComponent } from "@vapour/components/core/rating.component";
+import {
+  FormButtonSplitComponent,
+  FormButtonSplitItem,
+} from "@vapour/components/form/form-button-split.component";
 import { FanartComponent } from "@vapour/components/images/fanart.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
 import { CastComponent } from "@vapour/components/views/movies/cast.component";
@@ -23,6 +28,7 @@ import { movieValidator } from "@vapour/validators";
     CastComponent,
     DefinitionListComponent,
     FanartComponent,
+    FormButtonSplitComponent,
     RatingComponent,
     ThumbnailComponent,
     TranslatePipe,
@@ -89,4 +95,8 @@ export class MovieComponent {
     ),
     tap((movie) => this.titleService.setRawTitle(movie.label)),
   );
+
+  readonly buttonItems: FormButtonSplitItem[] = [
+    { label: "Play", icon: faPlayCircle },
+  ];
 }

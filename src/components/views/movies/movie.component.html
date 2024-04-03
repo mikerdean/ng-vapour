@@ -7,6 +7,9 @@
     <section class="sm:flex-grow">
       <div class="md:max-w-xl">
         <definition-list label="" [items]="movie.details" />
+        <div class="mb-4">
+          <form-button-split [items]="buttonItems" />
+        </div>
         @if (movie.plot) {
           <p class="mb-3">{{ movie.plot }}</p>
         }

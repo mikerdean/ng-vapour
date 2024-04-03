@@ -24,6 +24,7 @@
     "@fortawesome/fontawesome-svg-core": "6.5.1",
     "@fortawesome/free-regular-svg-icons": "6.5.1",
     "@fortawesome/free-solid-svg-icons": "6.5.1",
+    "clsx": "2.1.0",
     "i18next": "23.10.1",
     "i18next-http-backend": "2.5.0",
     "luxon": "3.4.4",

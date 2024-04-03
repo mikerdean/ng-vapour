@@ -2,21 +2,15 @@
   @for (star of rating(); track $index) {
     @switch (star) {
       @case (1) {
-        <fa-icon [class]="{ 'text-fuchsia-500': true }" [icon]="icons.star" />
+        <fa-icon css="text-fuchsia-500" [icon]="icons.star" />
       }
 
       @case (0.5) {
-        <fa-icon
-          [class]="{ 'text-fuchsia-500': true }"
-          [icon]="icons.halfStar"
-        />
+        <fa-icon css="text-fuchsia-500" [icon]="icons.halfStar" />
       }
 
       @default {
-        <fa-icon
-          [class]="{ 'text-fuchsia-500': true }"
-          [icon]="icons.starEmpty"
-        />
+        <fa-icon css="text-fuchsia-500" [icon]="icons.starEmpty" />
       }
     }
   }

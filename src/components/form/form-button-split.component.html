@@ -1,0 +1,10 @@
+@if (current(); as current) {
+  <form-button css="rounded-r-none" [disabled]="disabled()">
+    @if (current.icon; as icon) {
+      <fa-icon css="mr-2" [icon]="icon" />
+    }
+    <span>{{ current.label }}</span> </form-button
+  ><form-button css="rounded-l-none border-l-2 border-slate-900 !px-2"
+    ><fa-icon [icon]="icons.dropdown" size="sm"
+  /></form-button>
+}

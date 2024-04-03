@@ -13,10 +13,7 @@
   </div>
 } @else {
   <div class="p-2">
-    <fa-icon
-      [class]="{ 'w-full': true, 'h-auto': true }"
-      [icon]="icons.fallback()"
-    />
+    <fa-icon css="w-full h-auto" [icon]="icons.fallback()" />
   </div>
   @if (played()) {
     <div class="relative h-full w-full" [title]="'common:played' | translate">
@@ -27,23 +24,11 @@
 
 <ng-template #playedIcon>
   <fa-icon
-    [class]="{
-      absolute: true,
-      'right-1': true,
-      'bottom-1': true,
-      'text-fuchsia-500': true,
-      'z-[3]': true
-    }"
+    css="absolute right-1 bottom-1 text-fuchsia-500 z-[3]"
     [icon]="icons.checkCircle"
   />
   <fa-icon
-    [class]="{
-      absolute: true,
-      'right-1': true,
-      'bottom-1': true,
-      'text-slate-900': true,
-      'z-[2]': true
-    }"
+    css="absolute right-1 bottom-1 text-slate-900 z-[2]"
     [icon]="icons.circle"
   />
 </ng-template>

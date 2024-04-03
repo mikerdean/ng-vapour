@@ -50,16 +50,16 @@ export class AlertComponent {
     }),
   };
 
-  cssClasses = computed<string[]>(() => {
+  classNames = computed(() => {
     switch (this.type()) {
       case "success":
-        return ["bg-green-900", "border-green-700"];
+        return "bg-green-900 border-green-700";
       case "info":
-        return ["bg-cyan-900", "border-cyan-700"];
+        return "bg-cyan-900 border-cyan-700";
       case "warning":
-        return ["bg-yellow-700", "border-yellow-500"];
+        return "bg-yellow-700 border-yellow-500";
       case "error":
-        return ["bg-fuchsia-900", "border-fuchsia-700"];
+        return "bg-fuchsia-900 border-fuchsia-700";
     }
   });
 

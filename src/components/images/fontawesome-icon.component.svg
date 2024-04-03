@@ -1,7 +1,7 @@
 @if (parsedIcon(); as icon) {
   <svg
     aria-hidden="true"
-    [class]="classList()"
+    [class]="classNames()"
     [attr.data-prefix]="icon.prefix"
     [attr.data-icon]="icon.iconName"
     role="img"
