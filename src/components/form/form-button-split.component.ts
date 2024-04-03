@@ -13,7 +13,8 @@ import { FormButtonComponent } from "@vapour/components/form/form-button.compone
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 
 export type FormButtonSplitItem = {
-  icon?: IconDefinition;
+  action: () => void;
+  icon: IconDefinition;
   label: string;
 };
 
@@ -27,16 +28,23 @@ export type FormButtonSplitItem = {
 export class FormButtonSplitComponent {
   readonly disabled = input(false);
   readonly items = input<FormButtonSplitItem[]>([]);
-  readonly selected = signal<FormButtonSplitItem | undefined>(undefined);
+  readonly show = signal(false);
 
   readonly current = computed(() => {
-    const selected = this.selected();
-    const items = this.items();
-
-    return selected || items[0];
+    const [item] = this.items();
+    return item;
   });
 
   readonly icons = {
     dropdown: faCaretDown,
   };
+
+  performItemAction(item: FormButtonSplitItem) {
+    item.action();
+    this.show.set(false);
+  }
+
+  toggleDropdown() {
+    this.show.update((show) => !show);
+  }
 }

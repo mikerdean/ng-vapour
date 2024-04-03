@@ -1,7 +1,7 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { faPlayCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlayCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { combineLatest, map, switchMap, tap } from "rxjs";
 import { parse } from "valibot";
 
@@ -97,6 +97,19 @@ export class MovieComponent {
   );
 
   readonly buttonItems: FormButtonSplitItem[] = [
-    { label: "Play", icon: faPlayCircle },
+    {
+      label: "Play",
+      icon: faPlayCircle,
+      action: () => {
+        // play the movie here
+      },
+    },
+    {
+      label: "Add to playlist",
+      icon: faPlusCircle,
+      action: () => {
+        // add the item to the playlist
+      },
+    },
   ];
 }
