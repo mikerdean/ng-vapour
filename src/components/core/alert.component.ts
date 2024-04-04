@@ -7,7 +7,6 @@ import {
   Output,
   signal,
 } from "@angular/core";
-import type { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import {
   faCircleCheck,
   faCircleExclamation,
@@ -16,8 +15,9 @@ import {
   faWarning,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { AlertType } from "@vapour/components/core/alert.types";
+import type { AlertType } from "@vapour/components/core/alert.types";
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
+import type { FontAwesomeIcon } from "@vapour/components/images/fontawesome.types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,7 +36,7 @@ export class AlertComponent {
 
   readonly icons = {
     dismiss: faTimes,
-    header: computed<IconDefinition>(() => {
+    header: computed<FontAwesomeIcon>(() => {
       switch (this.type()) {
         case "success":
           return faCircleCheck;

@@ -729,3 +729,48 @@ export type FontAwesomeRotation =
   | 357
   | 358
   | 359;
+
+export type FontAwesomeSize =
+  | "2xs"
+  | "xs"
+  | "sm"
+  | "lg"
+  | "xl"
+  | "2xl"
+  | "1x"
+  | "2x"
+  | "3x"
+  | "4x"
+  | "5x"
+  | "6x"
+  | "7x"
+  | "8x"
+  | "9x"
+  | "10x";
+
+export type FontAwesomeFlip = "horizontal" | "vertical" | "both";
+
+export type FontAwesomeIcon = {
+  icon: [
+    number, // width
+    number, // height
+    string[], // ligatures
+    string, // unicode
+    string | string[], // svgPathData
+  ];
+  iconName: string;
+  prefix: FontAwesomeIconPrefix;
+};
+
+export type FontAwesomeIconPrefix =
+  | "fas"
+  | "far"
+  | "fal"
+  | "fat"
+  | "fad"
+  | "fab"
+  | "fak"
+  | "fass"
+  | "fasr"
+  | "fasl"
+  | "fast";

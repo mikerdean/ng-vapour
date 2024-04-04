@@ -1,7 +1,7 @@
-import type { IconDefinition } from "@fortawesome/fontawesome-common-types";
+import type { FontAwesomeIcon } from "@vapour/components/images/fontawesome.types";
 
 export type NavigationBarItem = {
-  icon: IconDefinition;
+  icon: FontAwesomeIcon;
   path: string;
   title: string;
 };

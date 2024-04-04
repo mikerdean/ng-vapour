@@ -4,19 +4,15 @@ import {
   computed,
   input,
 } from "@angular/core";
-import {
-  icon as parseIcon,
-  type FlipProp,
-  type Icon,
-  type IconDefinition,
-  type SizeProp,
-} from "@fortawesome/fontawesome-svg-core";
 import clsx, { ClassValue } from "clsx";
 
 import type {
   ClassOrStyle,
   FontAwesomeAnimation,
+  FontAwesomeFlip,
+  FontAwesomeIcon,
   FontAwesomeRotation,
+  FontAwesomeSize,
 } from "@vapour/components/images/fontawesome.types";
 
 @Component({
@@ -30,12 +26,12 @@ export class FontawesomeIconComponent {
   readonly border = input(false);
   readonly css = input<ClassValue>();
   readonly fixedWidth = input(false);
-  readonly flip = input<FlipProp>();
-  readonly icon = input.required<IconDefinition>();
+  readonly flip = input<FontAwesomeFlip>();
+  readonly icon = input.required<FontAwesomeIcon>();
   readonly inverse = input(false);
   readonly pull = input<"left" | "right">();
   readonly rotate = input<FontAwesomeRotation>();
-  readonly size = input<SizeProp>();
+  readonly size = input<FontAwesomeSize>();
   readonly style = input<ClassOrStyle>();
   readonly swapOpacity = input(false);
 
@@ -92,7 +88,10 @@ export class FontawesomeIconComponent {
     );
   });
 
-  readonly parsedIcon = computed<Icon>(() => parseIcon(this.icon()));
+  readonly svgPath = computed<string>(() => {
+    const { icon } = this.icon();
+    return icon[4].toString();
+  });
 
   readonly styleList = computed(() => {
     const rotation = this.rotate();
@@ -103,9 +102,11 @@ export class FontawesomeIconComponent {
     };
   });
 
-  readonly viewBox = computed(() => {
-    const parsed = this.parsedIcon();
-    const [width, height] = parsed.icon;
+  readonly viewBox = computed<string>(() => {
+    const {
+      icon: [width, height],
+    } = this.icon();
+
     return `0 0 ${width} ${height}`;
   });
 }

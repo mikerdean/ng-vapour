@@ -6,7 +6,6 @@ import {
   input,
 } from "@angular/core";
 import { toObservable } from "@angular/core/rxjs-interop";
-import type { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import {
   faCheckCircle,
   faCircle,
@@ -20,7 +19,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
-import { ThumbnailType } from "@vapour/components/images/thumbnail.types";
+import type { FontAwesomeIcon } from "@vapour/components/images/fontawesome.types";
+import type { ThumbnailType } from "@vapour/components/images/thumbnail.types";
 import { TranslatePipe } from "@vapour/pipes/translate";
 import { HostService } from "@vapour/services/host.service";
 import { toImageUrl } from "@vapour/shared/images";
@@ -51,7 +51,7 @@ export class ThumbnailComponent {
   );
 
   readonly icons = {
-    fallback: computed<IconDefinition>(() => {
+    fallback: computed<FontAwesomeIcon>(() => {
       switch (this.type()) {
         case "album":
           return faCompactDisc;

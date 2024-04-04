@@ -1,4 +1,3 @@
-import { NgClass } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,21 +5,21 @@ import {
   input,
   signal,
 } from "@angular/core";
-import type { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 import { FormButtonComponent } from "@vapour/components/form/form-button.component";
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
+import type { FontAwesomeIcon } from "@vapour/components/images/fontawesome.types";
 
 export type FormButtonSplitItem = {
   action: () => void;
-  icon: IconDefinition;
+  icon: FontAwesomeIcon;
   label: string;
 };
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FontawesomeIconComponent, FormButtonComponent, NgClass],
+  imports: [FontawesomeIconComponent, FormButtonComponent],
   selector: "form-button-split",
   standalone: true,
   templateUrl: "form-button-split.component.html",
