@@ -15,17 +15,17 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
     changeDetectorRef: ChangeDetectorRef,
     private translationService: TranslationService,
   ) {
-    this.asyncPipe = new AsyncPipe(changeDetectorRef);
+    this.#asyncPipe = new AsyncPipe(changeDetectorRef);
   }
 
-  readonly asyncPipe: AsyncPipe;
+  readonly #asyncPipe: AsyncPipe;
 
   ngOnDestroy(): void {
-    this.asyncPipe.ngOnDestroy();
+    this.#asyncPipe.ngOnDestroy();
   }
 
   transform(key: string, options?: TOptions): string | null {
-    return this.asyncPipe.transform(
+    return this.#asyncPipe.transform(
       this.translationService.translate(key, options),
     );
   }
