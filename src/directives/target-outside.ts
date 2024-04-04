@@ -1,19 +1,15 @@
-import {
-  Directive,
-  ElementRef,
-  EventEmitter,
-  HostListener,
-  Output,
-} from "@angular/core";
+import { Directive, ElementRef, EventEmitter, Output } from "@angular/core";
 
 @Directive({
+  host: {
+    "(document:click)": "documentClick($event)",
+  },
   selector: "[targetOutside]",
   standalone: true,
 })
 export class TargetOutsideDirective {
   constructor(private ref: ElementRef<Element>) {}
 
-  @HostListener("document:click", ["$event"])
   documentClick(ev: MouseEvent) {
     if (!ev.target) {
       return;
