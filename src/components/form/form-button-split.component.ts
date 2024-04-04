@@ -10,6 +10,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FormButtonComponent } from "@vapour/components/form/form-button.component";
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import type { FontAwesomeIcon } from "@vapour/components/images/fontawesome.types";
+import { TargetOutsideDirective } from "@vapour/directives/target-outside";
 
 export type FormButtonSplitItem = {
   action: () => void;
@@ -19,7 +20,11 @@ export type FormButtonSplitItem = {
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FontawesomeIconComponent, FormButtonComponent],
+  imports: [
+    FontawesomeIconComponent,
+    FormButtonComponent,
+    TargetOutsideDirective,
+  ],
   selector: "form-button-split",
   standalone: true,
   templateUrl: "form-button-split.component.html",
@@ -38,9 +43,13 @@ export class FormButtonSplitComponent {
     dropdown: faCaretDown,
   };
 
+  hideDropdown() {
+    this.show.set(false);
+  }
+
   performItemAction(item: FormButtonSplitItem) {
     item.action();
-    this.show.set(false);
+    this.hideDropdown();
   }
 
   toggleDropdown() {
