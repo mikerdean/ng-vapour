@@ -1,20 +1,27 @@
+import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import {
+  faCircleNotch,
   faCog,
   faCubes,
   faDisplay,
   faFilm,
   faMusic,
+  faPauseCircle,
+  faPlayCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import { map } from "rxjs";
 
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { NavigationBarItem } from "@vapour/components/navigation/navigation-bar.types";
 import { TranslatePipe } from "@vapour/pipes/translate";
+import { PlayerService } from "@vapour/services/player.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    AsyncPipe,
     FontawesomeIconComponent,
     RouterLink,
     RouterLinkActive,
@@ -25,6 +32,8 @@ import { TranslatePipe } from "@vapour/pipes/translate";
   templateUrl: "navigation-bar.component.html",
 })
 export class NavigationBarComponent {
+  constructor(private playerService: PlayerService) {}
+
   readonly links: NavigationBarItem[] = [
     { path: "/movies", icon: faFilm, title: "navigation.navbar.movies" },
     { path: "/music", icon: faMusic, title: "navigation.navbar.music" },
@@ -32,4 +41,18 @@ export class NavigationBarComponent {
     { path: "/addons", icon: faCubes, title: "navigation.navbar.addons" },
     { path: "/settings", icon: faCog, title: "navigation.navbar.settings" },
   ];
+
+  readonly icons = {
+    loading: faCircleNotch,
+    play: faPlayCircle,
+    pause: faPauseCircle,
+  };
+
+  readonly playingState$ = this.playerService.playing$.pipe(
+    map((info) =>
+      info.state === "playing" || info.state === "paused"
+        ? info.state
+        : undefined,
+    ),
+  );
 }

@@ -86,6 +86,11 @@ export type OnSeek = Notification<{
   player: PlayerSeek;
 }>;
 
+export type OnStop = Notification<{
+  end: boolean;
+  item: NotificationItem;
+}>;
+
 export type OnQuit = Notification<{
   exitcode: number;
 }>;
@@ -129,7 +134,7 @@ export type NotificationMap = {
   "Player.OnResume": NotificationFromPlayer;
   "Player.OnSeek": OnSeek;
   "Player.OnSpeedChanged": NotificationFromPlayer;
-  "Player.OnStop": NotificationFromPlayer;
+  "Player.OnStop": OnStop;
 
   "Playlist.OnAdd": PlaylistOnAdd;
   "Playlist.OnClear": PlaylistOnClear;

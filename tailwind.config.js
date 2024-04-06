@@ -5,6 +5,7 @@ export default {
     extend: {
       animation: {
         loading: "loading 1.25s ease-in 0s infinite",
+        playing: "spin 5s linear infinite",
       },
       keyframes: {
         loading: {
