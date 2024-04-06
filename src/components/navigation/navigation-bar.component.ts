@@ -2,19 +2,17 @@ import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import {
-  faCircleNotch,
   faCog,
   faCubes,
   faDisplay,
   faFilm,
   faMusic,
-  faPauseCircle,
-  faPlayCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { map } from "rxjs";
 
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { NavigationBarItem } from "@vapour/components/navigation/navigation-bar.types";
+import { PlayingButtonComponent } from "@vapour/components/playing/playing-button.component";
 import { TranslatePipe } from "@vapour/pipes/translate";
 import { PlayerService } from "@vapour/services/player.service";
 
@@ -23,6 +21,7 @@ import { PlayerService } from "@vapour/services/player.service";
   imports: [
     AsyncPipe,
     FontawesomeIconComponent,
+    PlayingButtonComponent,
     RouterLink,
     RouterLinkActive,
     TranslatePipe,
@@ -42,17 +41,7 @@ export class NavigationBarComponent {
     { path: "/settings", icon: faCog, title: "navigation.navbar.settings" },
   ];
 
-  readonly icons = {
-    loading: faCircleNotch,
-    play: faPlayCircle,
-    pause: faPauseCircle,
-  };
-
-  readonly playingState$ = this.playerService.playing$.pipe(
-    map((info) =>
-      info.state === "playing" || info.state === "paused"
-        ? info.state
-        : undefined,
-    ),
+  readonly isPlaying$ = this.playerService.playing$.pipe(
+    map((info) => info.state === "playing" || info.state === "paused"),
   );
 }

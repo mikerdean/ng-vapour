@@ -1,0 +1,22 @@
+@if (playingState$ | async; as state) {
+  <div
+    class="rounded-full border-2 border-fuchsia-600 bg-slate-900 p-1 leading-none"
+  >
+    <button class="relative" type="button">
+      @switch (state) {
+        @case ("playing") {
+          <fa-icon [icon]="icons.play" size="2x" />
+          <fa-icon
+            css="absolute top-0 left-0 animate-playing text-fuchsia-500"
+            [icon]="icons.loading"
+            size="2x"
+          />
+        }
+
+        @case ("paused") {
+          <fa-icon [icon]="icons.pause" size="2x" />
+        }
+      }
+    </button>
+  </div>
+}

@@ -4,8 +4,8 @@
   @for (link of links; track $index) {
     <a
       class="basis-20 p-4 text-center"
-      [class.pb-2]="playingState$ | async"
-      [class.py-2]="!(playingState$ | async)"
+      [class.pb-2]="isPlaying$ | async"
+      [class.py-2]="!(isPlaying$ | async)"
       [routerLink]="link.path"
       routerLinkActive="border-b-4 border-slate-50"
       ariaCurrentWhenActive="page"
@@ -14,28 +14,8 @@
       <div class="mt-1 text-sm">{{ link.title | translate }}</div>
     </a>
   }
-  @if (playingState$ | async; as state) {
-    <div
-      class="absolute top-[-2rem] rounded-full border-2 border-fuchsia-600 bg-slate-900 p-1 leading-none transition-colors hover:border-fuchsia-800 hover:bg-slate-700"
-    >
-      <button type="button">
-        @switch (state) {
-          @case ("playing") {
-            <fa-icon [icon]="icons.play" size="2x" />
-            <fa-icon
-              css="absolute top-1 left-1 animate-playing text-fuchsia-500"
-              [icon]="icons.loading"
-              size="2x"
-            />
-          }
-
-          @case ("paused") {
-            <fa-icon [icon]="icons.pause" size="2x" />
-          }
-        }
-      </button>
-    </div>
-  }
 </footer>
 
-<div [class]="(playingState$ | async) ? 'h-28' : 'h-20'"></div>
+<playing-button class="fixed bottom-16 z-10 flex w-full justify-center" />
+
+<div [class]="(isPlaying$ | async) ? 'h-28' : 'h-20'"></div>
