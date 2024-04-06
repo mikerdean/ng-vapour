@@ -104,6 +104,22 @@ export class SocketService implements OnDestroy {
     this.#hostSubscription.unsubscribe();
   }
 
+  observe<T extends keyof NotificationMap>(
+    type: T,
+  ): Observable<NotificationMap[T]> {
+    const subject = new Subject<NotificationMap[T]>();
+
+    let set = this.#notifications.get(type);
+    if (!set) {
+      set = new Set();
+      this.#notifications.set(type, set);
+    }
+
+    set.add(subject as Subject<unknown>);
+
+    return subject.asObservable();
+  }
+
   send<TParams, TResponse>(
     method: string,
     params: TParams,
@@ -158,21 +174,5 @@ export class SocketService implements OnDestroy {
         throw Error(`Message ${id} response could not be processed.`);
       }),
     );
-  }
-
-  subscribe<T extends keyof NotificationMap>(
-    type: T,
-  ): Observable<NotificationMap[T]> {
-    const subject = new Subject<NotificationMap[T]>();
-
-    let set = this.#notifications.get(type);
-    if (!set) {
-      set = new Set();
-      this.#notifications.set(type, set);
-    }
-
-    set.add(subject as Subject<unknown>);
-
-    return subject.asObservable();
   }
 }

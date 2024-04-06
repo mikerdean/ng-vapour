@@ -27,7 +27,7 @@ type PlayingInformation = {
 export class PlayerService implements OnDestroy {
   constructor(private socketService: SocketService) {
     this.#subscriptions.push(
-      socketService.subscribe("Player.OnPlay").subscribe(({ data }) => {
+      socketService.observe("Player.OnPlay").subscribe(({ data }) => {
         const info: PlayingInformation = {
           ...this.#playingInfo$.value,
           id: data.player.playerid,
@@ -40,7 +40,7 @@ export class PlayerService implements OnDestroy {
     );
 
     this.#subscriptions.push(
-      socketService.subscribe("Player.OnPause").subscribe(({ data }) => {
+      socketService.observe("Player.OnPause").subscribe(({ data }) => {
         const info: PlayingInformation = {
           ...this.#playingInfo$.value,
           id: data.player.playerid,
@@ -53,7 +53,7 @@ export class PlayerService implements OnDestroy {
     );
 
     this.#subscriptions.push(
-      socketService.subscribe("Player.OnResume").subscribe(({ data }) => {
+      socketService.observe("Player.OnResume").subscribe(({ data }) => {
         const info: PlayingInformation = {
           ...this.#playingInfo$.value,
           id: data.player.playerid,
@@ -66,7 +66,7 @@ export class PlayerService implements OnDestroy {
     );
 
     this.#subscriptions.push(
-      socketService.subscribe("Player.OnStop").subscribe(() => {
+      socketService.observe("Player.OnStop").subscribe(() => {
         const info: PlayingInformation = {
           ...this.#playingInfo$.value,
           id: undefined,
