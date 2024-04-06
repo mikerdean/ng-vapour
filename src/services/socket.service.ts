@@ -20,6 +20,7 @@ import {
   isKodiResponse,
   type KodiMessageBase,
 } from "@vapour/shared/kodi";
+import { NotificationMap } from "@vapour/shared/kodi/notifications";
 
 @Injectable({ providedIn: "root" })
 export class SocketService implements OnDestroy {
@@ -28,6 +29,7 @@ export class SocketService implements OnDestroy {
   );
 
   #hostSubscription: Subscription;
+  #notifications = new Map<keyof NotificationMap, Set<Subject<unknown>>>();
   #queue = new Map<string, Subject<KodiMessageBase>>();
   #socket: WebSocket | undefined;
 
@@ -64,7 +66,14 @@ export class SocketService implements OnDestroy {
           }
 
           if (isKodiNotification(message)) {
-            // do something good here
+            const subjects = this.#notifications.get(message.method);
+            if (subjects) {
+              for (const subject of subjects) {
+                subject.next(message.params);
+              }
+
+              return;
+            }
           }
         } catch (err) {
           // log this here
@@ -144,5 +153,21 @@ export class SocketService implements OnDestroy {
         throw Error(`Message ${id} response could not be processed.`);
       }),
     );
+  }
+
+  subscribe<T extends keyof NotificationMap>(
+    type: T,
+  ): Observable<NotificationMap[T]> {
+    const subject = new Subject<NotificationMap[T]>();
+
+    let set = this.#notifications.get(type);
+    if (!set) {
+      set = new Set();
+      this.#notifications.set(type, set);
+    }
+
+    set.add(subject as Subject<unknown>);
+
+    return subject.asObservable();
   }
 }

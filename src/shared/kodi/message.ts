@@ -1,3 +1,5 @@
+import type { NotificationMap } from "@vapour/shared/kodi/notifications";
+
 export type KodiMessageBase = {
   jsonrpc: "2.0";
 };
@@ -11,7 +13,7 @@ export type KodiRequest<T> = KodiMessageBase & {
 };
 
 export type KodiNotification<T> = KodiMessageBase & {
-  method: string;
+  method: keyof NotificationMap;
   params: T;
 };
 
