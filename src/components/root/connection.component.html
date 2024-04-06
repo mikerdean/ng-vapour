@@ -6,7 +6,7 @@
   }
 
   @case ("connecting") {
-    <fullscreen-message>
+    <fullscreen-message [allowClose]="false">
       <div class="text-center">
         <fa-icon animation="spin" [icon]="icons.loading" size="6x" />
         <div class="mt-2">
@@ -17,7 +17,7 @@
   }
 
   @case ("disconnected") {
-    <fullscreen-message>
+    <fullscreen-message [allowClose]="false">
       <heading [level]="1">{{ "root.connection.title" | translate }}</heading>
       <p class="mb-5">
         <strong>{{ "root.connection.subtitle" | translate }}</strong>

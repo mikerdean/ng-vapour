@@ -2,7 +2,7 @@
   <div
     class="rounded-full border-2 border-fuchsia-600 bg-slate-900 p-1 leading-none"
   >
-    <button class="relative" type="button">
+    <button (click)="modalOpen()" class="relative" type="button">
       @switch (state) {
         @case ("playing") {
           <fa-icon [icon]="icons.play" size="2x" />
@@ -19,4 +19,10 @@
       }
     </button>
   </div>
+}
+
+@if (showPlayingModal()) {
+  <fullscreen-message [background]="true" (close)="modalClose()">
+    <p>Hello this is some content that is here because omg</p>
+  </fullscreen-message>
 }
