@@ -69,6 +69,11 @@ export class SocketService implements OnDestroy {
             const subjects = this.#notifications.get(message.method);
             if (subjects) {
               for (const subject of subjects) {
+                if (subject.closed) {
+                  subjects.delete(subject);
+                  continue;
+                }
+
                 subject.next(message.params);
               }
 
