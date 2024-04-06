@@ -2,7 +2,7 @@ import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import { combineLatest, map, Observable } from "rxjs";
+import { combineLatest, map, Observable, tap } from "rxjs";
 
 import { DefinitionListComponent } from "@vapour/components/core/definition-list.component";
 import { DefinitionListItem } from "@vapour/components/core/definition-list.types";
@@ -16,6 +16,7 @@ import { NavigationBarComponent } from "@vapour/components/navigation/navigation
 import { TranslatePipe } from "@vapour/pipes/translate";
 import { HostService } from "@vapour/services/host.service";
 import { SocketService } from "@vapour/services/socket.service";
+import { TitleService } from "@vapour/services/title.service";
 import { TranslationService } from "@vapour/services/translation.service";
 
 @Component({
@@ -42,9 +43,16 @@ export class ConnectionComponent {
     private hostService: HostService,
     private socketService: SocketService,
     private translationService: TranslationService,
+    private titleService: TitleService,
   ) {}
 
-  readonly connectionState$ = this.socketService.connectionState$;
+  readonly connectionState$ = this.socketService.connectionState$.pipe(
+    tap((state) => {
+      if (state === "disconnected") {
+        this.titleService.setTranslatedTitle("root.connection.title");
+      }
+    }),
+  );
 
   readonly errorListItems$ = combineLatest([
     this.translationService.translate("root.connection.errorList.1"),
