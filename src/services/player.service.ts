@@ -1,8 +1,16 @@
 import { Injectable, OnDestroy } from "@angular/core";
-import { BehaviorSubject, SubscriptionLike } from "rxjs";
+import { BehaviorSubject, Observable, SubscriptionLike } from "rxjs";
 
 import type { ThumbnailType } from "@vapour/components/images/thumbnail.types";
 import { SocketService } from "@vapour/services/socket.service";
+import type {
+  GetActivePlayers,
+  GetPlayerItem,
+  GetPlayerItemQuery,
+  GetPlayers,
+  GetPlayersQuery,
+  MediaType,
+} from "@vapour/shared/kodi";
 
 type NowPlayingItemMetadata = {
   title: string;
@@ -90,5 +98,29 @@ export class PlayerService implements OnDestroy {
 
   ngOnDestroy(): void {
     this.#subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  getActivePlayers(): Observable<GetActivePlayers> {
+    return this.socketService.send<Record<string, never>, GetActivePlayers>(
+      "Player.GetActivePlayers",
+      {},
+    );
+  }
+
+  getPlayers(media: MediaType = "all"): Observable<GetPlayers> {
+    return this.socketService.send<GetPlayersQuery, GetPlayers>(
+      "Player.GetActivePlayers",
+      { media },
+    );
+  }
+
+  getPlayerItem(id: number): Observable<GetPlayerItem> {
+    return this.socketService.send<GetPlayerItemQuery, GetPlayerItem>(
+      "Player.GetItem",
+      {
+        playerid: id,
+        properties: [],
+      },
+    );
   }
 }
