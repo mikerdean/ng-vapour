@@ -30,10 +30,11 @@ export class PlayingButtonComponent {
   };
 
   readonly playingState$ = this.playerService.playing$.pipe(
-    map((info) =>
-      info.state === "playing" || info.state === "paused"
-        ? info.state
-        : undefined,
+    map(
+      (players) =>
+        players.find(
+          (player) => player.state === "playing" || player.state === "paused",
+        )?.state,
     ),
   );
 

@@ -42,6 +42,11 @@ export class NavigationBarComponent {
   ];
 
   readonly isPlaying$ = this.playerService.playing$.pipe(
-    map((info) => info.state === "playing" || info.state === "paused"),
+    map(
+      (players) =>
+        players.filter(
+          (player) => player.state === "playing" || player.state === "paused",
+        ).length > 0,
+    ),
   );
 }
