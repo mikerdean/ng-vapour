@@ -5,9 +5,10 @@ import {
   faPauseCircle,
   faPlayCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { combineLatest, map, of, switchMap } from "rxjs";
+import { combineLatest, map, Observable, of, switchMap } from "rxjs";
 
 import { FullscreenMessageComponent } from "@vapour/components/core/fullscreen-message.component";
+import type { GridItem } from "@vapour/components/grid/grid.types";
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
 import { MappingService } from "@vapour/services/mapping.service";
@@ -48,40 +49,46 @@ export class PlayingButtonComponent {
   readonly players$ = this.playerService.playing$.pipe(
     switchMap((players) =>
       combineLatest(
-        players
-          .filter(
-            (player): player is Required<typeof player> => "item" in player,
-          )
-          .map((player) => {
-            switch (player.item.type) {
-              case "episode":
-                return this.tvService.getEpisodeById(player.item.id).pipe(
+        players.map((player) => {
+          let item: Observable<GridItem | null> = of(null);
+
+          switch (player.item?.type) {
+            case "episode":
+              item = this.tvService
+                .getEpisodeById(player.item.id)
+                .pipe(
                   switchMap(({ episodedetails }) =>
                     this.mappingService.mapEpisodeToGridItem(episodedetails),
                   ),
-                  map((item) => ({ ...player, item })),
                 );
+              break;
 
-              case "movie":
-                return this.movieService.getMovieById(player.item.id).pipe(
+            case "movie":
+              item = this.movieService
+                .getMovieById(player.item.id)
+                .pipe(
                   map(({ moviedetails }) =>
                     this.mappingService.mapMovieToGridItem(moviedetails),
                   ),
-                  map((item) => ({ ...player, item })),
                 );
+              break;
 
-              case "song":
-                return this.musicService.getSongById(player.item.id).pipe(
+            case "song":
+              item = this.musicService
+                .getSongById(player.item.id)
+                .pipe(
                   map(({ songdetails }) =>
                     this.mappingService.mapSongDetailsToGridItem(songdetails),
                   ),
-                  map((item) => ({ ...player, item })),
                 );
+              break;
+          }
 
-              default:
-                return of({ ...player, item: null });
-            }
-          }),
+          return combineLatest([
+            this.playerService.getPlayerProperties(player.id),
+            item,
+          ]).pipe(map(([props, item]) => ({ ...player, item, props })));
+        }),
       ),
     ),
   );
@@ -95,11 +102,11 @@ export class PlayingButtonComponent {
     ),
   );
 
-  modalClose() {
+  modalClose(): void {
     this.showPlayingModal.set(false);
   }
 
-  modalOpen() {
+  modalOpen(): void {
     this.showPlayingModal.set(true);
   }
 }
