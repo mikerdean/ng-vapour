@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from "@angular/core";
 import {
   BehaviorSubject,
-  forkJoin,
+  combineLatest,
   map,
   Observable,
   SubscriptionLike,
@@ -13,11 +13,13 @@ import type {
   GetActivePlayers,
   GetPlayerItem,
   GetPlayerItemQuery,
+  GetPlayerProperties,
+  GetPlayerPropertiesQuery,
   GetPlayers,
   GetPlayersQuery,
   MediaType,
 } from "@vapour/shared/kodi";
-import { NotificationItem } from "@vapour/shared/kodi/notifications";
+import type { NotificationItem } from "@vapour/shared/kodi/notifications";
 
 type PlayerInformation = {
   id: number;
@@ -74,7 +76,7 @@ export class PlayerService implements OnDestroy {
     this.getActivePlayers()
       .pipe(
         switchMap((players) =>
-          forkJoin(
+          combineLatest(
             players.map((player) =>
               this.getPlayerItem(player.playerid).pipe(
                 map(({ item }) => ({ player, item })),
@@ -127,6 +129,43 @@ export class PlayerService implements OnDestroy {
         properties: [],
       },
     );
+  }
+
+  getPlayerProperties(id: number): Observable<GetPlayerProperties> {
+    return this.socketService.send<
+      GetPlayerPropertiesQuery,
+      GetPlayerProperties
+    >("Player.GetProperties", {
+      properties: [
+        "audiostreams",
+        "cachepercentage",
+        "canchangespeed",
+        "canmove",
+        "canrepeat",
+        "canrotate",
+        "canseek",
+        "canshuffle",
+        "canzoom",
+        "currentaudiostream",
+        "currentsubtitle",
+        "currentvideostream",
+        "live",
+        "partymode",
+        "percentage",
+        "playlistid",
+        "position",
+        "repeat",
+        "shuffled",
+        "speed",
+        "subtitleenabled",
+        "subtitles",
+        "time",
+        "totaltime",
+        "type",
+        "videostreams",
+      ],
+      playerid: id,
+    });
   }
 
   #updatePlayer(id: number, data: Omit<PlayerInformation, "id">): void {
