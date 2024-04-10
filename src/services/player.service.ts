@@ -8,7 +8,6 @@ import {
   switchMap,
 } from "rxjs";
 
-import type { ThumbnailType } from "@vapour/components/images/thumbnail.types";
 import { SocketService } from "@vapour/services/socket.service";
 import type {
   GetActivePlayers,
@@ -18,22 +17,11 @@ import type {
   GetPlayersQuery,
   MediaType,
 } from "@vapour/shared/kodi";
-
-type NowPlayingItemMetadata = {
-  title: string;
-  value?: string;
-};
+import { NotificationItem } from "@vapour/shared/kodi/notifications";
 
 type PlayerInformation = {
   id: number;
-  item?: {
-    id: number;
-    backgroundUrl?: string;
-    metadata: NowPlayingItemMetadata[];
-    thumbnailUrl?: string;
-    title: string;
-    type: ThumbnailType;
-  };
+  item?: NotificationItem;
   speed: number;
   state: "playing" | "paused" | "stopped";
 };
@@ -44,12 +32,7 @@ export class PlayerService implements OnDestroy {
     this.#subscriptions.push(
       socketService.observe("Player.OnPlay").subscribe(({ data }) => {
         this.#updatePlayer(data.player.playerid, {
-          item: {
-            id: data.item.id,
-            metadata: [],
-            title: "test",
-            type: data.item.type as ThumbnailType,
-          },
+          item: data.item,
           speed: data.player.speed,
           state: "playing",
         });
@@ -104,12 +87,7 @@ export class PlayerService implements OnDestroy {
         this.#playingInfo$.next(
           players.map(({ player, item }) => ({
             id: player.playerid,
-            item: {
-              id: item.id,
-              title: "some title",
-              metadata: [],
-              type: item.type as ThumbnailType,
-            },
+            item,
             speed: 1,
             state: "playing",
           })),
