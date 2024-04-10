@@ -6,11 +6,13 @@
   }"
 >
   <div class="flex h-full items-center justify-center">
-    <div class="relative m-5 w-full max-w-md rounded-lg bg-slate-700 p-5">
+    <div class="m-5 w-full max-w-md rounded-lg bg-slate-700 p-5">
       @if (allowClose()) {
-        <button class="absolute right-5" (click)="closeModal()">
-          <fa-icon [icon]="icons.close" />
-        </button>
+        <div class="mb-2 flex justify-end">
+          <button class="text-right" (click)="closeModal()">
+            <fa-icon [icon]="icons.close" />
+          </button>
+        </div>
       }
       <ng-content />
     </div>

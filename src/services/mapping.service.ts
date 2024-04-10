@@ -8,6 +8,7 @@ import type {
   AddonDetails,
   AudioDetailsAlbum,
   AudioDetailsArtist,
+  AudioDetailsSong,
   LibraryDetailsGenre,
   VideoDetailsEpisode,
   VideoDetailsMovie,
@@ -101,6 +102,17 @@ export class MappingService {
         url: `/tv/seasons/${season.seasonid}`,
       })),
     );
+  }
+
+  mapSongDetailsToGridItem(song: AudioDetailsSong): GridItem {
+    return {
+      id: song.songid,
+      details: [],
+      label: song.label,
+      played: (song.playcount || 0) > 0,
+      thumbnail: song.art?.thumb,
+      url: `/music/songs/${song.songid}`,
+    };
   }
 
   mapTvShowToGridItem(tvshow: VideoDetailsTVShow): Observable<GridItem> {
