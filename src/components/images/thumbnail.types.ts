@@ -11,4 +11,6 @@ export type ThumbnailType =
   | "tvShowGenre"
   | "season"
   | "episode"
-  | "addon";
+  | "addon"
+  | "picture"
+  | "channel";

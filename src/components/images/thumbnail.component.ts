@@ -7,11 +7,13 @@ import {
 } from "@angular/core";
 import { toObservable } from "@angular/core/rxjs-interop";
 import {
+  faBolt,
   faCheckCircle,
   faCircle,
   faCompactDisc,
   faCubes,
   faFilm,
+  faImage,
   faMusic,
   faTv,
   faUser,
@@ -73,6 +75,10 @@ export class ThumbnailComponent {
           return faTv;
         case "addon":
           return faCubes;
+        case "picture":
+          return faImage;
+        case "channel":
+          return faBolt;
       }
     }),
     checkCircle: faCheckCircle,
