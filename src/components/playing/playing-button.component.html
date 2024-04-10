@@ -24,17 +24,19 @@
 @if (showPlayingModal()) {
   <fullscreen-message [background]="true" (close)="modalClose()">
     @for (player of players$ | async; track player.id) {
-      <thumbnail type="picture" [uri]="player.item?.thumbnail" />
-      <p
-        class="mb-2 mt-2 line-clamp-1 border-b border-slate-500 text-lg text-cyan-400"
-      >
-        {{ player.item?.label }}
-      </p>
-      @for (detail of player.item?.details; track $index) {
-        <p>{{ detail }}</p>
+      @if (player.item; as item) {
+        <thumbnail type="picture" [uri]="item.thumbnail" />
+        <p
+          class="mb-2 mt-2 line-clamp-1 border-b border-slate-500 text-lg text-cyan-400"
+        >
+          {{ item.label }}
+        </p>
+        @for (detail of item.details; track $index) {
+          <p>{{ detail }}</p>
+        }
+        <p class="mt-2">[playing timer here]</p>
+        <p class="mt-2">[playing controls here]</p>
       }
-      <p class="mt-2">[playing timer here]</p>
-      <p class="mt-2">[playing controls here]</p>
     }
   </fullscreen-message>
 }
