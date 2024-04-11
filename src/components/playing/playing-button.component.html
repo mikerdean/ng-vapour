@@ -34,7 +34,11 @@
         @for (detail of item.details; track $index) {
           <p>{{ detail }}</p>
         }
-        <p class="mt-2">[playing timer here]</p>
+        <progress-bar
+          [speed]="player.speed"
+          [start]="player.props.time"
+          [total]="player.props.totaltime"
+        />
         <p class="mt-2">[playing controls here]</p>
       }
     }

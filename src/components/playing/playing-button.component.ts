@@ -11,6 +11,7 @@ import { FullscreenMessageComponent } from "@vapour/components/core/fullscreen-m
 import type { GridItem } from "@vapour/components/grid/grid.types";
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
+import { ProgressBarComponent } from "@vapour/components/playing/progress-bar.component";
 import { MappingService } from "@vapour/services/mapping.service";
 import { MoviesService } from "@vapour/services/movies.service";
 import { MusicService } from "@vapour/services/music.service";
@@ -23,6 +24,7 @@ import { TvService } from "@vapour/services/tv.service";
     AsyncPipe,
     FontawesomeIconComponent,
     FullscreenMessageComponent,
+    ProgressBarComponent,
     ThumbnailComponent,
   ],
   standalone: true,
@@ -47,8 +49,13 @@ export class PlayingButtonComponent {
   };
 
   readonly players$ = this.playerService.playing$.pipe(
-    switchMap((players) =>
-      combineLatest(
+    switchMap((players) => {
+      if (players.length === 0) {
+        this.modalClose();
+        return of([]);
+      }
+
+      return combineLatest(
         players.map((player) => {
           let item: Observable<GridItem | null> = of(null);
 
@@ -89,8 +96,8 @@ export class PlayingButtonComponent {
             item,
           ]).pipe(map(([props, item]) => ({ ...player, item, props })));
         }),
-      ),
-    ),
+      );
+    }),
   );
 
   readonly playingState$ = this.playerService.playing$.pipe(
