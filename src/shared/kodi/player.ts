@@ -103,3 +103,12 @@ export type GetPlayerProperties = {
   type: PlayerType;
   videostreams?: VideoStream[];
 };
+
+export type PlayerStop = {
+  playerid: number;
+};
+
+export type PlayerPlayPause = {
+  playerid: number;
+  play?: boolean | "toggle";
+};

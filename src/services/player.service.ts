@@ -18,6 +18,8 @@ import type {
   GetPlayers,
   GetPlayersQuery,
   MediaType,
+  PlayerPlayPause,
+  PlayerStop,
 } from "@vapour/shared/kodi";
 import type { NotificationItem } from "@vapour/shared/kodi/notifications";
 
@@ -166,6 +168,21 @@ export class PlayerService implements OnDestroy {
       ],
       playerid: id,
     });
+  }
+
+  stop(id: number): Observable<string> {
+    return this.socketService.send<PlayerStop, string>("Player.Stop", {
+      playerid: id,
+    });
+  }
+
+  togglePlayPause(id: number): Observable<number> {
+    return this.socketService.send<PlayerPlayPause, number>(
+      "Player.PlayPause",
+      {
+        playerid: id,
+      },
+    );
   }
 
   #updatePlayer(id: number, data: Omit<PlayerInformation, "id">): void {
