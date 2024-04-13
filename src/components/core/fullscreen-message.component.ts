@@ -18,6 +18,9 @@ import { AriaRole } from "@vapour/shared/types";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    "(document:keydown.escape)": "closeModal()",
+  },
   imports: [AsyncPipe, FontawesomeIconComponent],
   selector: "fullscreen-message",
   standalone: true,
@@ -52,6 +55,10 @@ export class FullscreenMessageComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
+    if (!this.allowClose()) {
+      return;
+    }
+
     this.closing.set(true);
     setTimeout(() => {
       this.close.emit();
