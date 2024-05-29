@@ -1,4 +1,7 @@
-import type { ApplicationConfig } from "@angular/core";
+import {
+  provideExperimentalZonelessChangeDetection,
+  type ApplicationConfig,
+} from "@angular/core";
 import {
   provideRouter,
   withHashLocation,
@@ -14,5 +17,6 @@ export const appConfig: ApplicationConfig = {
       withHashLocation(),
       withInMemoryScrolling({ scrollPositionRestoration: "enabled" }),
     ),
+    provideExperimentalZonelessChangeDetection(),
   ],
 };
