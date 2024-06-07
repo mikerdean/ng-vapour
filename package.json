@@ -3,12 +3,13 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
+    "build": "ng build",
     "lint": "npm run lint:eslint && npm run lint:prettier:check",
     "lint:eslint": "eslint .",
     "lint:prettier:check": "prettier --check .",
     "lint:prettier:write": "prettier --write .",
+    "typecheck": "tsc --noEmit",
     "start": "ng serve",
-    "build": "ng build",
     "watch": "ng build --watch --configuration development"
   },
   "private": true,

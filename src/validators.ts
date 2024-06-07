@@ -1,15 +1,16 @@
 import {
-  coerce,
+  any,
   fallback,
   integer,
   minLength,
   minValue,
-  number,
   object,
+  pipe,
   string,
+  transform
 } from "valibot";
 
-const positiveInteger = coerce(number([integer(), minValue(1)]), Number);
+const positiveInteger = pipe(any(), transform((x) => Number.parseInt(x, 10)), integer(), minValue(1));
 
 const minimumOneInteger = fallback(positiveInteger, 1);
 
@@ -25,7 +26,7 @@ export const artistValidator = object({
 });
 
 export const genreValidator = object({
-  genre: string([minLength(1)]),
+  genre: pipe(string(), minLength(1)),
 });
 
 export const movieValidator = object({

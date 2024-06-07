@@ -8,13 +8,13 @@ import {
   switchMap,
   takeUntil,
 } from "rxjs";
-import { parse, type BaseSchema } from "valibot";
+import { parse, type GenericSchema } from "valibot";
 
 import type { GridData, GridQuery } from "@vapour/components/grid/grid.types";
 
 export const prepareGrid = <T, U extends GridQuery>(
-  paramsSchema: BaseSchema<T>,
-  queryParamsSchema: BaseSchema<U>,
+  paramsSchema: GenericSchema<T>,
+  queryParamsSchema: GenericSchema<U>,
   route: ActivatedRoute,
   expectedItems: number,
   query: (params: T, queryParams: U) => Observable<GridData>,
