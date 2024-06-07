@@ -1,5 +1,4 @@
 import {
-  any,
   fallback,
   integer,
   minLength,
@@ -7,10 +6,16 @@ import {
   object,
   pipe,
   string,
-  transform
+  transform,
+  unknown,
 } from "valibot";
 
-const positiveInteger = pipe(any(), transform((x) => Number.parseInt(x, 10)), integer(), minValue(1));
+const positiveInteger = pipe(
+  unknown(),
+  transform((x) => Number.parseInt(typeof x === "string" ? x : "", 10)),
+  integer(),
+  minValue(1),
+);
 
 const minimumOneInteger = fallback(positiveInteger, 1);
 
