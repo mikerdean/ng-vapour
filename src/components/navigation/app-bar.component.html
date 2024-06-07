@@ -33,7 +33,7 @@
     class="relative h-1.5"
     [class]="{
       'bg-slate-900': !(navigating$ | async),
-      'bg-cyan-700': (navigating$ | async)
+      'bg-cyan-700': (navigating$ | async),
     }"
   >
     @if (navigating$ | async) {
