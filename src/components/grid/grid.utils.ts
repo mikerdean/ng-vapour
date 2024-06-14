@@ -12,12 +12,12 @@ import { parse, type GenericSchema } from "valibot";
 
 import type { GridData, GridQuery } from "@vapour/components/grid/grid.types";
 
-export const prepareGrid = <T, U extends GridQuery>(
-  paramsSchema: GenericSchema<T>,
-  queryParamsSchema: GenericSchema<U>,
+export const prepareGrid = <TInput, TOutput, UInput, UOutput extends GridQuery>(
+  paramsSchema: GenericSchema<TInput, TOutput>,
+  queryParamsSchema: GenericSchema<UInput, UOutput>,
   route: ActivatedRoute,
   expectedItems: number,
-  query: (params: T, queryParams: U) => Observable<GridData>,
+  query: (params: TOutput, queryParams: UOutput) => Observable<GridData>,
 ) =>
   combineLatest([route.params, route.queryParams]).pipe(
     map(([params, queryParams]) => ({
