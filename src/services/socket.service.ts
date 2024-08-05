@@ -13,7 +13,9 @@ import {
 
 import { CachingService } from "@vapour/services/caching.service";
 import { HostService } from "@vapour/services/host.service";
+import { LoggingService } from "@vapour/services/logging.service";
 import type { ConnectionState } from "@vapour/services/socket.service.types";
+import { toError } from "@vapour/shared/error";
 import {
   isKodiError,
   isKodiNotification,
@@ -39,6 +41,7 @@ export class SocketService implements OnDestroy {
   constructor(
     private cachingService: CachingService,
     hostService: HostService,
+    private loggingService: LoggingService,
   ) {
     this.#hostSubscription = hostService.websocketUrl$.subscribe((url) => {
       if (this.#socket) {
@@ -80,8 +83,8 @@ export class SocketService implements OnDestroy {
               return;
             }
           }
-        } catch (err) {
-          // log this here
+        } catch (err: unknown) {
+          this.loggingService.error(toError(err));
         }
       };
 
