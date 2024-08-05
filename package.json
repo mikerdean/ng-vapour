@@ -32,8 +32,7 @@
     "nanoid": "5.0.7",
     "rxjs": "7.8.1",
     "tslib": "2.6.3",
-    "valibot": "0.35.0",
-    "zone.js": "0.14.7"
+    "valibot": "0.35.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "18.1.3",
