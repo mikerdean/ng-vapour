@@ -773,4 +773,6 @@ export type FontAwesomeIconPrefix =
   | "fass"
   | "fasr"
   | "fasl"
-  | "fast";
+  | "fast"
+  | "fasds"
+  | "fakd";
