@@ -86,9 +86,6 @@ export class ThumbnailComponent {
   };
 
   onImageLoaded(element: HTMLImageElement) {
-    element.classList.remove("opacity-0");
-    requestAnimationFrame(() => {
-      element.classList.add("opacity-100");
-    });
+    element.classList.replace("opacity-0", "opacity-100");
   }
 }

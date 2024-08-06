@@ -25,9 +25,6 @@ export class FanartComponent {
   ]).pipe(map(([matches, imageUrl]) => (matches ? imageUrl : undefined)));
 
   onImageLoaded(element: HTMLImageElement) {
-    element.classList.remove("opacity-0");
-    requestAnimationFrame(() => {
-      element.classList.add("opacity-100");
-    });
+    element.classList.replace("opacity-0", "opacity-100");
   }
 }
