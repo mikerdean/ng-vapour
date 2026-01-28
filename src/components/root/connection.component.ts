@@ -62,11 +62,13 @@ export class ConnectionComponent {
 
   readonly hostSummaryItems$: Observable<DefinitionListItem[]> = combineLatest([
     this.hostService.host$,
-    this.translationService.translate("root.connection.hostSummary.hostName"),
-    this.translationService.translate("root.connection.hostSummary.port"),
-    this.translationService.translate("common:unknown"),
+    this.translationService.translateMany([
+      { key: "root.connection.hostSummary.hostName" },
+      { key: "root.connection.hostSummary.port" },
+      { key: "common:unknown" },
+    ]),
   ]).pipe(
-    map(([host, hostname, port, unknown]) => [
+    map(([host, [hostname, port, unknown]]) => [
       { header: hostname, description: host?.hostname || unknown },
       { header: port, description: host?.tcpPort.toString() || unknown },
     ]),
