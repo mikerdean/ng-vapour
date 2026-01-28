@@ -8,6 +8,11 @@ import {
 import HttpBackend from "i18next-http-backend";
 import { map, Observable, ReplaySubject } from "rxjs";
 
+type TranslationRequest = {
+  key: string;
+  options?: TOptions;
+};
+
 @Injectable({ providedIn: "root" })
 export class TranslationService {
   private readonly i18n: i18n;
@@ -52,5 +57,15 @@ export class TranslationService {
 
   translate(key: string, options?: TOptions): Observable<string> {
     return this.t.pipe(map((t) => t(key, options)));
+  }
+
+  translateMany(
+    translationRequests: TranslationRequest[],
+  ): Observable<string[]> {
+    return this.t.pipe(
+      map((t) =>
+        translationRequests.map(({ key, options }) => t(key, options)),
+      ),
+    );
   }
 }
