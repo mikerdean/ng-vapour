@@ -5,7 +5,6 @@ import { combineLatest, map, switchMap } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
-import { PaginationComponent } from "@vapour/components/grid/pagination.component";
 import { ConfigurationService } from "@vapour/services/configuration.service";
 import { MappingService } from "@vapour/services/mapping.service";
 import { MoviesService } from "@vapour/services/movies.service";
@@ -14,7 +13,7 @@ import { emptyParamsValidator, pageValidator } from "@vapour/validators";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, GridComponent, PaginationComponent],
+  imports: [AsyncPipe, GridComponent],
   selector: "movies-sets",
   templateUrl: "movie-sets.component.html",
 })
