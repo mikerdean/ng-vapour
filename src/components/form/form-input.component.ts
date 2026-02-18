@@ -39,7 +39,7 @@ export class FormInputComponent {
     ]).pipe(
       switchMap(([form, name]) => form.controls[name].statusChanges),
       map((status) =>
-        status === "INVALID" ? ["!bg-fuchsia-200", "!border-fuchsia-500"] : [],
+        status === "INVALID" ? ["bg-fuchsia-200!", "border-fuchsia-500!"] : [],
       ),
     );
   }

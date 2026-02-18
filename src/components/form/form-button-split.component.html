@@ -8,13 +8,13 @@
       <fa-icon css="mr-2" [icon]="current.icon" />
       <span>{{ current.label }}</span> </form-button
     ><form-button
-      css="rounded-l-none border-l-2 border-slate-900 !px-2"
+      css="rounded-l-none border-l-2 border-slate-900 px-2!"
       (click)="toggleDropdown()"
       ><fa-icon [icon]="icons.dropdown" size="sm"
     /></form-button>
   }
   @if (show()) {
-    <div class="absolute mt-1 rounded border border-slate-600 bg-slate-700">
+    <div class="absolute mt-1 rounded-sm border border-slate-600 bg-slate-700">
       <menu>
         @for (item of items(); track $index) {
           <li>
