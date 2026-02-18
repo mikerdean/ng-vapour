@@ -6,7 +6,6 @@ import { HostComponent } from "@vapour/components/root/host.component";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [HostComponent],
   selector: "app-root",
-  standalone: true,
   templateUrl: "app.component.html",
 })
 export class AppComponent {}

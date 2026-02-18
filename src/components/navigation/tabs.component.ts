@@ -7,7 +7,6 @@ import { TabItem } from "@vapour/components/navigation/tabs.types";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, RouterLinkActive],
   selector: "tabs",
-  standalone: true,
   templateUrl: "tabs.component.html",
 })
 export class TabsComponent {

@@ -15,7 +15,6 @@ import { emptyParamsValidator, pageValidator } from "@vapour/validators";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, GridComponent],
   selector: "movie-genres",
-  standalone: true,
   templateUrl: "movie-genres.component.html",
 })
 export class MovieGenresComponent {

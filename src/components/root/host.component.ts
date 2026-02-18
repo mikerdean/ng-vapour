@@ -28,7 +28,6 @@ import { TranslationService } from "@vapour/services/translation.service";
     ReactiveFormsModule,
   ],
   selector: "host",
-  standalone: true,
   templateUrl: "host.component.html",
 })
 export class HostComponent {

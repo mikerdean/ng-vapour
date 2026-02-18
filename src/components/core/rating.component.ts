@@ -13,7 +13,6 @@ import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FontawesomeIconComponent],
   selector: "rating",
-  standalone: true,
   templateUrl: "rating.component.html",
 })
 export class RatingComponent {

@@ -24,7 +24,6 @@ import { seasonValidator } from "@vapour/validators";
     ThumbnailComponent,
   ],
   selector: "season",
-  standalone: true,
   templateUrl: "season.component.html",
 })
 export class SeasonComponent {

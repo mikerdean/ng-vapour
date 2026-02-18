@@ -23,7 +23,6 @@ import { AriaRole } from "@vapour/shared/types";
   },
   imports: [AsyncPipe, FontawesomeIconComponent],
   selector: "fullscreen-message",
-  standalone: true,
   templateUrl: "fullscreen-message.component.html",
 })
 export class FullscreenMessageComponent implements OnInit, OnDestroy {

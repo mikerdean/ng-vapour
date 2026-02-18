@@ -15,7 +15,6 @@ import { pageValidator, tvShowValidator } from "@vapour/validators";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, GridComponent],
   selector: "tv-show",
-  standalone: true,
   templateUrl: "tv-show.component.html",
 })
 export class TvShowComponent {

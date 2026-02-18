@@ -15,7 +15,6 @@ import { emptyParamsValidator, pageValidator } from "@vapour/validators";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, GridComponent],
   selector: "tv-in-progress",
-  standalone: true,
   templateUrl: "tv-in-progress.component.html",
 })
 export class TvInProgressComponent {

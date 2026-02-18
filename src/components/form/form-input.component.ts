@@ -14,7 +14,6 @@ import { FormInputType } from "@vapour/components/form/form-input.types";
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, ReactiveFormsModule],
-  standalone: true,
   selector: "form-input",
   templateUrl: "form-input.component.html",
 })

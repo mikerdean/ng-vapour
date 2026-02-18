@@ -7,7 +7,6 @@ import { HeadingLevel } from "@vapour/components/core/heading.types";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgTemplateOutlet],
   selector: "heading",
-  standalone: true,
   templateUrl: "heading.component.html",
 })
 export class HeadingComponent {

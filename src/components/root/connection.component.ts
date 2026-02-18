@@ -35,7 +35,6 @@ import { TranslationService } from "@vapour/services/translation.service";
     TranslatePipe,
   ],
   selector: "connection",
-  standalone: true,
   templateUrl: "connection.component.html",
 })
 export class ConnectionComponent {

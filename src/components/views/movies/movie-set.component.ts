@@ -15,7 +15,6 @@ import { movieSetValidator, pageValidator } from "@vapour/validators";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, GridComponent],
   selector: "movie-set",
-  standalone: true,
   templateUrl: "movie-set.component.html",
 })
 export class MovieSetComponent {

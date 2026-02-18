@@ -5,7 +5,6 @@ import { combineLatest, map, switchMap, tap } from "rxjs";
 import { parse } from "valibot";
 
 import { DefinitionListComponent } from "@vapour/components/core/definition-list.component";
-import { HeadingComponent } from "@vapour/components/core/heading.component";
 import { RatingComponent } from "@vapour/components/core/rating.component";
 import { FanartComponent } from "@vapour/components/images/fanart.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
@@ -23,14 +22,12 @@ import { albumValidator } from "@vapour/validators";
     AsyncPipe,
     DefinitionListComponent,
     FanartComponent,
-    HeadingComponent,
     RatingComponent,
     SongListComponent,
     ThumbnailComponent,
     TranslatePipe,
   ],
   selector: "album",
-  standalone: true,
   templateUrl: "album.component.html",
 })
 export class AlbumComponent {

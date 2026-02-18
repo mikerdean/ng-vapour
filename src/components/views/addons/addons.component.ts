@@ -12,7 +12,6 @@ import { TranslationService } from "@vapour/services/translation.service";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, MainContentComponent, RouterOutlet, TabsComponent],
   selector: "addons",
-  standalone: true,
   templateUrl: "addons.component.html",
 })
 export class AddonsComponent {

@@ -23,7 +23,6 @@ import type { FontAwesomeIcon } from "@vapour/components/images/fontawesome.type
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FontawesomeIconComponent],
   selector: "alert",
-  standalone: true,
   templateUrl: "alert.component.html",
 })
 export class AlertComponent {

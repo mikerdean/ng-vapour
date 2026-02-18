@@ -12,7 +12,6 @@ import { TranslationService } from "@vapour/services/translation.service";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, MainContentComponent, RouterOutlet, TabsComponent],
   selector: "movies",
-  standalone: true,
   templateUrl: "movies.component.html",
 })
 export class MoviesComponent {

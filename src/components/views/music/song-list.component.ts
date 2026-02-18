@@ -10,7 +10,6 @@ import { AudioDetailsSong } from "@vapour/shared/kodi";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DurationPipe, FontawesomeIconComponent, PadStartPipe],
   selector: "song-list",
-  standalone: true,
   templateUrl: "song-list.component.html",
 })
 export class SongListComponent {

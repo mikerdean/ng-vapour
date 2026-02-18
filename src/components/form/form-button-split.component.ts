@@ -26,7 +26,6 @@ export type FormButtonSplitItem = {
     TargetOutsideDirective,
   ],
   selector: "form-button-split",
-  standalone: true,
   templateUrl: "form-button-split.component.html",
 })
 export class FormButtonSplitComponent {

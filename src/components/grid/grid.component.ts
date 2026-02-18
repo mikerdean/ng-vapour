@@ -21,7 +21,6 @@ import { ThumbnailType } from "@vapour/components/images/thumbnail.types";
     RouterLink,
     ThumbnailComponent,
   ],
-  standalone: true,
   selector: "grid",
   templateUrl: "grid.component.html",
 })

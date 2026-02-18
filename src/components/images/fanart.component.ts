@@ -11,7 +11,6 @@ import { fromMediaQuery } from "@vapour/shared/mediaQuery";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe],
   selector: "fanart",
-  standalone: true,
   templateUrl: "fanart.component.html",
 })
 export class FanartComponent {

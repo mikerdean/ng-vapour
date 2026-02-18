@@ -14,7 +14,6 @@ import { emptyParamsValidator, pageValidator } from "@vapour/validators";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, GridComponent],
   selector: "albums",
-  standalone: true,
   templateUrl: "albums.component.html",
 })
 export class AlbumsComponent {

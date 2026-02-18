@@ -15,7 +15,6 @@ import { emptyParamsValidator, pageValidator } from "@vapour/validators";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, GridComponent],
   selector: "addons-available",
-  standalone: true,
   templateUrl: "addons-installed.component.html",
 })
 export class AddonsInstalledComponent {

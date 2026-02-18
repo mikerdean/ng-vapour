@@ -14,7 +14,6 @@ import { artistValidator, pageValidator } from "@vapour/validators";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, GridComponent],
   selector: "artist",
-  standalone: true,
   templateUrl: "artist.component.html",
 })
 export class ArtistComponent {

@@ -33,7 +33,6 @@ import { movieValidator } from "@vapour/validators";
     ThumbnailComponent,
     TranslatePipe,
   ],
-  standalone: true,
   selector: "movie",
   templateUrl: "movie.component.html",
 })

@@ -13,7 +13,6 @@ const getTotalSeconds = ({ hours, minutes, seconds }: Time): number => {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe],
   selector: "progress-bar",
-  standalone: true,
   templateUrl: "progress-bar.component.html",
 })
 export class ProgressBarComponent {

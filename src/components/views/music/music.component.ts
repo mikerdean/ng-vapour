@@ -12,7 +12,6 @@ import { TranslationService } from "@vapour/services/translation.service";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, MainContentComponent, RouterOutlet, TabsComponent],
   selector: "music",
-  standalone: true,
   templateUrl: "music.component.html",
 })
 export class MusicComponent {

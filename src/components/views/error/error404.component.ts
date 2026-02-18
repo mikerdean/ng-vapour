@@ -7,7 +7,6 @@ import { TranslatePipe } from "@vapour/pipes/translate";
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AlertComponent, MainContentComponent, TranslatePipe],
-  standalone: true,
   selector: "error404",
   templateUrl: "error404.component.html",
 })

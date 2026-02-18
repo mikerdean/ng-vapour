@@ -16,7 +16,6 @@ import type { VideoDetailsEpisode } from "@vapour/shared/kodi";
     ThumbnailComponent,
   ],
   selector: "episode-list",
-  standalone: true,
   templateUrl: "episode-list.component.html",
 })
 export class EpisodeListComponent {

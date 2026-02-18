@@ -34,7 +34,6 @@ const defaultButtonClasses = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, FontawesomeIconComponent, TranslatePipe],
   selector: "pagination",
-  standalone: true,
   templateUrl: "pagination.component.html",
 })
 export class PaginationComponent {

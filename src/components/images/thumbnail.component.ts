@@ -36,7 +36,6 @@ import { toImageUrl } from "@vapour/shared/images";
     TranslatePipe,
   ],
   selector: "thumbnail",
-  standalone: true,
   templateUrl: "thumbnail.component.html",
 })
 export class ThumbnailComponent {

@@ -27,7 +27,6 @@ import { TvService } from "@vapour/services/tv.service";
     ProgressBarComponent,
     ThumbnailComponent,
   ],
-  standalone: true,
   selector: "playing-button",
   templateUrl: "playing-button.component.html",
 })

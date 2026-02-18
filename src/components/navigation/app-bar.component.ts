@@ -24,7 +24,6 @@ import { TitleService } from "@vapour/services/title.service";
     TranslatePipe,
   ],
   selector: "app-bar",
-  standalone: true,
   templateUrl: "app-bar.component.html",
 })
 export class AppbarComponent {

@@ -15,7 +15,6 @@ import { VideoDetailsCast } from "@vapour/shared/kodi";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormButtonComponent, ThumbnailComponent, TranslatePipe],
   selector: "cast",
-  standalone: true,
   templateUrl: "cast.component.html",
 })
 export class CastComponent {

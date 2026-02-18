@@ -27,7 +27,6 @@ import { PlayerService } from "@vapour/services/player.service";
     TranslatePipe,
   ],
   selector: "navigation-bar",
-  standalone: true,
   templateUrl: "navigation-bar.component.html",
 })
 export class NavigationBarComponent {

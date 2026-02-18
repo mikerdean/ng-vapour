@@ -15,7 +15,6 @@ import { genreValidator, pageValidator } from "@vapour/validators";
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, GridComponent],
   selector: "music-genre",
-  standalone: true,
   templateUrl: "music-genre.component.html",
 })
 export class MusicGenreComponent {
