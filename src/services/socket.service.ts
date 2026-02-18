@@ -16,13 +16,13 @@ import { HostService } from "@vapour/services/host.service";
 import { LoggingService } from "@vapour/services/logging.service";
 import type { ConnectionState } from "@vapour/services/socket.service.types";
 import { toError } from "@vapour/shared/error";
+import { KodiMessageBase } from "@vapour/shared/kodi/message";
+import { NotificationMap } from "@vapour/shared/kodi/notifications";
 import {
   isKodiError,
   isKodiNotification,
   isKodiResponse,
-  type KodiMessageBase,
-} from "@vapour/shared/kodi";
-import { NotificationMap } from "@vapour/shared/kodi/notifications";
+} from "@vapour/shared/kodi/typeguards";
 
 @Injectable({ providedIn: "root" })
 export class SocketService implements OnDestroy {

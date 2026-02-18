@@ -4,18 +4,20 @@ import { combineLatest, map, Observable } from "rxjs";
 import type { GridItem } from "@vapour/components/grid/grid.types";
 import { TranslationService } from "@vapour/services/translation.service";
 import { getVideoDuration } from "@vapour/shared/duration";
+import type { AddonDetails } from "@vapour/shared/kodi/addons";
 import type {
-  AddonDetails,
   AudioDetailsAlbum,
   AudioDetailsArtist,
   AudioDetailsSong,
-  LibraryDetailsGenre,
+} from "@vapour/shared/kodi/audio";
+import { LibraryDetailsGenre } from "@vapour/shared/kodi/library";
+import type {
   VideoDetailsEpisode,
   VideoDetailsMovie,
   VideoDetailsMovieSet,
   VideoDetailsSeason,
   VideoDetailsTVShow,
-} from "@vapour/shared/kodi";
+} from "@vapour/shared/kodi/video";
 
 @Injectable({ providedIn: "root" })
 export class MappingService {

@@ -5,7 +5,7 @@ import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
 import { DurationPipe } from "@vapour/pipes/duration";
 import { PadStartPipe } from "@vapour/pipes/padStart";
-import type { VideoDetailsEpisode } from "@vapour/shared/kodi";
+import type { VideoDetailsEpisode } from "@vapour/shared/kodi/video";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

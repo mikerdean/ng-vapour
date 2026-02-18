@@ -9,6 +9,7 @@ import {
 } from "rxjs";
 
 import { SocketService } from "@vapour/services/socket.service";
+import type { NotificationItem } from "@vapour/shared/kodi/notifications";
 import type {
   GetActivePlayers,
   GetPlayerItem,
@@ -20,8 +21,7 @@ import type {
   MediaType,
   PlayerPlayPause,
   PlayerStop,
-} from "@vapour/shared/kodi";
-import type { NotificationItem } from "@vapour/shared/kodi/notifications";
+} from "@vapour/shared/kodi/player";
 
 type PlayerInformation = {
   id: number;

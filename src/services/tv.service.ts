@@ -19,7 +19,7 @@ import type {
   GetTVShowsQuery,
   GetVideoGenresQuery,
   VideoGenresPaged,
-} from "@vapour/shared/kodi";
+} from "@vapour/shared/kodi/video";
 
 @Injectable({ providedIn: "root" })
 export class TvService {

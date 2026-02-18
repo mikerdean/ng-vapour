@@ -9,7 +9,7 @@ import {
 import { FormButtonComponent } from "@vapour/components/form/form-button.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
 import { TranslatePipe } from "@vapour/pipes/translate";
-import { VideoDetailsCast } from "@vapour/shared/kodi";
+import { VideoDetailsCast } from "@vapour/shared/kodi/video";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

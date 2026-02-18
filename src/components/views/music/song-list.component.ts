@@ -4,7 +4,7 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { DurationPipe } from "@vapour/pipes/duration";
 import { PadStartPipe } from "@vapour/pipes/padStart";
-import { AudioDetailsSong } from "@vapour/shared/kodi";
+import { AudioDetailsSong } from "@vapour/shared/kodi/audio";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

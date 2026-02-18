@@ -16,11 +16,11 @@ import type {
   GetSong,
   GetSongQuery,
   GetSongsQuery,
-  KodiMessageFilterOfType,
   MusicGenresPaged,
   RecentlyAddedAlbumsQuery,
   SongsPaged,
-} from "@vapour/shared/kodi";
+} from "@vapour/shared/kodi/audio";
+import { KodiMessageFilterOfType } from "@vapour/shared/kodi/message";
 
 @Injectable({ providedIn: "root" })
 export class MusicService {

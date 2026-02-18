@@ -7,7 +7,7 @@ import type {
   ProfileDetailsPaged,
   ProfileDetailsQuery,
   ProfilesQuery,
-} from "@vapour/shared/kodi";
+} from "@vapour/shared/kodi/profiles";
 
 @Injectable({ providedIn: "root" })
 export class ProfileService {

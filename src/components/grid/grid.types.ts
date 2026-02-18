@@ -1,4 +1,4 @@
-import type { KodiMessageLimitsReturned } from "shared/kodi";
+import type { KodiMessageLimitsReturned } from "shared/kodi/message";
 
 export type GridData = {
   currentPage: number;

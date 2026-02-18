@@ -9,7 +9,7 @@ import type {
   GetAddons,
   GetAddonsQuery,
   GetAddonsQueryFilters,
-} from "@vapour/shared/kodi";
+} from "@vapour/shared/kodi/addons";
 
 @Injectable({ providedIn: "root" })
 export class AddonService {
