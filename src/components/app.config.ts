@@ -1,5 +1,5 @@
 import {
-  provideExperimentalZonelessChangeDetection,
+  provideZonelessChangeDetection,
   type ApplicationConfig,
 } from "@angular/core";
 import {
@@ -17,6 +17,6 @@ export const appConfig: ApplicationConfig = {
       withHashLocation(),
       withInMemoryScrolling({ scrollPositionRestoration: "enabled" }),
     ),
-    provideExperimentalZonelessChangeDetection(),
+    provideZonelessChangeDetection(),
   ],
 };
