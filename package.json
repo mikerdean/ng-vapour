@@ -28,9 +28,9 @@
     "clsx": "2.1.1",
     "i18next": "23.12.2",
     "i18next-http-backend": "2.5.2",
-    "luxon": "3.5.0",
-    "nanoid": "5.0.7",
-    "rxjs": "7.8.1",
+    "luxon": "3.7.2",
+    "nanoid": "5.1.6",
+    "rxjs": "7.8.2",
     "tslib": "2.6.3",
     "valibot": "0.37.0"
   },
