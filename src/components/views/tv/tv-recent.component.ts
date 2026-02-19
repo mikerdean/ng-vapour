@@ -23,7 +23,7 @@ export class TvRecentComponent {
     titleService: TitleService,
     private tvService: TvService,
   ) {
-    titleService.setTranslatedTitle("tv:titles.recent");
+    void titleService.setTranslatedTitle("tv:titles.recent");
   }
 
   readonly $episodes = prepareGrid(

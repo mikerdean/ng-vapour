@@ -82,8 +82,11 @@ export class SeasonComponent {
         ],
       }),
     ),
-    tap((season) =>
-      this.titleService.setRawTitle(`${season.showtitle} - ${season.label}`),
+    tap(
+      (season) =>
+        void this.titleService.setRawTitle(
+          `${season.showtitle ?? ""} - ${season.label}`,
+        ),
     ),
   );
 }

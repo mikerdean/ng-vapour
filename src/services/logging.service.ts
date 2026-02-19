@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
+
 import { Injectable } from "@angular/core";
 
 type LoggingMessage = string | Error;
 
 @Injectable({ providedIn: "root" })
 export class LoggingService {
-  log<T>(message: LoggingMessage, context?: T) {
+  log(message: LoggingMessage, context?: unknown) {
     if (context) {
       console.log(message, context);
     } else {
@@ -13,7 +14,7 @@ export class LoggingService {
     }
   }
 
-  error<T>(message: LoggingMessage, context?: T) {
+  error(message: LoggingMessage, context?: unknown) {
     if (context) {
       console.error(message, context);
     } else {
@@ -21,7 +22,7 @@ export class LoggingService {
     }
   }
 
-  warn<T>(message: LoggingMessage, context?: T) {
+  warn(message: LoggingMessage, context?: unknown) {
     if (context) {
       console.warn(message, context);
     } else {
@@ -29,7 +30,7 @@ export class LoggingService {
     }
   }
 
-  debug<T>(message: LoggingMessage, context?: T) {
+  debug(message: LoggingMessage, context?: unknown) {
     if (context) {
       console.debug(message, context);
     } else {

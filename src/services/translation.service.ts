@@ -34,7 +34,7 @@ export class TranslationService {
 
     i18n.use(HttpBackend);
 
-    i18n.init((err, t) => {
+    void i18n.init((err, t) => {
       if (err) {
         this.t.error(err);
       } else {
@@ -45,14 +45,13 @@ export class TranslationService {
     this.i18n = i18n;
   }
 
-  changeLanguage(lng: string): void {
-    this.i18n.changeLanguage(lng, (err, t) => {
-      if (err) {
-        this.t.error(err);
-      } else {
-        this.t.next(t);
-      }
-    });
+  async changeLanguage(lng: string): Promise<void> {
+    try {
+      const t = await this.i18n.changeLanguage(lng);
+      this.t.next(t);
+    } catch (err: unknown) {
+      this.t.error(err);
+    }
   }
 
   translate(key: string, options?: TOptions): Observable<string> {

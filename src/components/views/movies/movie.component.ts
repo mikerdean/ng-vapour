@@ -92,7 +92,7 @@ export class MovieComponent {
         ],
       }),
     ),
-    tap((movie) => this.titleService.setRawTitle(movie.label)),
+    tap((movie) => void this.titleService.setRawTitle(movie.label)),
   );
 
   readonly buttonItems: FormButtonSplitItem[] = [

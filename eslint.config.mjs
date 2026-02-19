@@ -8,11 +8,14 @@ export default defineConfig(
     ignores: [".angular/cache", "node_modules"],
   },
   eslint.configs.recommended,
-  tseslint.configs.strict,
+  tseslint.configs.strictTypeChecked,
   eslintConfigPrettier,
   {
     languageOptions: {
       ecmaVersion: 2022,
+      parserOptions: {
+        projectService: true,
+      },
       sourceType: "module",
     },
     rules: {

@@ -140,6 +140,6 @@ export class PaginationComponent {
   }
 
   changePage(page: number): void {
-    this.router.navigate([], { queryParams: { page } });
+    void this.router.navigate([], { queryParams: { page } });
   }
 }

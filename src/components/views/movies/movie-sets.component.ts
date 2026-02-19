@@ -25,7 +25,7 @@ export class MovieSetsComponent {
     private route: ActivatedRoute,
     titleService: TitleService,
   ) {
-    titleService.setTranslatedTitle("movies:titles.sets");
+    void titleService.setTranslatedTitle("movies:titles.sets");
   }
 
   readonly movies$ = prepareGrid(

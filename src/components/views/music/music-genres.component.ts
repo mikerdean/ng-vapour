@@ -25,7 +25,7 @@ export class MusicGenresComponent {
     private route: ActivatedRoute,
     titleService: TitleService,
   ) {
-    titleService.setTranslatedTitle("music:titles.genres");
+    void titleService.setTranslatedTitle("music:titles.genres");
   }
 
   readonly genres$ = prepareGrid(

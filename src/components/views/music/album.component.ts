@@ -107,6 +107,6 @@ export class AlbumComponent {
         ],
       }),
     ),
-    tap((album) => this.titleService.setRawTitle(album.label)),
+    tap((album) => void this.titleService.setRawTitle(album.label)),
   );
 }

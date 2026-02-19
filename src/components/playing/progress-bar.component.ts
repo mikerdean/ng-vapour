@@ -26,9 +26,11 @@ export class ProgressBarComponent {
     toObservable(this.total),
     interval(1000).pipe(startWith(0)),
   ]).pipe(
-    map(
-      ([, start, total, offset]) =>
-        `${((getTotalSeconds(start) + offset + 1) / getTotalSeconds(total)) * 100}%`,
-    ),
+    map(([, start, total, offset]) => {
+      const percentage =
+        ((getTotalSeconds(start) + offset + 1) / getTotalSeconds(total)) * 100;
+
+      return `${percentage.toString()}%`;
+    }),
   );
 }

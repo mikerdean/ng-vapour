@@ -33,8 +33,11 @@ export class MusicGenreComponent {
     this.configurationService.pageSize,
     ({ genre }, { page }) =>
       this.musicService.getArtistsByGenre(genre, page).pipe(
-        tap(() =>
-          this.titleService.setTranslatedTitle("music:titles.genre", { genre }),
+        tap(
+          () =>
+            void this.titleService.setTranslatedTitle("music:titles.genre", {
+              genre,
+            }),
         ),
         map(({ artists, limits }) => ({
           currentPage: page,

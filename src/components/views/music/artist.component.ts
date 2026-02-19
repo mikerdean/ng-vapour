@@ -31,8 +31,9 @@ export class ArtistComponent {
     25,
     ({ artistId }, { page }) =>
       this.musicService.getArtistById(artistId).pipe(
-        tap(({ artistdetails }) =>
-          this.titleService.setRawTitle(artistdetails.label),
+        tap(
+          ({ artistdetails }) =>
+            void this.titleService.setRawTitle(artistdetails.label),
         ),
         switchMap(({ artistdetails }) =>
           this.musicService.getAlbumsByAlbumArtist(artistdetails.artist),

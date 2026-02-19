@@ -10,6 +10,7 @@ import { KodiMessageBase } from "@vapour/shared/kodi/message";
 import { NotificationMap } from "@vapour/shared/kodi/notifications";
 import {
   isKodiError,
+  isKodiMessageBase,
   isKodiNotification,
   isKodiResponse,
 } from "@vapour/shared/kodi/typeguards";
@@ -50,8 +51,16 @@ export class SocketService {
       this.#connectionState.set("connecting");
 
       socket.onmessage = (ev: MessageEvent) => {
+        if (typeof ev.data !== "string") {
+          return;
+        }
+
         try {
-          const message = JSON.parse(ev.data);
+          const message: unknown = JSON.parse(ev.data);
+          if (!isKodiMessageBase(message)) {
+            return;
+          }
+
           if (isKodiResponse(message) || isKodiError(message)) {
             const subject = this.#queue.get(message.id);
             if (subject) {
@@ -116,6 +125,7 @@ export class SocketService {
     return subject.asObservable();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
   send<TParams, TResponse>(
     method: string,
     params: TParams,
@@ -153,7 +163,9 @@ export class SocketService {
         with: () => {
           this.#queue.delete(id);
           return throwError(() =>
-            Error(`Message ${id} exceeded the timeout value (${timeout})`),
+            Error(
+              `Message ${id} exceeded the timeout value (${timeout.toString()})`,
+            ),
           );
         },
       }),

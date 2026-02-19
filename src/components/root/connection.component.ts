@@ -48,7 +48,7 @@ export class ConnectionComponent {
     effect(() => {
       const state = this.socketService.connectionState();
       if (state === "disconnected") {
-        this.titleService.setTranslatedTitle("root.connection.title");
+        void this.titleService.setTranslatedTitle("root.connection.title");
       }
     });
   }

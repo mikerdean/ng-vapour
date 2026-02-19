@@ -23,7 +23,7 @@ export class RecentAlbumsComponent {
     private route: ActivatedRoute,
     titleService: TitleService,
   ) {
-    titleService.setTranslatedTitle("music:titles.recent");
+    void titleService.setTranslatedTitle("music:titles.recent");
   }
 
   readonly albums$ = prepareGrid(

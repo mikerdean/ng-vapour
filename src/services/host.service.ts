@@ -20,7 +20,7 @@ export class HostService {
 
     const { hostname, httpPort } = host;
     const protocol = window.location.protocol;
-    return `${protocol}//${hostname}:${httpPort}`;
+    return `${protocol}//${hostname}:${httpPort.toString()}`;
   });
 
   readonly websocketUrl = computed(() => {
@@ -31,7 +31,7 @@ export class HostService {
 
     const { hostname, tcpPort } = host;
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    return `${protocol}//${hostname}:${tcpPort}`;
+    return `${protocol}//${hostname}:${tcpPort.toString()}`;
   });
 
   clear(): void {

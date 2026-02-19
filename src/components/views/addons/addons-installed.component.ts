@@ -25,7 +25,7 @@ export class AddonsInstalledComponent {
     private route: ActivatedRoute,
     titleService: TitleService,
   ) {
-    titleService.setTranslatedTitle("addons:titles.installed");
+    void titleService.setTranslatedTitle("addons:titles.installed");
   }
 
   readonly addons$ = prepareGrid(

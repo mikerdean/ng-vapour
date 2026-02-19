@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-parameters */
+
 import { Injectable } from "@angular/core";
 
 type Cached = {

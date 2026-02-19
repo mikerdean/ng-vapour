@@ -33,8 +33,9 @@ export class MovieSetComponent {
     this.configurationService.pageSize,
     ({ movieSetId }, { page }) =>
       this.moviesService.getMovieSetById(movieSetId).pipe(
-        tap(({ setdetails }) =>
-          this.titleService.setRawTitle(setdetails.label),
+        tap(
+          ({ setdetails }) =>
+            void this.titleService.setRawTitle(setdetails.label),
         ),
         map(({ setdetails: { movies } }) => ({
           currentPage: page,

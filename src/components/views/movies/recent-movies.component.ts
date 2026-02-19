@@ -23,7 +23,7 @@ export class RecentMoviesComponent {
     private route: ActivatedRoute,
     titleService: TitleService,
   ) {
-    titleService.setTranslatedTitle("movies:titles.recent");
+    void titleService.setTranslatedTitle("movies:titles.recent");
   }
 
   readonly movies$ = prepareGrid(

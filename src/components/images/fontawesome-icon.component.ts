@@ -97,7 +97,7 @@ export class FontawesomeIconComponent {
     const rotation = this.rotate();
 
     return {
-      "--fa-rotate-angle": rotation ? `${rotation}deg` : undefined,
+      "--fa-rotate-angle": rotation ? `${rotation.toString()}deg` : undefined,
       ...this.style(),
     };
   });
@@ -107,6 +107,6 @@ export class FontawesomeIconComponent {
       icon: [width, height],
     } = this.icon();
 
-    return `0 0 ${width} ${height}`;
+    return `0 0 ${width.toString()} ${height.toString()}`;
   });
 }

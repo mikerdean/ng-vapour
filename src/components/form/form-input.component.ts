@@ -29,7 +29,7 @@ export class FormInputComponent {
         ),
       ),
       map(({ status, form, name }) =>
-        status === "INVALID" ? form.controls[name]?.errors || null : null,
+        status === "INVALID" ? form.controls[name].errors || null : null,
       ),
     );
 

@@ -25,7 +25,7 @@ export class TvGenresComponent {
     titleService: TitleService,
     private tvService: TvService,
   ) {
-    titleService.setTranslatedTitle("tv:titles.genres");
+    void titleService.setTranslatedTitle("tv:titles.genres");
   }
 
   readonly genres$ = prepareGrid(

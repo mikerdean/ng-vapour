@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/unbound-method */
+
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component, computed } from "@angular/core";
 import {

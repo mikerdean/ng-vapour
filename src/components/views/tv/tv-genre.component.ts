@@ -33,8 +33,11 @@ export class TvGenreComponent {
     this.configurationService.pageSize,
     ({ genre }, { page }) =>
       this.tvService.getTvShowsByGenre(genre, page).pipe(
-        tap(() =>
-          this.titleService.setTranslatedTitle("tv:titles.genre", { genre }),
+        tap(
+          () =>
+            void this.titleService.setTranslatedTitle("tv:titles.genre", {
+              genre,
+            }),
         ),
         switchMap(({ tvshows, limits }) =>
           combineLatest(

@@ -75,28 +75,30 @@ export class PlayerService implements OnDestroy {
       }),
     );
 
-    this.getActivePlayers()
-      .pipe(
-        switchMap((players) =>
-          combineLatest(
-            players.map((player) =>
-              this.getPlayerItem(player.playerid).pipe(
-                map(({ item }) => ({ player, item })),
+    this.#subscriptions.push(
+      this.getActivePlayers()
+        .pipe(
+          switchMap((players) =>
+            combineLatest(
+              players.map((player) =>
+                this.getPlayerItem(player.playerid).pipe(
+                  map(({ item }) => ({ player, item })),
+                ),
               ),
             ),
           ),
-        ),
-      )
-      .forEach((players) => {
-        this.#playingInfo$.next(
-          players.map(({ player, item }) => ({
-            id: player.playerid,
-            item,
-            speed: 1,
-            state: "playing",
-          })),
-        );
-      });
+        )
+        .subscribe((players) => {
+          this.#playingInfo$.next(
+            players.map(({ player, item }) => ({
+              id: player.playerid,
+              item,
+              speed: 1,
+              state: "playing",
+            })),
+          );
+        }),
+    );
   }
 
   readonly #playingInfo$ = new BehaviorSubject<PlayerInformation[]>([]);
@@ -106,7 +108,9 @@ export class PlayerService implements OnDestroy {
   readonly playing$ = this.#playingInfo$.asObservable();
 
   ngOnDestroy(): void {
-    this.#subscriptions.forEach((sub) => sub.unsubscribe());
+    this.#subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
   }
 
   getActivePlayers(): Observable<GetActivePlayers> {

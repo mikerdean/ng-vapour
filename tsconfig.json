@@ -1,7 +1,9 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "allowJs": true,
     "baseUrl": "./src",
+    "checkJs": true,
     "declaration": false,
     "experimentalDecorators": true,
     "esModuleInterop": true,
@@ -29,5 +31,6 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "include": ["./src/**/*", "./eslint.config.mjs"]
 }

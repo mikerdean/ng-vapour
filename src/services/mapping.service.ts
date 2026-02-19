@@ -30,7 +30,7 @@ export class MappingService {
       label: album.label,
       played: (album.playcount || 0) > 0,
       thumbnail: album.art?.thumb,
-      url: `/music/albums/${album.albumid}`,
+      url: `/music/albums/${album.albumid.toString()}`,
     };
   }
 
@@ -40,7 +40,7 @@ export class MappingService {
       details: [artist.songgenres?.map(({ title }) => title).join(", ")],
       label: artist.label,
       thumbnail: artist.art?.thumb,
-      url: `/music/artists/${artist.artistid}`,
+      url: `/music/artists/${artist.artistid.toString()}`,
     };
   }
 
@@ -60,7 +60,7 @@ export class MappingService {
       label: movie.label,
       played: movie.playcount !== undefined && movie.playcount > 0,
       thumbnail: movie.art?.poster,
-      url: `/movies/${movie.movieid}`,
+      url: `/movies/${movie.movieid.toString()}`,
     };
   }
 
@@ -77,7 +77,7 @@ export class MappingService {
           label: set.label,
           played: set.playcount !== undefined && set.playcount > 0,
           thumbnail: set.art?.poster,
-          url: `/movies/sets/${set.setid}`,
+          url: `/movies/sets/${set.setid.toString()}`,
         })),
       );
   }
@@ -101,7 +101,7 @@ export class MappingService {
         label,
         played: season.episode === season.watchedepisodes,
         thumbnail: season.art?.poster,
-        url: `/tv/seasons/${season.seasonid}`,
+        url: `/tv/seasons/${season.seasonid.toString()}`,
       })),
     );
   }
@@ -113,7 +113,7 @@ export class MappingService {
       label: song.label,
       played: (song.playcount || 0) > 0,
       thumbnail: song.art?.thumb,
-      url: `/music/songs/${song.songid}`,
+      url: `/music/songs/${song.songid.toString()}`,
     };
   }
 
@@ -130,7 +130,7 @@ export class MappingService {
           label: tvshow.label,
           played: tvshow.watchedepisodes === tvshow.episode,
           thumbnail: tvshow.art?.poster,
-          url: `/tv/${tvshow.tvshowid}`,
+          url: `/tv/${tvshow.tvshowid.toString()}`,
         })),
       );
   }
@@ -147,7 +147,7 @@ export class MappingService {
           label: episode.label,
           played: (episode.playcount || 0) > 0,
           thumbnail: episode.art?.thumb,
-          url: `/tv/episodes/${episode.episodeid}`,
+          url: `/tv/episodes/${episode.episodeid.toString()}`,
         })),
       );
   }

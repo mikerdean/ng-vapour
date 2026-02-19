@@ -39,13 +39,14 @@ export class TvShowComponent {
       ]).pipe(
         tap(([{ tvshowdetails }, { seasons }]) => {
           if (tvshowdetails.season === 1) {
-            this.router.navigate(["tv", "seasons", seasons[0].seasonid], {
+            void this.router.navigate(["tv", "seasons", seasons[0].seasonid], {
               replaceUrl: true,
             });
           }
         }),
-        tap(([{ tvshowdetails }]) =>
-          this.titleService.setRawTitle(tvshowdetails.label),
+        tap(
+          ([{ tvshowdetails }]) =>
+            void this.titleService.setRawTitle(tvshowdetails.label),
         ),
         switchMap(([, { seasons, limits }]) =>
           combineLatest(

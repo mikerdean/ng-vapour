@@ -33,10 +33,11 @@ export class MovieGenreComponent {
     this.configurationService.pageSize,
     ({ genre }, { page }) =>
       this.moviesService.getMoviesByGenre(genre, page).pipe(
-        tap(() =>
-          this.titleService.setTranslatedTitle("movies:titles.genre", {
-            genre,
-          }),
+        tap(
+          () =>
+            void this.titleService.setTranslatedTitle("movies:titles.genre", {
+              genre,
+            }),
         ),
         map(({ movies, limits }) => ({
           currentPage: page,

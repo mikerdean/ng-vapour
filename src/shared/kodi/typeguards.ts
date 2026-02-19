@@ -7,9 +7,14 @@ import type {
 } from "./message";
 
 export const isKodiMessageBase = (
-  message: object,
+  message: unknown,
 ): message is KodiMessageBase => {
-  return "jsonrpc" in message && message.jsonrpc === "2.0";
+  return (
+    message !== null &&
+    typeof message === "object" &&
+    "jsonrpc" in message &&
+    message.jsonrpc === "2.0"
+  );
 };
 
 export const isKodiRequest = <T>(

@@ -23,7 +23,7 @@ export class AlbumsComponent {
     private route: ActivatedRoute,
     titleService: TitleService,
   ) {
-    titleService.setTranslatedTitle("music:titles.albums");
+    void titleService.setTranslatedTitle("music:titles.albums");
   }
 
   readonly albums$ = prepareGrid(

@@ -25,7 +25,7 @@ export class TvInProgressComponent {
     titleService: TitleService,
     private tvService: TvService,
   ) {
-    titleService.setTranslatedTitle("tv:titles.inprogress");
+    void titleService.setTranslatedTitle("tv:titles.inprogress");
   }
 
   readonly tvShows$ = prepareGrid(
