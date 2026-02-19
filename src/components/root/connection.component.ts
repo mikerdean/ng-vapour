@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, effect } from "@angular/core";
 import { toObservable } from "@angular/core/rxjs-interop";
 import { RouterOutlet } from "@angular/router";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import { combineLatest, map, Observable, tap } from "rxjs";
+import { combineLatest, map, Observable } from "rxjs";
 
 import { DefinitionListComponent } from "@vapour/components/core/definition-list.component";
 import { DefinitionListItem } from "@vapour/components/core/definition-list.types";

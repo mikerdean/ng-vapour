@@ -97,7 +97,7 @@ export class SocketService {
   }
 
   retry(): void {
-    this.#attempts.update((i) => ++i);
+    this.#attempts.update((i) => i + 1);
   }
 
   observe<T extends keyof NotificationMap>(

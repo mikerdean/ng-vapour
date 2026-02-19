@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import { combineLatest, map, Observable } from "rxjs";
+import { combineLatest, map } from "rxjs";
 
 import { FullscreenMessageComponent } from "@vapour/components/core/fullscreen-message.component";
 import { HeadingComponent } from "@vapour/components/core/heading.component";
