@@ -1,4 +1,4 @@
-@if (hasValidHost$ | async) {
+@if (hasValidHost()) {
   <connection />
 } @else {
   @if (translations$ | async; as translations) {

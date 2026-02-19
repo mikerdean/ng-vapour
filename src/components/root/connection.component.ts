@@ -1,5 +1,6 @@
 import { AsyncPipe } from "@angular/common";
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, effect } from "@angular/core";
+import { toObservable } from "@angular/core/rxjs-interop";
 import { RouterOutlet } from "@angular/router";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { combineLatest, map, Observable, tap } from "rxjs";
@@ -43,15 +44,16 @@ export class ConnectionComponent {
     private socketService: SocketService,
     private translationService: TranslationService,
     private titleService: TitleService,
-  ) {}
-
-  readonly connectionState$ = this.socketService.connectionState$.pipe(
-    tap((state) => {
+  ) {
+    effect(() => {
+      const state = this.socketService.connectionState();
       if (state === "disconnected") {
         this.titleService.setTranslatedTitle("root.connection.title");
       }
-    }),
-  );
+    });
+  }
+
+  readonly connectionState = this.socketService.connectionState;
 
   readonly errorListItems$ = combineLatest([
     this.translationService.translate("root.connection.errorList.1"),
@@ -60,7 +62,7 @@ export class ConnectionComponent {
   ]);
 
   readonly hostSummaryItems$: Observable<DefinitionListItem[]> = combineLatest([
-    this.hostService.host$,
+    toObservable(this.hostService.host),
     this.translationService.translateMany([
       { key: "root.connection.hostSummary.hostName" },
       { key: "root.connection.hostSummary.port" },
@@ -82,6 +84,6 @@ export class ConnectionComponent {
   }
 
   reconnect() {
-    this.hostService.retry();
+    this.socketService.retry();
   }
 }

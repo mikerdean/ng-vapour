@@ -47,7 +47,7 @@ export class ThumbnailComponent {
   readonly uri = input<string>();
 
   readonly imageUrl$ = toImageUrl(
-    this.hostService.httpUrl$,
+    toObservable(this.hostService.httpUrl),
     toObservable(this.uri),
   );
 

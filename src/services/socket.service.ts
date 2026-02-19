@@ -1,15 +1,12 @@
-import { Injectable, type OnDestroy } from "@angular/core";
-import { nanoid } from "nanoid";
 import {
-  BehaviorSubject,
-  map,
-  Observable,
-  of,
-  Subject,
-  Subscription,
-  throwError,
-  timeout,
-} from "rxjs";
+  computed,
+  effect,
+  Injectable,
+  signal,
+  type OnDestroy,
+} from "@angular/core";
+import { nanoid } from "nanoid";
+import { map, Observable, of, Subject, throwError, timeout } from "rxjs";
 
 import { CachingService } from "@vapour/services/caching.service";
 import { HostService } from "@vapour/services/host.service";
@@ -25,36 +22,37 @@ import {
 } from "@vapour/shared/kodi/typeguards";
 
 @Injectable({ providedIn: "root" })
-export class SocketService implements OnDestroy {
-  readonly #connectionState = new BehaviorSubject<ConnectionState>(
-    "connecting",
-  );
-
-  #hostSubscription: Subscription;
+export class SocketService {
   #notifications = new Map<keyof NotificationMap, Set<Subject<unknown>>>();
   #queue = new Map<string, Subject<KodiMessageBase>>();
   #socket: WebSocket | undefined;
 
-  readonly connectionState$ = this.#connectionState.asObservable();
+  readonly #attempts = signal(0);
+  readonly #connectionState = signal<ConnectionState>("connecting");
+
+  readonly connectionState = computed(() => this.#connectionState());
   readonly timeout = 5000;
 
   constructor(
     private cachingService: CachingService,
-    hostService: HostService,
+    private hostService: HostService,
     private loggingService: LoggingService,
   ) {
-    this.#hostSubscription = hostService.websocketUrl$.subscribe((url) => {
+    effect(() => {
+      const url = this.hostService.websocketUrl();
+      this.#attempts();
+
       if (this.#socket) {
         this.#socket.close();
       }
 
       if (!url) {
-        this.#connectionState.next("disconnected");
+        this.#connectionState.set("disconnected");
         return;
       }
 
       const socket = new WebSocket(url);
-      this.#connectionState.next("connecting");
+      this.#connectionState.set("connecting");
 
       socket.onmessage = (ev: MessageEvent) => {
         try {
@@ -89,12 +87,12 @@ export class SocketService implements OnDestroy {
       };
 
       socket.onopen = () => {
-        this.#connectionState.next("connected");
+        this.#connectionState.set("connected");
       };
 
       socket.onclose = () => {
         setTimeout(() => {
-          this.#connectionState.next("disconnected");
+          this.#connectionState.set("disconnected");
           this.#socket = undefined;
         }, 250);
       };
@@ -103,8 +101,8 @@ export class SocketService implements OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.#hostSubscription.unsubscribe();
+  retry(): void {
+    this.#attempts.update((i) => ++i);
   }
 
   observe<T extends keyof NotificationMap>(

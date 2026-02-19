@@ -20,7 +20,7 @@ export class FanartComponent {
 
   readonly fanartUrl$ = combineLatest([
     fromMediaQuery("(min-width: 640px)"),
-    toImageUrl(this.hostService.httpUrl$, toObservable(this.uri)),
+    toImageUrl(toObservable(this.hostService.httpUrl), toObservable(this.uri)),
   ]).pipe(map(([matches, imageUrl]) => (matches ? imageUrl : undefined)));
 
   onImageLoaded(element: HTMLImageElement) {

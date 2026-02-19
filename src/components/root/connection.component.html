@@ -1,4 +1,4 @@
-@switch (connectionState$ | async) {
+@switch (connectionState()) {
   @case ("connected") {
     <app-bar />
     <router-outlet />

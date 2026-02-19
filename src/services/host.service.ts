@@ -1,56 +1,44 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, map } from "rxjs";
+import { computed, Injectable, signal } from "@angular/core";
 
 import { Host } from "@vapour/services/host.service.types";
 
 @Injectable({ providedIn: "root" })
 export class HostService {
-  readonly #host = new BehaviorSubject<Host | undefined>({
+  readonly #host = signal<Host | undefined>({
     hostname: window.location.hostname,
     httpPort: 8080,
     tcpPort: 9090,
   });
 
-  readonly host$ = this.#host.asObservable();
+  readonly host = computed(() => this.#host());
 
-  readonly httpUrl$ = this.#host.pipe(
-    map((host) => {
-      if (!host) {
-        return undefined;
-      }
+  readonly httpUrl = computed(() => {
+    const host = this.#host();
+    if (!host) {
+      return undefined;
+    }
 
-      const { hostname, httpPort } = host;
-      const protocol = window.location.protocol;
-      const url = new URL(`${protocol}//${hostname}:${httpPort}`);
-      return url.toString();
-    }),
-  );
+    const { hostname, httpPort } = host;
+    const protocol = window.location.protocol;
+    return `${protocol}//${hostname}:${httpPort}`;
+  });
 
-  readonly websocketUrl$ = this.#host.pipe(
-    map((host) => {
-      if (!host) {
-        return undefined;
-      }
+  readonly websocketUrl = computed(() => {
+    const host = this.#host();
+    if (!host) {
+      return undefined;
+    }
 
-      const { hostname, tcpPort } = host;
-      const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-      const url = new URL(`${protocol}://${hostname}:${tcpPort}`);
-      return url.toString();
-    }),
-  );
+    const { hostname, tcpPort } = host;
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    return `${protocol}//${hostname}:${tcpPort}`;
+  });
 
   clear(): void {
-    this.#host.next(undefined);
-  }
-
-  retry(): void {
-    const host = this.#host.value;
-    if (host) {
-      this.update({ ...host });
-    }
+    this.#host.set(undefined);
   }
 
   update(host: Host): void {
-    this.#host.next(host);
+    this.#host.set(host);
   }
 }

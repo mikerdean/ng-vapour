@@ -1,5 +1,5 @@
 import { AsyncPipe } from "@angular/common";
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -55,9 +55,7 @@ export class HostComponent {
     })),
   );
 
-  readonly hasValidHost$: Observable<boolean> = this.hostService.host$.pipe(
-    map((host) => (host ? true : false)),
-  );
+  readonly hasValidHost = computed(() => Boolean(this.hostService.host()));
 
   readonly hostForm = new FormGroup({
     hostname: new FormControl<string>(window.location.hostname, {
