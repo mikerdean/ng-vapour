@@ -10,4 +10,4 @@ import { TranslatePipe } from "@vapour/pipes/translate";
   selector: "error404",
   templateUrl: "error404.component.html",
 })
-export class Error404Component {}
+export class Error404Component {} // eslint-disable-line @typescript-eslint/no-extraneous-class

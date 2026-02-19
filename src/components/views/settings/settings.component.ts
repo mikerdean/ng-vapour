@@ -6,4 +6,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   standalone: true,
   templateUrl: "settings.component.html",
 })
-export class SettingsComponent {}
+export class SettingsComponent {} // eslint-disable-line @typescript-eslint/no-extraneous-class

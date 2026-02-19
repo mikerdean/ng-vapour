@@ -8,7 +8,7 @@ export default defineConfig(
     ignores: [".angular/cache", "node_modules"],
   },
   eslint.configs.recommended,
-  tseslint.configs.recommended,
+  tseslint.configs.strict,
   eslintConfigPrettier,
   {
     languageOptions: {

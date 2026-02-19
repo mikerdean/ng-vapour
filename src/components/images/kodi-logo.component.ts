@@ -6,4 +6,4 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   standalone: true,
   templateUrl: "kodi-logo.component.svg",
 })
-export class KodiLogoComponent {}
+export class KodiLogoComponent {} // eslint-disable-line @typescript-eslint/no-extraneous-class

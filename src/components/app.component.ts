@@ -8,4 +8,4 @@ import { HostComponent } from "@vapour/components/root/host.component";
   selector: "app-root",
   templateUrl: "app.component.html",
 })
-export class AppComponent {}
+export class AppComponent {} // eslint-disable-line @typescript-eslint/no-extraneous-class
