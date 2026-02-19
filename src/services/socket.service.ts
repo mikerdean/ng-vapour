@@ -1,17 +1,10 @@
-import {
-  computed,
-  effect,
-  Injectable,
-  signal,
-  type OnDestroy,
-} from "@angular/core";
+import { computed, effect, Injectable, signal } from "@angular/core";
 import { nanoid } from "nanoid";
 import { map, Observable, of, Subject, throwError, timeout } from "rxjs";
 
 import { CachingService } from "@vapour/services/caching.service";
 import { HostService } from "@vapour/services/host.service";
 import { LoggingService } from "@vapour/services/logging.service";
-import type { ConnectionState } from "@vapour/services/socket.service.types";
 import { toError } from "@vapour/shared/error";
 import { KodiMessageBase } from "@vapour/shared/kodi/message";
 import { NotificationMap } from "@vapour/shared/kodi/notifications";
@@ -20,6 +13,8 @@ import {
   isKodiNotification,
   isKodiResponse,
 } from "@vapour/shared/kodi/typeguards";
+
+export type ConnectionState = "connected" | "connecting" | "disconnected";
 
 @Injectable({ providedIn: "root" })
 export class SocketService {
