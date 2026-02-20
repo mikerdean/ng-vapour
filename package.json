@@ -4,10 +4,9 @@
   "license": "MIT",
   "scripts": {
     "build": "ng build",
-    "lint": "npm run lint:eslint && npm run lint:prettier:check",
-    "lint:eslint": "eslint .",
-    "lint:prettier:check": "prettier --check .",
-    "lint:prettier:write": "prettier --write .",
+    "lint": "eslint .",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
     "typecheck": "tsc --noEmit",
     "start": "ng serve",
     "watch": "ng build --watch --configuration development"
