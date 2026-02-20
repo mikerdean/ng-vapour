@@ -16,6 +16,7 @@ import {
   kodiLimitsWithTotal,
   kodiSort,
 } from "./base";
+import { distinct } from "./utils";
 
 export const profileDetails = object({
   ...itemDetailsBase.entries,
@@ -24,7 +25,7 @@ export const profileDetails = object({
 });
 
 export const getCurrentProfileRequest = object({
-  properties: array(keyof(profileDetails)),
+  properties: pipe(array(keyof(profileDetails)), distinct()),
 });
 
 export type GetCurrentProfileRequest = InferInput<

@@ -1,4 +1,11 @@
-import { object, type BaseIssue, type BaseSchema } from "valibot";
+import {
+  object,
+  transform,
+  type BaseIssue,
+  type BaseSchema,
+  type TransformAction,
+} from "valibot";
+
 import { jsonRpcRequest, jsonRpcResponse } from "./base";
 
 export function createRequest<TInput, TOutput>(
@@ -16,5 +23,12 @@ export function createResponse<TInput, TOutput>(
   return object({
     ...jsonRpcResponse.entries,
     result,
+  });
+}
+
+export function distinct<T>(): TransformAction<T[], T[]> {
+  return transform<T[], T[]>((input) => {
+    const set = new Set<T>(input);
+    return [...set];
   });
 }
