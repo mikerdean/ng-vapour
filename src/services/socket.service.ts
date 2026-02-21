@@ -27,10 +27,9 @@ import { LoggingService } from "@vapour/services/logging.service";
 import { toError } from "@vapour/shared/error";
 
 export type ConnectionState = "connected" | "connecting" | "disconnected";
-
-type JsonRpcListener = (message: JsonRpc) => void;
-type EventRpcListener = (message: unknown) => void;
-type Unsubscribe = () => void;
+export type JsonRpcListener = (message: JsonRpc) => void;
+export type EventRpcListener = (message: unknown) => void;
+export type Unsubscribe = () => void;
 
 @Injectable({ providedIn: "root" })
 export class SocketService {
