@@ -1,6 +1,6 @@
 import {
   array,
-  InferInput,
+  InferOutput,
   integer,
   keyof,
   number,
@@ -28,13 +28,13 @@ export const getCurrentProfileRequest = object({
   properties: pipe(array(keyof(profileDetails)), distinct()),
 });
 
-export type GetCurrentProfileRequest = InferInput<
+export type GetCurrentProfileRequest = InferOutput<
   typeof getCurrentProfileRequest
 >;
 
 export const getCurrentProfileResponse = profileDetails;
 
-export type GetCurrentProfileResponse = InferInput<
+export type GetCurrentProfileResponse = InferOutput<
   typeof getCurrentProfileResponse
 >;
 
@@ -44,11 +44,11 @@ export const getProfilesRequest = object({
   sort: optional(kodiSort),
 });
 
-export type GetProfilesRequest = InferInput<typeof getProfilesRequest>;
+export type GetProfilesRequest = InferOutput<typeof getProfilesRequest>;
 
 export const getProfilesResponse = object({
   limits: kodiLimitsWithTotal,
   profiles: array(profileDetails),
 });
 
-export type GetProfilesResponse = InferInput<typeof getProfilesResponse>;
+export type GetProfilesResponse = InferOutput<typeof getProfilesResponse>;
