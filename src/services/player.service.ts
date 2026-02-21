@@ -1,14 +1,11 @@
-import { Injectable, OnDestroy } from "@angular/core";
-import {
-  BehaviorSubject,
-  combineLatest,
-  map,
-  Observable,
-  SubscriptionLike,
-  switchMap,
-} from "rxjs";
+/* eslint-disable @typescript-eslint/no-dynamic-delete */
 
-import { SocketService } from "@vapour/services/socket.service";
+import { computed, Injectable, OnDestroy, signal } from "@angular/core";
+
+import {
+  SocketService,
+  type Unsubscribe,
+} from "@vapour/services/socket.service";
 import type { NotificationItem } from "@vapour/shared/kodi/notifications";
 import type {
   GetActivePlayers,
@@ -34,82 +31,45 @@ type PlayerInformation = {
 export class PlayerService implements OnDestroy {
   constructor(private socketService: SocketService) {
     this.#subscriptions.push(
-      socketService.observe("Player.OnPlay").subscribe(({ data }) => {
+      socketService.subscribe("Player.OnPlay", ({ data }) => {
         this.#updatePlayer(data.player.playerid, {
           item: data.item,
           speed: data.player.speed,
           state: "playing",
         });
       }),
-    );
-
-    this.#subscriptions.push(
-      socketService.observe("Player.OnPause").subscribe(({ data }) => {
+      socketService.subscribe("Player.OnPause", ({ data }) => {
         this.#updatePlayer(data.player.playerid, {
           speed: data.player.speed,
           state: "paused",
         });
       }),
-    );
-
-    this.#subscriptions.push(
-      socketService.observe("Player.OnResume").subscribe(({ data }) => {
+      socketService.subscribe("Player.OnResume", ({ data }) => {
         this.#updatePlayer(data.player.playerid, {
           speed: data.player.speed,
           state: "playing",
         });
       }),
-    );
+      socketService.subscribe("Player.OnStop", ({ data }) => {
+        const players = { ...this.#playingInfo() };
+        const id = data.item.id;
 
-    this.#subscriptions.push(
-      socketService.observe("Player.OnStop").subscribe(({ data }) => {
-        const players = [...this.#playingInfo$.value];
-        const idx = players.findIndex(
-          (player) => player.item?.id === data.item.id,
-        );
-
-        if (idx > -1) {
-          players.splice(idx, 1);
-          this.#playingInfo$.next(players);
+        if (id in players) {
+          delete players[id];
+          this.#playingInfo.set(players);
         }
       }),
     );
-
-    this.#subscriptions.push(
-      this.getActivePlayers()
-        .pipe(
-          switchMap((players) =>
-            combineLatest(
-              players.map((player) =>
-                this.getPlayerItem(player.playerid).pipe(
-                  map(({ item }) => ({ player, item })),
-                ),
-              ),
-            ),
-          ),
-        )
-        .subscribe((players) => {
-          this.#playingInfo$.next(
-            players.map(({ player, item }) => ({
-              id: player.playerid,
-              item,
-              speed: 1,
-              state: "playing",
-            })),
-          );
-        }),
-    );
   }
 
-  readonly #playingInfo$ = new BehaviorSubject<PlayerInformation[]>([]);
+  readonly #playingInfo = signal<Record<number, PlayerInformation>>({});
+  readonly #subscriptions: Unsubscribe[] = [];
 
-  readonly #subscriptions: SubscriptionLike[] = [];
-
-  readonly playing$ = this.#playingInfo$.asObservable();
+  readonly playing = computed(() => Object.values(this.#playingInfo()));
 
   ngOnDestroy(): void {
-    this.#subscriptions.forEach((sub) => {
-      sub.unsubscribe();
+    this.#subscriptions.forEach((unsubscribe) => {
+      unsubscribe();
     });
   }
 
@@ -190,18 +150,17 @@ export class PlayerService implements OnDestroy {
   }
 
   #updatePlayer(id: number, data: Omit<PlayerInformation, "id">): void {
-    const players = [...this.#playingInfo$.value];
+    const players = { ...this.#playingInfo() };
 
-    const idx = players.findIndex((info) => info.id === id);
-    if (idx < 0) {
-      players.push({ id, ...data });
-    } else {
-      players[idx] = {
-        ...players[idx],
+    if (id in players) {
+      players[id] = {
+        ...players[id],
         ...data,
       };
+    } else {
+      players[id] = { id, ...data };
     }
 
-    this.#playingInfo$.next(players);
+    this.#playingInfo.set(players);
   }
 }
