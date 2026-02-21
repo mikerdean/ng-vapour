@@ -1,6 +1,7 @@
 import {
   array,
   boolean,
+  InferOutput,
   integer,
   literal,
   number,
@@ -16,6 +17,8 @@ export const jsonRpc = object({
   jsonrpc: literal("2.0"),
 });
 
+export type JsonRpc = InferOutput<typeof jsonRpc>;
+
 export const jsonRpcWithId = object({
   id: string(),
 });
@@ -27,16 +30,12 @@ export const jsonRpcRequest = object({
   params: unknown(),
 });
 
+export type JsonRpcRequest = InferOutput<typeof jsonRpcRequest>;
+
 export const jsonRpcResponse = object({
   ...jsonRpc.entries,
   ...jsonRpcWithId.entries,
   result: unknown(),
-});
-
-export const jsonRpcNotification = object({
-  ...jsonRpc.entries,
-  method: string(),
-  params: unknown(),
 });
 
 export const jsonRpcError = object({
@@ -48,7 +47,7 @@ export const jsonRpcError = object({
 export const jsonRpcErrorResponse = object({
   ...jsonRpc.entries,
   ...jsonRpcWithId.entries,
-  error: jsonRpc,
+  error: jsonRpcError,
 });
 
 export const kodiLimits = object({

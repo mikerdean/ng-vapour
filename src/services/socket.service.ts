@@ -1,26 +1,41 @@
 import { computed, effect, Injectable, signal } from "@angular/core";
 import { nanoid } from "nanoid";
-import { map, Observable, of, Subject, throwError, timeout } from "rxjs";
+import {
+  is,
+  object,
+  safeParse,
+  type BaseIssue,
+  type BaseSchema,
+  type InferOutput,
+} from "valibot";
 
-import { CachingService } from "@vapour/services/caching.service";
+import {
+  jsonRpc,
+  jsonRpcErrorResponse,
+  jsonRpcRequest,
+  jsonRpcResponse,
+  jsonRpcWithId,
+  type JsonRpc,
+  type JsonRpcRequest,
+} from "@vapour/schema/base";
+import {
+  notifications,
+  type NotificationEvents,
+} from "@vapour/schema/notifications";
 import { HostService } from "@vapour/services/host.service";
 import { LoggingService } from "@vapour/services/logging.service";
 import { toError } from "@vapour/shared/error";
-import { KodiMessageBase } from "@vapour/shared/kodi/message";
-import { NotificationMap } from "@vapour/shared/kodi/notifications";
-import {
-  isKodiError,
-  isKodiMessageBase,
-  isKodiNotification,
-  isKodiResponse,
-} from "@vapour/shared/kodi/typeguards";
 
 export type ConnectionState = "connected" | "connecting" | "disconnected";
 
+type JsonRpcListener = (message: JsonRpc) => void;
+type EventRpcListener = (message: unknown) => void;
+type Unsubscribe = () => void;
+
 @Injectable({ providedIn: "root" })
 export class SocketService {
-  #notifications = new Map<keyof NotificationMap, Set<Subject<unknown>>>();
-  #queue = new Map<string, Subject<KodiMessageBase>>();
+  #notifications = new Map<keyof NotificationEvents, Set<EventRpcListener>>();
+  #queue = new Map<string, JsonRpcListener>();
   #socket: WebSocket | undefined;
 
   readonly #attempts = signal(0);
@@ -30,7 +45,6 @@ export class SocketService {
   readonly timeout = 5000;
 
   constructor(
-    private cachingService: CachingService,
     private hostService: HostService,
     private loggingService: LoggingService,
   ) {
@@ -57,33 +71,30 @@ export class SocketService {
 
         try {
           const message: unknown = JSON.parse(ev.data);
-          if (!isKodiMessageBase(message)) {
+          if (!is(jsonRpc, message)) {
             return;
           }
 
-          if (isKodiResponse(message) || isKodiError(message)) {
-            const subject = this.#queue.get(message.id);
-            if (subject) {
-              subject.next(message);
-              subject.complete();
+          if (is(jsonRpcWithId, message)) {
+            const callback = this.#queue.get(message.id);
+            if (callback) {
+              callback(message);
               this.#queue.delete(message.id);
             }
           }
 
-          if (isKodiNotification(message)) {
-            const subjects = this.#notifications.get(message.method);
-            if (subjects) {
-              for (const subject of subjects) {
-                if (subject.closed) {
-                  subjects.delete(subject);
-                  continue;
-                }
+          const result = safeParse(notifications, message);
+          if (!result.success) {
+            return;
+          }
 
-                subject.next(message.params);
-              }
+          const listeners = this.#notifications.get(result.output.method);
+          if (!listeners) {
+            return;
+          }
 
-              return;
-            }
+          for (const listener of listeners) {
+            listener(result.output.params);
           }
         } catch (err: unknown) {
           this.loggingService.error(toError(err));
@@ -109,78 +120,88 @@ export class SocketService {
     this.#attempts.update((i) => i + 1);
   }
 
-  observe<T extends keyof NotificationMap>(
-    type: T,
-  ): Observable<NotificationMap[T]> {
-    const subject = new Subject<NotificationMap[T]>();
-
-    let set = this.#notifications.get(type);
-    if (!set) {
-      set = new Set();
-      this.#notifications.set(type, set);
-    }
-
-    set.add(subject as Subject<unknown>);
-
-    return subject.asObservable();
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
-  send<TParams, TResponse>(
+  send<TRequest, TResponse>(
     method: string,
-    params: TParams,
-  ): Observable<TResponse> {
-    const socket = this.#socket;
+    paramsSchema: BaseSchema<TRequest, TRequest, BaseIssue<unknown>>,
+    responseSchema: BaseSchema<TResponse, TResponse, BaseIssue<unknown>>,
+    params: InferOutput<typeof paramsSchema>,
+  ): Promise<InferOutput<typeof responseSchema>> {
+    return new Promise((resolve, reject) => {
+      const socket = this.#socket;
 
-    if (!socket) {
-      return throwError(() =>
-        Error("Socket not currently connected. Command failed."),
-      );
-    }
+      if (!socket) {
+        reject(Error("Socket not currently connected. Command failed."));
+        return;
+      }
 
-    const key = this.cachingService.key(params);
-    const cached = this.cachingService.get<TResponse>(key);
-    if (cached !== undefined) {
-      return of(cached);
-    }
+      const requestSchema = object({
+        ...jsonRpcRequest.entries,
+        params: paramsSchema,
+      });
 
-    const id = nanoid();
-    const subject = new Subject<KodiMessageBase>();
-    this.#queue.set(id, subject);
+      const id = nanoid();
 
-    socket.send(
-      JSON.stringify({
+      const request: JsonRpcRequest = {
         id,
         jsonrpc: "2.0",
         method,
         params,
-      }),
-    );
+      };
 
-    return subject.pipe(
-      timeout({
-        each: this.timeout,
-        with: () => {
-          this.#queue.delete(id);
-          return throwError(() =>
-            Error(
-              `Message ${id} exceeded the timeout value (${timeout.toString()})`,
-            ),
-          );
-        },
-      }),
-      map((message) => {
-        if (isKodiError(message)) {
-          throw Error(
-            `Message ${id} response returned an error from JSONRPC: ${message.error.message}`,
-          );
-        } else if (isKodiResponse<TResponse>(message)) {
-          this.cachingService.set(key, message.result);
-          return message.result;
+      const requestResult = safeParse(requestSchema, request);
+      if (!requestResult.success) {
+        reject(Error("Request validation failed."));
+        return;
+      }
+
+      this.#queue.set(id, (message) => {
+        const responseSchemaWithResult = object({
+          ...jsonRpcResponse.entries,
+          result: responseSchema,
+        });
+
+        const responseResult = safeParse(responseSchemaWithResult, message);
+        if (responseResult.success) {
+          resolve(responseResult.output.result);
+          return;
         }
 
-        throw Error(`Message ${id} response could not be processed.`);
-      }),
-    );
+        if (is(jsonRpcErrorResponse, message)) {
+          reject(
+            Error(
+              `Request to kodi failed with the following message: ${message.error.message}`,
+            ),
+          );
+
+          return;
+        }
+
+        reject(Error("Request to kodi failed with an unspecified error."));
+      });
+
+      socket.send(JSON.stringify(requestResult.output));
+    });
+  }
+
+  subscribe<T extends keyof NotificationEvents>(
+    method: T,
+    listener: NotificationEvents[T],
+  ): Unsubscribe {
+    let set = this.#notifications.get(method);
+    if (!set) {
+      set = new Set();
+      this.#notifications.set(method, set);
+    }
+
+    set.add(listener as EventRpcListener);
+
+    return () => {
+      const set = this.#notifications.get(method);
+      if (!set) {
+        return false;
+      }
+
+      return set.delete(listener as EventRpcListener);
+    };
   }
 }

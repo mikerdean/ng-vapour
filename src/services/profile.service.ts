@@ -1,11 +1,10 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
 
 import {
-  GetCurrentProfileRequest,
-  GetCurrentProfileResponse,
-  GetProfilesRequest,
-  GetProfilesResponse,
+  getCurrentProfileRequest,
+  getCurrentProfileResponse,
+  getProfilesRequest,
+  getProfilesResponse,
 } from "@vapour/schema/profiles";
 import { SocketService } from "@vapour/services/socket.service";
 
@@ -13,18 +12,22 @@ import { SocketService } from "@vapour/services/socket.service";
 export class ProfileService {
   constructor(private socketService: SocketService) {}
 
-  getCurrentProfile(): Observable<GetCurrentProfileResponse> {
-    return this.socketService.send<
-      GetCurrentProfileRequest,
-      GetCurrentProfileResponse
-    >("Profiles.GetCurrentProfile", {
-      properties: ["lockmode", "thumbnail"],
-    });
+  getCurrentProfile() {
+    return this.socketService.send(
+      "Profiles.GetCurrentProfile",
+      getCurrentProfileRequest,
+      getCurrentProfileResponse,
+      {
+        properties: ["lockmode", "thumbnail"],
+      },
+    );
   }
 
-  getProfiles(): Observable<GetProfilesResponse> {
-    return this.socketService.send<GetProfilesRequest, GetProfilesResponse>(
+  getProfiles() {
+    return this.socketService.send(
       "Profiles.GetProfiles",
+      getProfilesRequest,
+      getProfilesResponse,
       {
         properties: ["lockmode", "thumbnail"],
         sort: { method: "label", order: "ascending" },
