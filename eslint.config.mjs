@@ -1,12 +1,10 @@
 import eslint from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
-import { defineConfig } from "eslint/config";
+import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 
 export default defineConfig(
-  {
-    ignores: [".angular/cache", "node_modules"],
-  },
+  globalIgnores([".angular/cache", "node_modules"]),
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
   eslintConfigPrettier,
