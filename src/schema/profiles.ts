@@ -2,7 +2,6 @@ import {
   array,
   InferOutput,
   integer,
-  keyof,
   number,
   object,
   optional,
@@ -16,7 +15,7 @@ import {
   kodiLimitsWithTotal,
   kodiSort,
 } from "./base";
-import { distinct } from "./utils";
+import { properties } from "./utils";
 
 export const profileDetails = object({
   ...itemDetailsBase.entries,
@@ -25,7 +24,7 @@ export const profileDetails = object({
 });
 
 export const getCurrentProfileRequest = object({
-  properties: pipe(array(keyof(profileDetails)), distinct()),
+  properties: properties(profileDetails, ["lockmode", "thumbnail"]),
 });
 
 export type GetCurrentProfileRequest = InferOutput<
