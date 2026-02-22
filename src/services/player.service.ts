@@ -31,42 +31,42 @@ type PlayerInformation = {
 export class PlayerService implements OnDestroy {
   private readonly socketService = inject(SocketService);
 
-  readonly #playingInfo = signal<Record<number, PlayerInformation>>({});
-  readonly #subscriptions: Unsubscribe[] = [
+  private readonly playingInfo = signal<Record<number, PlayerInformation>>({});
+  private readonly subscriptions: Unsubscribe[] = [
     this.socketService.subscribe("Player.OnPlay", ({ data }) => {
-      this.#updatePlayer(data.player.playerid, {
+      this.updatePlayer(data.player.playerid, {
         item: data.item,
         speed: data.player.speed,
         state: "playing",
       });
     }),
     this.socketService.subscribe("Player.OnPause", ({ data }) => {
-      this.#updatePlayer(data.player.playerid, {
+      this.updatePlayer(data.player.playerid, {
         speed: data.player.speed,
         state: "paused",
       });
     }),
     this.socketService.subscribe("Player.OnResume", ({ data }) => {
-      this.#updatePlayer(data.player.playerid, {
+      this.updatePlayer(data.player.playerid, {
         speed: data.player.speed,
         state: "playing",
       });
     }),
     this.socketService.subscribe("Player.OnStop", ({ data }) => {
-      const players = { ...this.#playingInfo() };
+      const players = { ...this.playingInfo() };
       const id = data.item.id;
 
       if (id in players) {
         delete players[id];
-        this.#playingInfo.set(players);
+        this.playingInfo.set(players);
       }
     }),
   ];
 
-  readonly playing = computed(() => Object.values(this.#playingInfo()));
+  readonly playing = computed(() => Object.values(this.playingInfo()));
 
   ngOnDestroy(): void {
-    this.#subscriptions.forEach((unsubscribe) => {
+    this.subscriptions.forEach((unsubscribe) => {
       unsubscribe();
     });
   }
@@ -147,8 +147,8 @@ export class PlayerService implements OnDestroy {
     );
   }
 
-  #updatePlayer(id: number, data: Omit<PlayerInformation, "id">): void {
-    const players = { ...this.#playingInfo() };
+  updatePlayer(id: number, data: Omit<PlayerInformation, "id">): void {
+    const players = { ...this.playingInfo() };
 
     if (id in players) {
       players[id] = {
@@ -159,6 +159,6 @@ export class PlayerService implements OnDestroy {
       players[id] = { id, ...data };
     }
 
-    this.#playingInfo.set(players);
+    this.playingInfo.set(players);
   }
 }
