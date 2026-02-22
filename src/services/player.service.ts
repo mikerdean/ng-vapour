@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-dynamic-delete */
 
-import { computed, Injectable, OnDestroy, signal } from "@angular/core";
+import { computed, inject, Injectable, OnDestroy, signal } from "@angular/core";
 
 import {
   SocketService,
@@ -29,41 +29,39 @@ type PlayerInformation = {
 
 @Injectable({ providedIn: "root" })
 export class PlayerService implements OnDestroy {
-  constructor(private socketService: SocketService) {
-    this.#subscriptions.push(
-      socketService.subscribe("Player.OnPlay", ({ data }) => {
-        this.#updatePlayer(data.player.playerid, {
-          item: data.item,
-          speed: data.player.speed,
-          state: "playing",
-        });
-      }),
-      socketService.subscribe("Player.OnPause", ({ data }) => {
-        this.#updatePlayer(data.player.playerid, {
-          speed: data.player.speed,
-          state: "paused",
-        });
-      }),
-      socketService.subscribe("Player.OnResume", ({ data }) => {
-        this.#updatePlayer(data.player.playerid, {
-          speed: data.player.speed,
-          state: "playing",
-        });
-      }),
-      socketService.subscribe("Player.OnStop", ({ data }) => {
-        const players = { ...this.#playingInfo() };
-        const id = data.item.id;
-
-        if (id in players) {
-          delete players[id];
-          this.#playingInfo.set(players);
-        }
-      }),
-    );
-  }
+  readonly socketService = inject(SocketService);
 
   readonly #playingInfo = signal<Record<number, PlayerInformation>>({});
-  readonly #subscriptions: Unsubscribe[] = [];
+  readonly #subscriptions: Unsubscribe[] = [
+    this.socketService.subscribe("Player.OnPlay", ({ data }) => {
+      this.#updatePlayer(data.player.playerid, {
+        item: data.item,
+        speed: data.player.speed,
+        state: "playing",
+      });
+    }),
+    this.socketService.subscribe("Player.OnPause", ({ data }) => {
+      this.#updatePlayer(data.player.playerid, {
+        speed: data.player.speed,
+        state: "paused",
+      });
+    }),
+    this.socketService.subscribe("Player.OnResume", ({ data }) => {
+      this.#updatePlayer(data.player.playerid, {
+        speed: data.player.speed,
+        state: "playing",
+      });
+    }),
+    this.socketService.subscribe("Player.OnStop", ({ data }) => {
+      const players = { ...this.#playingInfo() };
+      const id = data.item.id;
+
+      if (id in players) {
+        delete players[id];
+        this.#playingInfo.set(players);
+      }
+    }),
+  ];
 
   readonly playing = computed(() => Object.values(this.#playingInfo()));
 
