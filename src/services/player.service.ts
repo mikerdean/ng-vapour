@@ -29,7 +29,7 @@ type PlayerInformation = {
 
 @Injectable({ providedIn: "root" })
 export class PlayerService implements OnDestroy {
-  readonly socketService = inject(SocketService);
+  private readonly socketService = inject(SocketService);
 
   readonly #playingInfo = signal<Record<number, PlayerInformation>>({});
   readonly #subscriptions: Unsubscribe[] = [
