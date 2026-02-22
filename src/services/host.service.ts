@@ -1,6 +1,10 @@
 import { computed, Injectable, signal } from "@angular/core";
 
-import { Host } from "@vapour/services/host.service.types";
+export type Host = {
+  hostname: string;
+  httpPort: number;
+  tcpPort: number;
+};
 
 @Injectable({ providedIn: "root" })
 export class HostService {
