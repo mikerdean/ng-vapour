@@ -1,60 +1,43 @@
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { inject, Injectable } from "@angular/core";
+import { InferOutput } from "valibot";
 
+import { addonQueryFilters } from "@vapour/schema/addons";
 import { ConfigurationService } from "@vapour/services/configuration.service";
 import { SocketService } from "@vapour/services/socket.service";
-import type {
-  GetAddon,
-  GetAddonQuery,
-  GetAddons,
-  GetAddonsQuery,
-  GetAddonsQueryFilters,
-} from "@vapour/shared/kodi/addons";
 
 @Injectable({ providedIn: "root" })
 export class AddonService {
-  constructor(
-    private configurationService: ConfigurationService,
-    private socketService: SocketService,
-  ) {}
+  readonly #configurationService = inject(ConfigurationService);
+  readonly #socketService = inject(SocketService);
 
-  getAddons(
-    page = 1,
-    filters: GetAddonsQueryFilters = {},
-  ): Observable<GetAddons> {
-    return this.socketService.send<GetAddonsQuery, GetAddons>(
-      "Addons.GetAddons",
-      {
-        ...filters,
-        limits: this.configurationService.getPageLimits(page),
-        properties: [
-          "author",
-          "broken",
-          "deprecated",
-          "enabled",
-          "name",
-          "rating",
-          "thumbnail",
-        ],
-      },
-    );
+  getAddons(page = 1, filters: InferOutput<typeof addonQueryFilters> = {}) {
+    return this.#socketService.send("Addons.GetAddons", {
+      ...filters,
+      limits: this.#configurationService.getPageLimits(page),
+      properties: [
+        "author",
+        "broken",
+        "deprecated",
+        "enabled",
+        "name",
+        "rating",
+        "thumbnail",
+      ],
+    });
   }
 
-  getAddonById(id: string): Observable<GetAddon> {
-    return this.socketService.send<GetAddonQuery, GetAddon>(
-      "Addons.GetAddons",
-      {
-        addonid: id,
-        properties: [
-          "author",
-          "broken",
-          "deprecated",
-          "enabled",
-          "name",
-          "rating",
-          "thumbnail",
-        ],
-      },
-    );
+  getAddonById(id: string) {
+    return this.#socketService.send("Addons.GetAddonDetails", {
+      addonid: id,
+      properties: [
+        "author",
+        "broken",
+        "deprecated",
+        "enabled",
+        "name",
+        "rating",
+        "thumbnail",
+      ],
+    });
   }
 }

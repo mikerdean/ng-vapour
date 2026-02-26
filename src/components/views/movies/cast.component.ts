@@ -9,7 +9,7 @@ import {
 import { FormButtonComponent } from "@vapour/components/form/form-button.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
 import { TranslatePipe } from "@vapour/pipes/translate";
-import { VideoDetailsCast } from "@vapour/shared/kodi/video";
+import type { VideoCast } from "@vapour/schema/video";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,7 +18,7 @@ import { VideoDetailsCast } from "@vapour/shared/kodi/video";
   templateUrl: "cast.component.html",
 })
 export class CastComponent {
-  readonly cast = input.required<VideoDetailsCast[]>();
+  readonly cast = input.required<VideoCast[]>();
   readonly castPerPage = input(6);
   readonly page = signal(1);
 

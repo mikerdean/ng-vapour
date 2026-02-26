@@ -10,7 +10,10 @@ import {
 } from "rxjs";
 import { parse, type GenericSchema } from "valibot";
 
-import type { GridData, GridQuery } from "@vapour/components/grid/grid.types";
+import type {
+  GridData,
+  GridQuery,
+} from "@vapour/components/grid/grid.component";
 
 export const prepareGrid = <TInput, TOutput, UInput, UOutput extends GridQuery>(
   paramsSchema: GenericSchema<TInput, TOutput>,

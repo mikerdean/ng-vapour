@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 
-import { TabItem } from "@vapour/components/navigation/tabs.types";
+export type TabItem = {
+  path: string;
+  label: string;
+};
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

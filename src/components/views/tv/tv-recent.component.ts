@@ -1,7 +1,7 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { combineLatest, map, switchMap } from "rxjs";
+import { combineLatest, from, map, switchMap } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
@@ -32,7 +32,7 @@ export class TvRecentComponent {
     this.route,
     25,
     (_, { page }) =>
-      this.tvService.getRecentlyAddedEpisodes().pipe(
+      from(this.tvService.getRecentlyAddedEpisodes()).pipe(
         switchMap(({ episodes }) =>
           combineLatest(
             episodes.map((episode) =>

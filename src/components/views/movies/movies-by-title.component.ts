@@ -1,7 +1,7 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { map } from "rxjs";
+import { from, map } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
@@ -34,7 +34,7 @@ export class MoviesByTitleComponent {
     this.route,
     this.configurationService.pageSize,
     (_, { page }) =>
-      this.moviesService.getMovies(page).pipe(
+      from(this.moviesService.getMovies(page)).pipe(
         map(({ movies, limits }) => ({
           currentPage: page,
           items: movies.map((movie) =>

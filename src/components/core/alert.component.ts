@@ -2,9 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  EventEmitter,
   input,
-  Output,
+  output,
   signal,
 } from "@angular/core";
 import {
@@ -15,9 +14,12 @@ import {
   faWarning,
 } from "@fortawesome/free-solid-svg-icons";
 
-import type { AlertType } from "@vapour/components/core/alert.types";
-import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
-import type { FontAwesomeIcon } from "@vapour/components/images/fontawesome.types";
+import {
+  FontawesomeIconComponent,
+  type FontAwesomeIcon,
+} from "@vapour/components/images/fontawesome-icon.component";
+
+export type AlertType = "success" | "info" | "warning" | "error";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,7 +33,7 @@ export class AlertComponent {
   readonly title = input<string>();
   readonly type = input<AlertType>("info");
 
-  @Output() dismiss = new EventEmitter();
+  readonly dismiss = output();
 
   readonly icons = {
     dismiss: faTimes,

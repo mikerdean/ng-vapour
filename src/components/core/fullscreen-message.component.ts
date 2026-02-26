@@ -1,17 +1,14 @@
-import { AsyncPipe } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
+  computed,
   input,
   OnDestroy,
   OnInit,
-  Output,
+  output,
   signal,
 } from "@angular/core";
-import { toObservable } from "@angular/core/rxjs-interop";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
-import { combineLatest, delay, map } from "rxjs";
 
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { AriaRole } from "@vapour/shared/types";
@@ -21,7 +18,7 @@ import { AriaRole } from "@vapour/shared/types";
   host: {
     "(document:keydown.escape)": "closeModal()",
   },
-  imports: [AsyncPipe, FontawesomeIconComponent],
+  imports: [FontawesomeIconComponent],
   selector: "fullscreen-message",
   templateUrl: "fullscreen-message.component.html",
 })
@@ -31,14 +28,10 @@ export class FullscreenMessageComponent implements OnInit, OnDestroy {
   readonly closing = signal(false);
   readonly role = input<AriaRole>();
 
-  @Output() readonly close = new EventEmitter();
+  readonly close = output();
 
-  readonly background$ = combineLatest([
-    toObservable(this.background),
-    toObservable(this.closing),
-  ]).pipe(
-    delay(0),
-    map(([background, closing]) => background && !closing),
+  readonly backgroundShow = computed(
+    () => this.background() && !this.closing(),
   );
 
   readonly icons = {

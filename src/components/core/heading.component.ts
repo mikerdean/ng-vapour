@@ -1,7 +1,7 @@
 import { NgTemplateOutlet } from "@angular/common";
 import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 
-import { HeadingLevel } from "@vapour/components/core/heading.types";
+export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

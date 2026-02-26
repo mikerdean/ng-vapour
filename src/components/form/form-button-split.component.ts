@@ -8,8 +8,10 @@ import {
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 import { FormButtonComponent } from "@vapour/components/form/form-button.component";
-import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
-import type { FontAwesomeIcon } from "@vapour/components/images/fontawesome.types";
+import {
+  FontawesomeIconComponent,
+  type FontAwesomeIcon,
+} from "@vapour/components/images/fontawesome-icon.component";
 import { TargetOutsideDirective } from "@vapour/directives/target-outside";
 
 export type FormButtonSplitItem = {

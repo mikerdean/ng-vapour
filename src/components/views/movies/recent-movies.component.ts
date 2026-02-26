@@ -1,7 +1,7 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { map } from "rxjs";
+import { from, map } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
@@ -32,7 +32,7 @@ export class RecentMoviesComponent {
     this.route,
     25,
     (_, { page }) =>
-      this.moviesService.getRecentlyAddedMovies().pipe(
+      from(this.moviesService.getRecentlyAddedMovies()).pipe(
         map(({ movies }) => ({
           currentPage: page,
           items: movies.map((movie) =>

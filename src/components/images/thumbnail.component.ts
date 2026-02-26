@@ -20,12 +20,30 @@ import {
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
-import type { FontAwesomeIcon } from "@vapour/components/images/fontawesome.types";
-import type { ThumbnailType } from "@vapour/components/images/thumbnail.types";
+import {
+  FontawesomeIconComponent,
+  type FontAwesomeIcon,
+} from "@vapour/components/images/fontawesome-icon.component";
 import { TranslatePipe } from "@vapour/pipes/translate";
 import { HostService } from "@vapour/services/host.service";
 import { toImageUrl } from "@vapour/shared/images";
+
+export type ThumbnailType =
+  | "actor"
+  | "artist"
+  | "album"
+  | "song"
+  | "musicGenre"
+  | "movie"
+  | "movieSet"
+  | "movieGenre"
+  | "tvShow"
+  | "tvShowGenre"
+  | "season"
+  | "episode"
+  | "addon"
+  | "picture"
+  | "channel";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

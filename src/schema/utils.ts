@@ -1,6 +1,9 @@
 import {
   array,
+  integer,
   keyof,
+  minValue,
+  number,
   pick,
   pipe,
   transform,
@@ -16,6 +19,10 @@ export function distinct<T>(): TransformAction<T[], T[]> {
     return [...set];
   });
 }
+
+export const int = () => pipe(number(), integer());
+
+export const id = () => pipe(number(), integer(), minValue(1));
 
 export function properties<
   TEntries extends ObjectEntries,

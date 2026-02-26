@@ -1,7 +1,7 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { combineLatest, map, switchMap } from "rxjs";
+import { combineLatest, from, map, switchMap } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
@@ -35,8 +35,8 @@ export class MovieSetsComponent {
     this.configurationService.pageSize,
     (_, { page }) =>
       combineLatest([
-        this.moviesService.getMovieSets(page),
-        this.moviesService.getMoviesInSets(),
+        from(this.moviesService.getMovieSets(page)),
+        from(this.moviesService.getMoviesInSets()),
       ]).pipe(
         switchMap(([data, moviesInSets]) => {
           const sets: Record<string, number> = {};

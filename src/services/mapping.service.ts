@@ -1,23 +1,23 @@
 import { Injectable } from "@angular/core";
 import { combineLatest, map, Observable } from "rxjs";
 
-import type { GridItem } from "@vapour/components/grid/grid.types";
-import { TranslationService } from "@vapour/services/translation.service";
-import { getVideoDuration } from "@vapour/shared/duration";
-import type { AddonDetails } from "@vapour/shared/kodi/addons";
+import type { GridItem } from "@vapour/components/grid/grid.component";
+import type { AddonDetails } from "@vapour/schema/addons";
 import type {
   AudioDetailsAlbum,
   AudioDetailsArtist,
   AudioDetailsSong,
-} from "@vapour/shared/kodi/audio";
-import { LibraryDetailsGenre } from "@vapour/shared/kodi/library";
+} from "@vapour/schema/audio";
+import type { LibraryDetailsGenre } from "@vapour/schema/library";
 import type {
   VideoDetailsEpisode,
   VideoDetailsMovie,
   VideoDetailsMovieSet,
   VideoDetailsSeason,
   VideoDetailsTVShow,
-} from "@vapour/shared/kodi/video";
+} from "@vapour/schema/video";
+import { TranslationService } from "@vapour/services/translation.service";
+import { getVideoDuration } from "@vapour/shared/duration";
 
 @Injectable({ providedIn: "root" })
 export class MappingService {

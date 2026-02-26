@@ -1,9 +1,10 @@
 import {
   array,
   boolean,
-  InferOutput,
   integer,
   literal,
+  maxValue,
+  minValue,
   number,
   object,
   optional,
@@ -11,7 +12,10 @@ import {
   string,
   union,
   unknown,
+  type InferOutput,
 } from "valibot";
+
+import { int } from "./utils";
 
 export const jsonRpc = object({
   jsonrpc: literal("2.0"),
@@ -26,6 +30,12 @@ export const jsonRpcWithId = object({
 export const jsonRpcRequest = object({
   ...jsonRpc.entries,
   ...jsonRpcWithId.entries,
+  method: string(),
+  params: unknown(),
+});
+
+export const jsonRpcNotification = object({
+  ...jsonRpc.entries,
   method: string(),
   params: unknown(),
 });
@@ -73,6 +83,8 @@ export const kodiFilter = object({
   value: union([string(), array(string())]),
 });
 
+export type KodiFilter = InferOutput<typeof kodiFilter>;
+
 export const kodiAndFilter = object({
   and: array(kodiFilter),
 });
@@ -99,3 +111,12 @@ export const mediaDetailsBase = object({
   fanart: optional(string()),
   thumbnail: optional(string()),
 });
+
+export const time = object({
+  hours: int(),
+  milliseconds: pipe(number(), minValue(0), maxValue(999), integer()),
+  minutes: pipe(number(), minValue(0), maxValue(59), integer()),
+  seconds: pipe(number(), minValue(0), maxValue(59), integer()),
+});
+
+export type Time = InferOutput<typeof time>;

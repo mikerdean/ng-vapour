@@ -1,7 +1,7 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { combineLatest, map, switchMap, tap } from "rxjs";
+import { combineLatest, from, map, switchMap, tap } from "rxjs";
 import { parse } from "valibot";
 
 import { DefinitionListComponent } from "@vapour/components/core/definition-list.component";
@@ -42,7 +42,7 @@ export class AlbumComponent {
     map((params) => parse(albumValidator, params)),
     switchMap(({ albumId }) =>
       combineLatest([
-        this.musicService.getAlbumById(albumId),
+        from(this.musicService.getAlbumById(albumId)),
         this.translationService.translate("music:album"),
         this.translationService.translate("music:artist"),
         this.translationService.translate("common:duration"),
@@ -57,13 +57,13 @@ export class AlbumComponent {
       ),
     ),
     switchMap(({ albumdetails, translations }) =>
-      this.musicService
-        .getSongsByAlbum({
+      from(
+        this.musicService.getSongsByAlbum({
           artist: albumdetails.artist,
           album: albumdetails.title,
           year: albumdetails.year,
-        })
-        .pipe(map(({ songs }) => ({ albumdetails, songs, translations }))),
+        }),
+      ).pipe(map(({ songs }) => ({ albumdetails, songs, translations }))),
     ),
     map(
       ({

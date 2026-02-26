@@ -3,7 +3,7 @@
     <kodi-logo />
     <div class="mx-3 grow">
       <h1 class="line-clamp-1 text-lg">
-        {{ title$ | async }}
+        {{ title() }}
       </h1>
     </div>
     <button class="mr-6">
@@ -14,7 +14,7 @@
       <fa-icon [icon]="icons.search" />
       <span class="sr-only">{{ "common:search" | translate }}</span>
     </button>
-    @if (allowProfileChange$ | async) {
+    @if (allowProfileChange()) {
       <button class="mr-6">
         <fa-icon [icon]="icons.profile" />
         <span class="sr-only">{{
@@ -31,12 +31,10 @@
   </div>
   <div
     class="relative h-1.5"
-    [class]="{
-      'bg-slate-900': !(navigating$ | async),
-      'bg-cyan-700': (navigating$ | async),
-    }"
+    [class.bg-slate-900]="!navigating()"
+    [class.bg-cyan-700]="navigating()"
   >
-    @if (navigating$ | async) {
+    @if (navigating()) {
       <span
         class="animate-loading absolute left-[-50%] h-full w-1/2 bg-cyan-500"
       ></span>

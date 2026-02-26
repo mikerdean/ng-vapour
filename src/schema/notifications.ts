@@ -1,43 +1,28 @@
 import {
-  BaseIssue,
-  BaseSchema,
   boolean,
-  integer,
   literal,
-  maxValue,
-  minValue,
   number,
   object,
   optional,
-  pipe,
   string,
   union,
   unknown,
-  variant,
-  type InferOutput,
-  type Literal,
+  type GenericSchema,
 } from "valibot";
 
-import { jsonRpc } from "@vapour/schema/base";
+import { time } from "./base";
+import { id, int } from "./utils";
 
-const int = pipe(number(), integer());
-const id = int;
-
-function createNotification<TLiteral extends Literal, TInput, TOutput>(
-  method: TLiteral,
-  schema: BaseSchema<TInput, TOutput, BaseIssue<unknown>>,
+function createNotification<TInput, TOutput>(
+  schema: GenericSchema<TInput, TOutput>,
 ) {
   return object({
-    ...jsonRpc.entries,
-    method: literal<TLiteral>(method),
-    params: object({
-      data: schema,
-      sender: string(),
-    }),
+    data: schema,
+    sender: string(),
   });
 }
 
-const notificationItemType = union([
+export const notificationItemType = union([
   literal("unknown"),
   literal("movie"),
   literal("episode"),
@@ -46,21 +31,14 @@ const notificationItemType = union([
   literal("channel"),
 ]);
 
-const notificationItem = object({
-  id,
+export const notificationItem = object({
+  id: id(),
   type: notificationItemType,
 });
 
 const player = object({
-  playerid: id,
+  playerid: id(),
   speed: number(),
-});
-
-const time = object({
-  hours: int,
-  milliseconds: pipe(number(), minValue(0), maxValue(999), integer()),
-  minutes: pipe(number(), minValue(0), maxValue(59), integer()),
-  sconds: pipe(number(), minValue(0), maxValue(59), integer()),
 });
 
 const playerSeek = object({
@@ -75,7 +53,7 @@ const notificationFromPlayer = object({
 });
 
 const onExport = object({
-  failcount: int,
+  failcount: int(),
   file: string(),
 });
 
@@ -92,78 +70,42 @@ const onUpdate = object({
   type: string(),
 });
 
-const applicationOnVolumeChange = createNotification(
-  "Application.OnVolumeChange",
+export const applicationOnVolumeChange = createNotification(
   object({
     muted: boolean(),
     volume: number(),
   }),
 );
 
-// notification types
-// ###############
+export const audioLibraryOnCleanFinished = createNotification(string());
 
-const audioLibraryOnCleanFinished = createNotification(
-  "AudioLibrary.OnCleanFinished",
-  string(),
-);
+export const audioLibraryOnCleanStarted = createNotification(string());
 
-const audioLibraryOnCleanStarted = createNotification(
-  "AudioLibrary.OnCleanStarted",
-  string(),
-);
+export const audioLibraryOnExport = createNotification(onExport);
 
-const audioLibraryOnExport = createNotification(
-  "AudioLibrary.OnExport",
-  onExport,
-);
+export const audioLibraryOnRemove = createNotification(onRemove);
 
-const audioLibraryOnRemove = createNotification(
-  "AudioLibrary.OnRemove",
-  onRemove,
-);
+export const audioLibraryOnScanFinished = createNotification(string());
 
-const audioLibraryScanFinished = createNotification(
-  "AudioLibrary.ScanFinished",
-  string(),
-);
+export const audioLibraryOnScanStarted = createNotification(string());
 
-const audioLibraryOnScanStarted = createNotification(
-  "AudioLibrary.OnScanStarted",
-  string(),
-);
+export const audioLibraryOnUpdate = createNotification(onUpdate);
 
-const audioLibraryOnUpdate = createNotification(
-  "AudioLibrary.OnUpdate",
-  onUpdate,
-);
+export const guiOnDPMSActivated = createNotification(string());
 
-const guiOnDPMSActivated = createNotification("GUI.OnDPMSActivated", string());
+export const guiOnDPMSDeactivated = createNotification(string());
 
-const guiOnDPMSDeactivated = createNotification(
-  "GUI.OnDPMSDeactivated",
-  string(),
-);
+export const guiOnScreensaverActivated = createNotification(string());
 
-const guiOnScreensaverActivated = createNotification(
-  "GUI.OnScreensaverActivated",
-  string(),
-);
-
-const guiOnScreensaverDeactivated = createNotification(
-  "GUI.OnScreensaverDeactivated",
+export const guiOnScreensaverDeactivated = createNotification(
   object({
     shuttingdown: boolean(),
   }),
 );
 
-const inputOnInputFinished = createNotification(
-  "Input.OnInputFinished",
-  string(),
-);
+export const inputOnInputFinished = createNotification(string());
 
-const inputOnInputRequested = createNotification(
-  "Input.OnInputRequested",
+export const inputOnInputRequested = createNotification(
   object({
     title: string(),
     type: string(),
@@ -171,183 +113,86 @@ const inputOnInputRequested = createNotification(
   }),
 );
 
-const playerOnAVChange = createNotification(
-  "Player.OnAVChange",
-  notificationFromPlayer,
-);
+export const playerOnAVChange = createNotification(notificationFromPlayer);
 
-const playerOnAVStart = createNotification(
-  "Player.OnAVStart",
-  notificationFromPlayer,
-);
+export const playerOnAVStart = createNotification(notificationFromPlayer);
 
-const playerOnPause = createNotification(
-  "Player.OnPause",
-  notificationFromPlayer,
-);
+export const playerOnPause = createNotification(notificationFromPlayer);
 
-const playerOnPlay = createNotification(
-  "Player.OnPlay",
-  notificationFromPlayer,
-);
+export const playerOnPlay = createNotification(notificationFromPlayer);
 
-const playerOnPropertyChanged = createNotification(
-  "Player.OnPropertyChanged",
+export const playerOnPropertyChanged = createNotification(
   object({
     player,
     value: unknown(),
   }),
 );
 
-const playerOnResume = createNotification(
-  "Player.OnResume",
-  notificationFromPlayer,
-);
+export const playerOnResume = createNotification(notificationFromPlayer);
 
-const playerOnSeek = createNotification(
-  "Player.OnSeek",
+export const playerOnSeek = createNotification(
   object({
     item: notificationItem,
     player: playerSeek,
   }),
 );
 
-const playerOnSpeedChanged = createNotification(
-  "Player.OnSpeedChanged",
-  notificationFromPlayer,
-);
+export const playerOnSpeedChanged = createNotification(notificationFromPlayer);
 
-const playerOnStop = createNotification(
-  "Player.OnStop",
+export const playerOnStop = createNotification(
   object({
     end: boolean(),
     item: notificationItem,
   }),
 );
 
-const playlistOnAdd = createNotification(
-  "Playlist.OnAdd",
+export const playlistOnAdd = createNotification(
   object({
     item: notificationItem,
-    playlistid: id,
-    position: int,
+    playlistid: id(),
+    position: int(),
   }),
 );
 
-const playlistOnClear = createNotification(
-  "Playlist.OnClear",
+export const playlistOnClear = createNotification(
   object({
-    playlistid: id,
+    playlistid: id(),
   }),
 );
 
-const playlistOnRemove = createNotification(
-  "Playlist.OnClear",
+export const playlistOnRemove = createNotification(
   object({
-    playlistid: id,
-    position: int,
+    playlistid: id(),
+    position: int(),
   }),
 );
 
-const systemOnLowBattery = createNotification("System.OnLowBattery", string());
+export const systemOnLowBattery = createNotification(string());
 
-const systemOnQuit = createNotification(
-  "System.OnQuit",
+export const systemOnQuit = createNotification(
   object({
-    exitcode: int,
+    exitcode: int(),
   }),
 );
 
-const systemOnRestart = createNotification("System.OnRestart", string());
+export const systemOnRestart = createNotification(string());
 
-const systemOnSleep = createNotification("System.OnSleep", string());
+export const systemOnSleep = createNotification(string());
 
-const systemOnWake = createNotification("System.OnWake", string());
+export const systemOnWake = createNotification(string());
 
-const videoLibraryOnCleanFinished = createNotification(
-  "VideoLibrary.OnCleanFinished",
-  string(),
-);
+export const videoLibraryOnCleanFinished = createNotification(string());
 
-const videoLibraryOnCleanStarted = createNotification(
-  "VideoLibrary.OnCleanStarted",
-  string(),
-);
+export const videoLibraryOnCleanStarted = createNotification(string());
 
-const videoLibraryOnExport = createNotification(
-  "VideoLibrary.OnExport",
-  onExport,
-);
+export const videoLibraryOnExport = createNotification(onExport);
 
-const videoLibraryOnRefresh = createNotification(
-  "VideoLibrary.OnRefresh",
-  string(),
-);
+export const videoLibraryOnRefresh = createNotification(string());
 
-const videoLibraryOnRemove = createNotification(
-  "VideoLibrary.OnRemove",
-  onRemove,
-);
+export const videoLibraryOnRemove = createNotification(onRemove);
 
-const videoLibraryOnScanFinished = createNotification(
-  "VideoLibrary.OnScanFinished",
-  string(),
-);
+export const videoLibraryOnScanFinished = createNotification(string());
 
-const videoLibraryOnScanStarted = createNotification(
-  "VideoLibrary.OnScanStarted",
-  string(),
-);
+export const videoLibraryOnScanStarted = createNotification(string());
 
-const videoLibraryOnUpdate = createNotification(
-  "VideoLibrary.OnUpdate",
-  onUpdate,
-);
-
-export const notifications = variant("method", [
-  applicationOnVolumeChange,
-  audioLibraryOnCleanFinished,
-  audioLibraryOnCleanStarted,
-  audioLibraryOnExport,
-  audioLibraryOnRemove,
-  audioLibraryScanFinished,
-  audioLibraryOnScanStarted,
-  audioLibraryOnUpdate,
-  guiOnDPMSActivated,
-  guiOnDPMSDeactivated,
-  guiOnScreensaverActivated,
-  guiOnScreensaverDeactivated,
-  inputOnInputFinished,
-  inputOnInputRequested,
-  playerOnAVChange,
-  playerOnAVStart,
-  playerOnPause,
-  playerOnPlay,
-  playerOnPropertyChanged,
-  playerOnResume,
-  playerOnSeek,
-  playerOnSpeedChanged,
-  playerOnStop,
-  playlistOnAdd,
-  playlistOnClear,
-  playlistOnRemove,
-  systemOnLowBattery,
-  systemOnQuit,
-  systemOnRestart,
-  systemOnSleep,
-  systemOnWake,
-  videoLibraryOnCleanFinished,
-  videoLibraryOnCleanStarted,
-  videoLibraryOnExport,
-  videoLibraryOnRefresh,
-  videoLibraryOnRemove,
-  videoLibraryOnScanFinished,
-  videoLibraryOnScanStarted,
-  videoLibraryOnUpdate,
-]);
-
-export type Notifications = InferOutput<typeof notifications>;
-
-export type NotificationEvents = {
-  [N in Notifications as N["method"]]: (event: N["params"]) => void;
-};
+export const videoLibraryOnUpdate = createNotification(onUpdate);

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, Output } from "@angular/core";
+import { Directive, ElementRef, inject, output } from "@angular/core";
 
 @Directive({
   host: {
@@ -8,14 +8,14 @@ import { Directive, ElementRef, EventEmitter, Output } from "@angular/core";
   standalone: true,
 })
 export class TargetOutsideDirective {
-  constructor(private ref: ElementRef<Element>) {}
+  readonly #ref = inject<ElementRef<Element>>(ElementRef);
 
   documentClick(ev: MouseEvent) {
     if (!ev.target) {
       return;
     }
 
-    const element = this.ref.nativeElement;
+    const element = this.#ref.nativeElement;
     if (element.contains(ev.target as Node)) {
       return;
     }
@@ -23,5 +23,5 @@ export class TargetOutsideDirective {
     this.outside.emit();
   }
 
-  @Output() readonly outside = new EventEmitter();
+  readonly outside = output();
 }

@@ -1,4 +1,4 @@
-@if (playingState$ | async; as state) {
+@if (playingState(); as state) {
   <div
     class="rounded-full border-2 border-fuchsia-600 bg-slate-900 p-1 leading-none"
   >
@@ -23,7 +23,7 @@
 
 @if (showPlayingModal()) {
   <fullscreen-message [background]="true" (close)="modalClose()">
-    @for (player of players$ | async; track player.id) {
+    @for (player of players.value(); track player.id) {
       @if (player.item; as item) {
         <thumbnail type="picture" [uri]="item.thumbnail" />
         <p

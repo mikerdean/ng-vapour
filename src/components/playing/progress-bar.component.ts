@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 import { toObservable } from "@angular/core/rxjs-interop";
 import { combineLatest, interval, map, startWith } from "rxjs";
 
-import type { Time } from "@vapour/shared/kodi/notifications";
+import type { Time } from "@vapour/schema/base";
 
 const getTotalSeconds = ({ hours, minutes, seconds }: Time): number => {
   return hours * 3600 + minutes * 60 + seconds;

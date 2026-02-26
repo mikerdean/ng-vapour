@@ -1,7 +1,7 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { map } from "rxjs";
+import { from, map } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
@@ -32,7 +32,7 @@ export class ArtistsComponent {
     this.route,
     25,
     (_, { page }) =>
-      this.musicService.getArtists(page).pipe(
+      from(this.musicService.getArtists(page)).pipe(
         map(({ artists, limits }) => ({
           currentPage: page,
           items: artists.map((artist) =>

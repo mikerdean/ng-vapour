@@ -9,7 +9,7 @@ import {
 import { nanoid } from "nanoid";
 import { combineLatest, map, Observable, switchMap } from "rxjs";
 
-import { FormInputType } from "@vapour/components/form/form-input.types";
+export type FormInputType = "email" | "number" | "password" | "text" | "url";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

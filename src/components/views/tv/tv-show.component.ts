@@ -1,7 +1,7 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { combineLatest, map, switchMap, tap } from "rxjs";
+import { combineLatest, from, map, switchMap, tap } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
@@ -34,8 +34,8 @@ export class TvShowComponent {
     this.configurationService.pageSize,
     ({ tvShowId }, { page }) =>
       combineLatest([
-        this.tvService.getTvShowById(tvShowId),
-        this.tvService.getSeasonsByTvShowId(tvShowId),
+        from(this.tvService.getTvShowById(tvShowId)),
+        from(this.tvService.getSeasonsByTvShowId(tvShowId)),
       ]).pipe(
         tap(([{ tvshowdetails }, { seasons }]) => {
           if (tvshowdetails.season === 1) {

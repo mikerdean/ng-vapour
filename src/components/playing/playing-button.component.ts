@@ -1,14 +1,20 @@
-import { AsyncPipe } from "@angular/common";
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  resource,
+  signal,
+} from "@angular/core";
 import {
   faCircleNotch,
   faPauseCircle,
   faPlayCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { combineLatest, map, Observable, of, switchMap } from "rxjs";
+import { firstValueFrom } from "rxjs";
 
 import { FullscreenMessageComponent } from "@vapour/components/core/fullscreen-message.component";
-import type { GridItem } from "@vapour/components/grid/grid.types";
+import type { GridItem } from "@vapour/components/grid/grid.component";
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
 import { ProgressBarComponent } from "@vapour/components/playing/progress-bar.component";
@@ -21,7 +27,6 @@ import { TvService } from "@vapour/services/tv.service";
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    AsyncPipe,
     FontawesomeIconComponent,
     FullscreenMessageComponent,
     ProgressBarComponent,
@@ -31,13 +36,11 @@ import { TvService } from "@vapour/services/tv.service";
   templateUrl: "playing-button.component.html",
 })
 export class PlayingButtonComponent {
-  constructor(
-    private mappingService: MappingService,
-    private movieService: MoviesService,
-    private musicService: MusicService,
-    private playerService: PlayerService,
-    private tvService: TvService,
-  ) {}
+  private readonly mappingService = inject(MappingService);
+  private readonly moviesService = inject(MoviesService);
+  private readonly musicService = inject(MusicService);
+  private readonly playerService = inject(PlayerService);
+  private readonly tvService = inject(TvService);
 
   readonly showPlayingModal = signal(false);
 
@@ -47,66 +50,75 @@ export class PlayingButtonComponent {
     pause: faPauseCircle,
   };
 
-  readonly players$ = this.playerService.playing$.pipe(
-    switchMap((players) => {
+  readonly players = resource({
+    loader: async ({ params: players }) => {
       if (players.length === 0) {
-        this.modalClose();
-        return of([]);
+        return [];
       }
 
-      return combineLatest(
-        players.map((player) => {
-          let item: Observable<GridItem | null> = of(null);
+      const promises = players.map((player) => {
+        let item: Promise<GridItem | null>;
 
-          switch (player.item?.type) {
-            case "episode":
-              item = this.tvService
-                .getEpisodeById(player.item.id)
-                .pipe(
-                  switchMap(({ episodedetails }) =>
-                    this.mappingService.mapEpisodeToGridItem(episodedetails),
-                  ),
-                );
-              break;
-
-            case "movie":
-              item = this.movieService
-                .getMovieById(player.item.id)
-                .pipe(
-                  map(({ moviedetails }) =>
-                    this.mappingService.mapMovieToGridItem(moviedetails),
-                  ),
-                );
-              break;
-
-            case "song":
-              item = this.musicService
-                .getSongById(player.item.id)
-                .pipe(
-                  map(({ songdetails }) =>
-                    this.mappingService.mapSongDetailsToGridItem(songdetails),
-                  ),
-                );
-              break;
+        switch (player.item?.type) {
+          case "episode": {
+            item = this.tvService
+              .getEpisodeById(player.item.id)
+              .then(({ episodedetails }) =>
+                firstValueFrom(
+                  this.mappingService.mapEpisodeToGridItem(episodedetails),
+                ),
+              );
+            break;
           }
 
-          return combineLatest([
-            this.playerService.getPlayerProperties(player.id),
-            item,
-          ]).pipe(map(([props, item]) => ({ ...player, item, props })));
-        }),
-      );
-    }),
-  );
+          case "movie": {
+            item = this.moviesService
+              .getMovieById(player.item.id)
+              .then(({ moviedetails }) =>
+                this.mappingService.mapMovieToGridItem(moviedetails),
+              );
+            break;
+          }
 
-  readonly playingState$ = this.playerService.playing$.pipe(
-    map(
-      (players) =>
-        players.find(
-          (player) => player.state === "playing" || player.state === "paused",
-        )?.state,
-    ),
-  );
+          case "song": {
+            item = this.musicService
+              .getSongById(player.item.id)
+              .then(({ songdetails }) =>
+                this.mappingService.mapSongDetailsToGridItem(songdetails),
+              );
+            break;
+          }
+
+          default:
+            item = Promise.resolve(null);
+            break;
+        }
+
+        return Promise.all([
+          item,
+          this.playerService.getProperties(player.id),
+        ]).then(([item, props]) => ({
+          ...player,
+          item,
+          props,
+        }));
+      });
+
+      const results = await Promise.all(promises);
+      return results;
+    },
+    params: this.playerService.playing,
+  });
+
+  readonly playingState = computed(() => {
+    const players = this.playerService.playing();
+
+    const playPaused = players.find(
+      (player) => player.state === "playing" || player.state === "paused",
+    );
+
+    return playPaused?.state;
+  });
 
   modalClose(): void {
     this.showPlayingModal.set(false);

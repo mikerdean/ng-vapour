@@ -1,7 +1,7 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { map } from "rxjs";
+import { from, map } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
@@ -34,7 +34,7 @@ export class AddonsInstalledComponent {
     this.route,
     this.configurationService.pageSize,
     (_, { page }) =>
-      this.addonService.getAddons(page, { installed: true }).pipe(
+      from(this.addonService.getAddons(page, { installed: true })).pipe(
         map(({ addons, limits }) => ({
           currentPage: page,
           items: addons.map((addon) =>

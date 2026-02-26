@@ -1,7 +1,7 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { combineLatest, map, switchMap, tap } from "rxjs";
+import { combineLatest, from, map, switchMap, tap } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
@@ -32,7 +32,7 @@ export class TvGenreComponent {
     this.route,
     this.configurationService.pageSize,
     ({ genre }, { page }) =>
-      this.tvService.getTvShowsByGenre(genre, page).pipe(
+      from(this.tvService.getTvShowsByGenre(genre, page)).pipe(
         tap(
           () =>
             void this.titleService.setTranslatedTitle("tv:titles.genre", {

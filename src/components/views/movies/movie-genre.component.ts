@@ -1,7 +1,7 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { map, tap } from "rxjs";
+import { from, map, tap } from "rxjs";
 
 import { GridComponent } from "@vapour/components/grid/grid.component";
 import { prepareGrid } from "@vapour/components/grid/grid.utils";
@@ -32,7 +32,7 @@ export class MovieGenreComponent {
     this.route,
     this.configurationService.pageSize,
     ({ genre }, { page }) =>
-      this.moviesService.getMoviesByGenre(genre, page).pipe(
+      from(this.moviesService.getMoviesByGenre(genre, page)).pipe(
         tap(
           () =>
             void this.titleService.setTranslatedTitle("movies:titles.genre", {

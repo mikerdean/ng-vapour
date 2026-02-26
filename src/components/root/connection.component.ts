@@ -5,8 +5,10 @@ import { RouterOutlet } from "@angular/router";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { combineLatest, map, Observable } from "rxjs";
 
-import { DefinitionListComponent } from "@vapour/components/core/definition-list.component";
-import { DefinitionListItem } from "@vapour/components/core/definition-list.types";
+import {
+  DefinitionListComponent,
+  type DefinitionListItem,
+} from "@vapour/components/core/definition-list.component";
 import { FullscreenMessageComponent } from "@vapour/components/core/fullscreen-message.component";
 import { HeadingComponent } from "@vapour/components/core/heading.component";
 import { OrderedListComponent } from "@vapour/components/core/ordered-list.component";

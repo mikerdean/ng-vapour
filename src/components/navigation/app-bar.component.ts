@@ -1,49 +1,42 @@
-import { AsyncPipe } from "@angular/common";
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  resource,
+} from "@angular/core";
+import { Router } from "@angular/router";
 import {
   faEllipsisVertical,
   faMobileRetro,
   faSearch,
   faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { map } from "rxjs";
 
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { KodiLogoComponent } from "@vapour/components/images/kodi-logo.component";
 import { TranslatePipe } from "@vapour/pipes/translate";
-import { NavigationService } from "@vapour/services/navigation.service";
 import { ProfileService } from "@vapour/services/profile.service";
 import { TitleService } from "@vapour/services/title.service";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    AsyncPipe,
-    FontawesomeIconComponent,
-    KodiLogoComponent,
-    TranslatePipe,
-  ],
+  imports: [FontawesomeIconComponent, KodiLogoComponent, TranslatePipe],
   selector: "app-bar",
   templateUrl: "app-bar.component.html",
 })
 export class AppbarComponent {
-  constructor(
-    private navigationService: NavigationService,
-    private profileService: ProfileService,
-    private titleService: TitleService,
-  ) {}
+  private readonly profileService = inject(ProfileService);
+  private readonly router = inject(Router);
+  private readonly titleService = inject(TitleService);
 
-  readonly profiles$ = this.profileService.getProfiles();
-
-  readonly allowProfileChange$ = this.profiles$.pipe(
-    map((data) => data.limits.total > 1),
+  readonly allowProfileChange = computed(
+    () => (this.profiles.value()?.total ?? 0) > 1,
   );
 
-  readonly currentUser$ = this.profileService.getCurrentProfile();
-
-  readonly navigating$ = this.navigationService.navigating$;
-
-  readonly title$ = this.titleService.title$;
+  readonly currentUser = resource({
+    loader: () => this.profileService.getCurrentProfile(),
+  });
 
   readonly icons = {
     config: faEllipsisVertical,
@@ -51,4 +44,17 @@ export class AppbarComponent {
     remote: faMobileRetro,
     search: faSearch,
   };
+
+  readonly navigating = computed(() =>
+    Boolean(this.router.currentNavigation()),
+  );
+
+  readonly profiles = resource({
+    loader: async () => {
+      const { limits } = await this.profileService.getProfiles();
+      return limits;
+    },
+  });
+
+  readonly title = this.titleService.title;
 }

@@ -1,105 +1,106 @@
-/* eslint-disable @typescript-eslint/no-dynamic-delete */
-
 import { computed, inject, Injectable, OnDestroy, signal } from "@angular/core";
+import type { InferOutput } from "valibot";
 
+import type { notificationItem } from "@vapour/schema/notifications";
+import { mediaType } from "@vapour/schema/player";
 import {
   SocketService,
   type Unsubscribe,
 } from "@vapour/services/socket.service";
-import type { NotificationItem } from "@vapour/shared/kodi/notifications";
-import type {
-  GetActivePlayers,
-  GetPlayerItem,
-  GetPlayerItemQuery,
-  GetPlayerProperties,
-  GetPlayerPropertiesQuery,
-  GetPlayers,
-  GetPlayersQuery,
-  MediaType,
-  PlayerPlayPause,
-  PlayerStop,
-} from "@vapour/shared/kodi/player";
 
 type PlayerInformation = {
   id: number;
-  item?: NotificationItem;
+  item?: InferOutput<typeof notificationItem>;
   speed: number;
   state: "playing" | "paused" | "stopped";
 };
 
+function isMapEqual<K, V>(prev: Map<K, V>, next: Map<K, V>): boolean {
+  if (prev.size !== next.size) {
+    return false;
+  }
+
+  for (const [key, value] of prev.entries()) {
+    if (!next.has(key)) {
+      return false;
+    }
+
+    if (!Object.is(value, next.get(key))) {
+      return false;
+    }
+  }
+
+  for (const [key, value] of next.entries()) {
+    if (!prev.has(key)) {
+      return false;
+    }
+
+    if (!Object.is(value, prev.get(key))) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 @Injectable({ providedIn: "root" })
 export class PlayerService implements OnDestroy {
-  private readonly socketService = inject(SocketService);
+  readonly #socketService = inject(SocketService);
 
-  private readonly playingInfo = signal<Record<number, PlayerInformation>>({});
-  private readonly subscriptions: Unsubscribe[] = [
-    this.socketService.subscribe("Player.OnPlay", ({ data }) => {
-      this.updatePlayer(data.player.playerid, {
+  readonly #playingInfo = signal<Map<number, PlayerInformation>>(new Map(), {
+    equal: isMapEqual,
+  });
+
+  readonly #subscriptions: Unsubscribe[] = [
+    this.#socketService.subscribe("Player.OnPlay", ({ data }) => {
+      this.#updatePlayer(data.player.playerid, {
         item: data.item,
         speed: data.player.speed,
         state: "playing",
       });
     }),
-    this.socketService.subscribe("Player.OnPause", ({ data }) => {
-      this.updatePlayer(data.player.playerid, {
+    this.#socketService.subscribe("Player.OnPause", ({ data }) => {
+      this.#updatePlayer(data.player.playerid, {
         speed: data.player.speed,
         state: "paused",
       });
     }),
-    this.socketService.subscribe("Player.OnResume", ({ data }) => {
-      this.updatePlayer(data.player.playerid, {
+    this.#socketService.subscribe("Player.OnResume", ({ data }) => {
+      this.#updatePlayer(data.player.playerid, {
         speed: data.player.speed,
         state: "playing",
       });
     }),
-    this.socketService.subscribe("Player.OnStop", ({ data }) => {
-      const players = { ...this.playingInfo() };
+    this.#socketService.subscribe("Player.OnStop", ({ data }) => {
+      const players = this.#playingInfo();
       const id = data.item.id;
 
       if (id in players) {
-        delete players[id];
-        this.playingInfo.set(players);
+        players.delete(id);
+        this.#playingInfo.set(players);
       }
     }),
   ];
 
-  readonly playing = computed(() => Object.values(this.playingInfo()));
+  readonly playing = computed(() => [...this.#playingInfo().values()]);
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((unsubscribe) => {
-      unsubscribe();
+  getActivePlayers() {
+    return this.#socketService.send("Player.GetActivePlayers", {});
+  }
+
+  getPlayers(media: InferOutput<typeof mediaType> = "all") {
+    return this.#socketService.send("Player.GetPlayers", { media });
+  }
+
+  getItem(id: number) {
+    return this.#socketService.send("Player.GetItem", {
+      playerid: id,
+      properties: [],
     });
   }
 
-  getActivePlayers(): Observable<GetActivePlayers> {
-    return this.socketService.send<Record<string, never>, GetActivePlayers>(
-      "Player.GetActivePlayers",
-      {},
-    );
-  }
-
-  getPlayers(media: MediaType = "all"): Observable<GetPlayers> {
-    return this.socketService.send<GetPlayersQuery, GetPlayers>(
-      "Player.GetPlayers",
-      { media },
-    );
-  }
-
-  getPlayerItem(id: number): Observable<GetPlayerItem> {
-    return this.socketService.send<GetPlayerItemQuery, GetPlayerItem>(
-      "Player.GetItem",
-      {
-        playerid: id,
-        properties: [],
-      },
-    );
-  }
-
-  getPlayerProperties(id: number): Observable<GetPlayerProperties> {
-    return this.socketService.send<
-      GetPlayerPropertiesQuery,
-      GetPlayerProperties
-    >("Player.GetProperties", {
+  getProperties(id: number) {
+    return this.#socketService.send("Player.GetProperties", {
       properties: [
         "audiostreams",
         "cachepercentage",
@@ -132,33 +133,32 @@ export class PlayerService implements OnDestroy {
     });
   }
 
-  stop(id: number): Observable<string> {
-    return this.socketService.send<PlayerStop, string>("Player.Stop", {
+  stop(id: number) {
+    return this.#socketService.send("Player.Stop", {
       playerid: id,
     });
   }
 
-  togglePlayPause(id: number): Observable<number> {
-    return this.socketService.send<PlayerPlayPause, number>(
-      "Player.PlayPause",
-      {
-        playerid: id,
-      },
-    );
+  togglePlayPause(id: number) {
+    return this.#socketService.send("Player.PlayPause", {
+      playerid: id,
+    });
   }
 
-  updatePlayer(id: number, data: Omit<PlayerInformation, "id">): void {
-    const players = { ...this.playingInfo() };
+  #updatePlayer(id: number, data: Omit<PlayerInformation, "id">): void {
+    const players = this.#playingInfo();
 
-    if (id in players) {
-      players[id] = {
-        ...players[id],
-        ...data,
-      };
-    } else {
-      players[id] = { id, ...data };
-    }
+    players.set(id, {
+      ...data,
+      id,
+    });
 
-    this.playingInfo.set(players);
+    this.#playingInfo.set(players);
+  }
+
+  ngOnDestroy(): void {
+    this.#subscriptions.forEach((unsubscribe) => {
+      unsubscribe();
+    });
   }
 }

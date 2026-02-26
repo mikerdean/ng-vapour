@@ -1,6 +1,5 @@
 import {
   array,
-  InferOutput,
   integer,
   number,
   object,
@@ -27,15 +26,7 @@ export const getCurrentProfileRequest = object({
   properties: properties(profileDetails, ["lockmode", "thumbnail"]),
 });
 
-export type GetCurrentProfileRequest = InferOutput<
-  typeof getCurrentProfileRequest
->;
-
 export const getCurrentProfileResponse = profileDetails;
-
-export type GetCurrentProfileResponse = InferOutput<
-  typeof getCurrentProfileResponse
->;
 
 export const getProfilesRequest = object({
   ...getCurrentProfileRequest.entries,
@@ -43,11 +34,7 @@ export const getProfilesRequest = object({
   sort: optional(kodiSort),
 });
 
-export type GetProfilesRequest = InferOutput<typeof getProfilesRequest>;
-
 export const getProfilesResponse = object({
   limits: kodiLimitsWithTotal,
   profiles: array(profileDetails),
 });
-
-export type GetProfilesResponse = InferOutput<typeof getProfilesResponse>;

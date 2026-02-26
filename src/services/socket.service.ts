@@ -1,17 +1,18 @@
-import { computed, effect, Injectable, signal } from "@angular/core";
-import { nanoid } from "nanoid";
 import {
-  is,
-  object,
-  safeParse,
-  type BaseIssue,
-  type BaseSchema,
-  type InferOutput,
-} from "valibot";
+  computed,
+  effect,
+  inject,
+  Injectable,
+  signal,
+  type OnDestroy,
+} from "@angular/core";
+import { nanoid } from "nanoid";
+import { is, object, safeParse, type InferOutput } from "valibot";
 
 import {
   jsonRpc,
   jsonRpcErrorResponse,
+  jsonRpcNotification,
   jsonRpcRequest,
   jsonRpcResponse,
   jsonRpcWithId,
@@ -19,22 +20,30 @@ import {
   type JsonRpcRequest,
 } from "@vapour/schema/base";
 import {
-  notifications,
-  type NotificationEvents,
-} from "@vapour/schema/notifications";
+  notificationMap,
+  NotificationMap,
+  requestResponseMap,
+  RequestResponseMap,
+} from "@vapour/schema/map";
 import { HostService } from "@vapour/services/host.service";
 import { LoggingService } from "@vapour/services/logging.service";
 import { toError } from "@vapour/shared/error";
 
 export type ConnectionState = "connected" | "connecting" | "disconnected";
-export type JsonRpcListener = (message: JsonRpc) => void;
 export type EventRpcListener = (message: unknown) => void;
+export type JsonRpcListener = (message: JsonRpc) => void;
 export type Unsubscribe = () => void;
 
 @Injectable({ providedIn: "root" })
-export class SocketService {
-  #notifications = new Map<keyof NotificationEvents, Set<EventRpcListener>>();
-  #queue = new Map<string, JsonRpcListener>();
+export class SocketService implements OnDestroy {
+  readonly #hostService = inject(HostService);
+  readonly #loggingService = inject(LoggingService);
+
+  readonly #notifications = new Map<
+    keyof NotificationMap,
+    Set<EventRpcListener>
+  >();
+  readonly #queue = new Map<string, JsonRpcListener>();
   #socket: WebSocket | undefined;
 
   readonly #attempts = signal(0);
@@ -43,88 +52,85 @@ export class SocketService {
   readonly connectionState = computed(() => this.#connectionState());
   readonly timeout = 5000;
 
-  constructor(
-    private hostService: HostService,
-    private loggingService: LoggingService,
-  ) {
-    effect(() => {
-      const url = this.hostService.websocketUrl();
-      this.#attempts();
+  readonly #socketEffect = effect(() => {
+    const url = this.#hostService.websocketUrl();
+    this.#attempts();
 
-      if (this.#socket) {
-        this.#socket.close();
-      }
+    if (this.#socket) {
+      this.#socket.close();
+    }
 
-      if (!url) {
-        this.#connectionState.set("disconnected");
+    if (!url) {
+      this.#connectionState.set("disconnected");
+      return;
+    }
+
+    const socket = new WebSocket(url);
+    this.#connectionState.set("connecting");
+
+    socket.onmessage = (ev: MessageEvent) => {
+      if (typeof ev.data !== "string") {
         return;
       }
 
-      const socket = new WebSocket(url);
-      this.#connectionState.set("connecting");
-
-      socket.onmessage = (ev: MessageEvent) => {
-        if (typeof ev.data !== "string") {
+      try {
+        const message: unknown = JSON.parse(ev.data);
+        if (!is(jsonRpc, message)) {
           return;
         }
 
-        try {
-          const message: unknown = JSON.parse(ev.data);
-          if (!is(jsonRpc, message)) {
-            return;
+        if (is(jsonRpcWithId, message)) {
+          const callback = this.#queue.get(message.id);
+          if (callback) {
+            callback(message);
+            this.#queue.delete(message.id);
           }
+        }
 
-          if (is(jsonRpcWithId, message)) {
-            const callback = this.#queue.get(message.id);
-            if (callback) {
-              callback(message);
-              this.#queue.delete(message.id);
-            }
-          }
+        if (is(jsonRpcNotification, message)) {
+          const method = message.method as keyof NotificationMap;
 
-          const result = safeParse(notifications, message);
-          if (!result.success) {
-            return;
-          }
-
-          const listeners = this.#notifications.get(result.output.method);
+          const listeners = this.#notifications.get(method);
           if (!listeners) {
             return;
           }
 
-          for (const listener of listeners) {
-            listener(result.output.params);
+          const result = safeParse(notificationMap[method], message.params);
+          if (!result.success) {
+            return;
           }
-        } catch (err: unknown) {
-          this.loggingService.error(toError(err));
+
+          for (const listener of listeners) {
+            listener(result.output);
+          }
         }
-      };
+      } catch (err: unknown) {
+        this.#loggingService.error(toError(err));
+      }
+    };
 
-      socket.onopen = () => {
-        this.#connectionState.set("connected");
-      };
+    socket.onopen = () => {
+      this.#connectionState.set("connected");
+    };
 
-      socket.onclose = () => {
-        setTimeout(() => {
-          this.#connectionState.set("disconnected");
-          this.#socket = undefined;
-        }, 250);
-      };
+    socket.onclose = () => {
+      setTimeout(() => {
+        this.#connectionState.set("disconnected");
+        this.#socket = undefined;
+      }, 250);
+    };
 
-      this.#socket = socket;
-    });
-  }
+    this.#socket = socket;
+  });
 
   retry(): void {
     this.#attempts.update((i) => i + 1);
   }
 
-  send<TRequest, TResponse>(
-    method: string,
-    paramsSchema: BaseSchema<TRequest, TRequest, BaseIssue<unknown>>,
-    responseSchema: BaseSchema<TResponse, TResponse, BaseIssue<unknown>>,
-    params: InferOutput<typeof paramsSchema>,
-  ): Promise<InferOutput<typeof responseSchema>> {
+  send<TMethod extends keyof RequestResponseMap>(
+    method: TMethod,
+    params: InferOutput<RequestResponseMap[TMethod]["request"]>,
+  ): Promise<InferOutput<RequestResponseMap[TMethod]["response"]>> {
     return new Promise((resolve, reject) => {
       const socket = this.#socket;
 
@@ -132,6 +138,9 @@ export class SocketService {
         reject(Error("Socket not currently connected. Command failed."));
         return;
       }
+
+      const { request: paramsSchema, response: responseSchema } =
+        requestResponseMap[method];
 
       const requestSchema = object({
         ...jsonRpcRequest.entries,
@@ -182,9 +191,9 @@ export class SocketService {
     });
   }
 
-  subscribe<T extends keyof NotificationEvents>(
+  subscribe<T extends keyof NotificationMap>(
     method: T,
-    listener: NotificationEvents[T],
+    listener: (event: InferOutput<NotificationMap[T]>) => void,
   ): Unsubscribe {
     let set = this.#notifications.get(method);
     if (!set) {
@@ -202,5 +211,9 @@ export class SocketService {
 
       return set.delete(listener as EventRpcListener);
     };
+  }
+
+  ngOnDestroy(): void {
+    this.#socketEffect.destroy();
   }
 }

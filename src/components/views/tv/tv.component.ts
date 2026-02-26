@@ -3,8 +3,10 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { combineLatest, map, Observable } from "rxjs";
 
-import { TabsComponent } from "@vapour/components/navigation/tabs.component";
-import type { TabItem } from "@vapour/components/navigation/tabs.types";
+import {
+  TabsComponent,
+  type TabItem,
+} from "@vapour/components/navigation/tabs.component";
 import { MainContentComponent } from "@vapour/components/root/main-content.component";
 import { TranslationService } from "@vapour/services/translation.service";
 

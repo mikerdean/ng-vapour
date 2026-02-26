@@ -1,22 +1,21 @@
-import { Injectable } from "@angular/core";
+import { computed, inject, Injectable, signal } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import type { TOptions } from "i18next";
-import { BehaviorSubject, firstValueFrom } from "rxjs";
+import { firstValueFrom } from "rxjs";
 
 import { TranslationService } from "@vapour/services/translation.service";
 
 @Injectable({ providedIn: "root" })
 export class TitleService {
-  constructor(
-    private translationService: TranslationService,
-    private windowTitle: Title,
-  ) {}
+  readonly #translationService = inject(TranslationService);
+  readonly #windowTitle = inject(Title);
 
-  readonly #title = new BehaviorSubject<string | undefined>(undefined);
-  readonly title$ = this.#title.asObservable();
+  readonly #title = signal<string | undefined>(undefined);
+  readonly title = computed(() => this.#title());
+
   async setTranslatedTitle(key: string, options?: TOptions): Promise<void> {
     const pageTitle = await firstValueFrom(
-      this.translationService.translate(key, options),
+      this.#translationService.translate(key, options),
     );
 
     await this.setRawTitle(pageTitle);
@@ -25,20 +24,20 @@ export class TitleService {
   async setRawTitle(pageTitle: string | null): Promise<void> {
     if (pageTitle) {
       const fullTitle = await firstValueFrom(
-        this.translationService.translate("common:pageTitle.combined", {
+        this.#translationService.translate("common:pageTitle.combined", {
           pageTitle,
         }),
       );
 
-      this.windowTitle.setTitle(fullTitle);
-      this.#title.next(pageTitle);
+      this.#windowTitle.setTitle(fullTitle);
+      this.#title.set(pageTitle);
     } else {
       const defaultTitle = await firstValueFrom(
-        this.translationService.translate("common:pageTitle.main"),
+        this.#translationService.translate("common:pageTitle.main"),
       );
 
-      this.windowTitle.setTitle(defaultTitle);
-      this.#title.next(undefined);
+      this.#windowTitle.setTitle(defaultTitle);
+      this.#title.set(undefined);
     }
   }
 }

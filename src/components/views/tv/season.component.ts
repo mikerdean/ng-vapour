@@ -1,7 +1,7 @@
 import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { combineLatest, map, switchMap, tap } from "rxjs";
+import { combineLatest, from, map, switchMap, tap } from "rxjs";
 import { parse } from "valibot";
 
 import { DefinitionListComponent } from "@vapour/components/core/definition-list.component";
@@ -38,7 +38,7 @@ export class SeasonComponent {
     map((params) => parse(seasonValidator, params)),
     switchMap(({ seasonId }) =>
       combineLatest([
-        this.tvService.getSeasonById(seasonId),
+        from(this.tvService.getSeasonById(seasonId)),
         this.translationService.translate("common:duration"),
         this.translationService.translate("tv:season"),
         this.translationService.translate("common:unknown"),
@@ -50,11 +50,14 @@ export class SeasonComponent {
       ),
     ),
     switchMap(({ seasondetails, translations }) =>
-      this.tvService
-        .getEpisodeByTvShowSeason(seasondetails.tvshowid, seasondetails.season)
-        .pipe(
-          map(({ episodes }) => ({ episodes, seasondetails, translations })),
+      from(
+        this.tvService.getEpisodeByTvShowSeason(
+          seasondetails.tvshowid,
+          seasondetails.season,
         ),
+      ).pipe(
+        map(({ episodes }) => ({ episodes, seasondetails, translations })),
+      ),
     ),
     map(
       ({

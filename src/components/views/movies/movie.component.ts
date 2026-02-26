@@ -2,7 +2,7 @@ import { AsyncPipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { faPlayCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import { combineLatest, map, switchMap, tap } from "rxjs";
+import { combineLatest, from, map, switchMap, tap } from "rxjs";
 import { parse } from "valibot";
 
 import { DefinitionListComponent } from "@vapour/components/core/definition-list.component";
@@ -48,7 +48,7 @@ export class MovieComponent {
     map((params) => parse(movieValidator, params)),
     switchMap(({ movieId }) =>
       combineLatest([
-        this.movieService.getMovieById(movieId),
+        from(this.movieService.getMovieById(movieId)),
         this.translationService.translate("common:director"),
         this.translationService.translate("common:duration"),
         this.translationService.translate("common:genre"),
