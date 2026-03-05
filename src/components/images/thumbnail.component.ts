@@ -24,9 +24,9 @@ import {
   FontawesomeIconComponent,
   type FontAwesomeIcon,
 } from "@vapour/components/images/fontawesome-icon.component";
-import { TranslatePipe } from "@vapour/pipes/translate";
 import { HostService } from "@vapour/services/host.service";
 import { toImageUrl } from "@vapour/shared/images";
+import { translate } from "@vapour/signals/translate";
 
 export type ThumbnailType =
   | "actor"
@@ -47,12 +47,7 @@ export type ThumbnailType =
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    AsyncPipe,
-    FontawesomeIconComponent,
-    NgTemplateOutlet,
-    TranslatePipe,
-  ],
+  imports: [AsyncPipe, FontawesomeIconComponent, NgTemplateOutlet],
   selector: "thumbnail",
   templateUrl: "thumbnail.component.html",
 })
@@ -101,6 +96,10 @@ export class ThumbnailComponent {
     checkCircle: faCheckCircle,
     circle: faCircle,
   };
+
+  readonly translations = translate({
+    played: "common.played",
+  });
 
   onImageLoaded(element: HTMLImageElement) {
     element.classList.replace("opacity-0", "opacity-100");

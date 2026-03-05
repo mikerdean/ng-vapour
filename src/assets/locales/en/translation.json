@@ -1,0 +1,139 @@
+{
+  "appbar": {
+    "buttons": {
+      "config": "Edit configuration",
+      "profile": "Change profile"
+    }
+  },
+  "common": {
+    "director": "Director",
+    "duration": "Duration",
+    "genre": "Genre",
+    "played": "Played",
+    "rating": "Rating",
+    "remote": "Remote control",
+    "save": "Save",
+    "saving": "Saving...",
+    "search": "Search",
+    "unknown": "Unknown",
+    "writer": "Writer",
+    "year": "Year"
+  },
+  "connection": {
+    "errorList": {
+      "introduction": "Please ensure that:",
+      "1": "Kodi is running",
+      "2": "You have enabled Settings > Services > Control > Allow Remote Control via HTTP",
+      "3": "You have enabled Settings > Services > Control > Allow Remote Control from applications on this system"
+    },
+    "hostSummary": {
+      "introduction": "We tried to connect you to:",
+      "label": "Host details",
+      "hostName": "Host name",
+      "port": "Port"
+    },
+    "buttons": {
+      "retry": "Retry connection",
+      "changeHost": "Try a different host"
+    },
+    "connecting": "Connecting...",
+    "title": "Connection error",
+    "subtitle": "The connection to Kodi failed."
+  },
+  "error404": {
+    "description": "Unable to find the specified page"
+  },
+  "host": {
+    "title": "Enter host details",
+    "form": {
+      "hostname": "Hostname",
+      "tcpPort": "TCP Port",
+      "httpPort": "HTTP Port"
+    }
+  },
+  "movies": {
+    "movieCount_one": "{{ count }} movie",
+    "movieCount_other": "{{ count }} movies",
+    "showMoreCast": "Show more cast"
+  },
+  "music": {
+    "album": "Album",
+    "artist": "Artist"
+  },
+  "navbar": {
+    "movies": "Movies",
+    "music": "Music",
+    "tv": "TV",
+    "addons": "Addons",
+    "settings": "Settings"
+  },
+  "pagination": {
+    "first": "Go back to first page (1)",
+    "previous": "Go back to previous page ({{ page }})",
+    "next": "Go to the next page ({{ page }})",
+    "last": "Go to the last page ({{ page }})",
+    "change": "Change to page {{ page }}"
+  },
+  "tabs": {
+    "addons": {
+      "installed": "Installed"
+    },
+    "movies": {
+      "recent": "Recent",
+      "titles": "Titles",
+      "sets": "Sets",
+      "genres": "Genres"
+    },
+    "music": {
+      "recent": "Recent",
+      "artists": "Artists",
+      "albums": "Albums",
+      "genres": "Genres"
+    },
+    "tv": {
+      "inprogress": "In Progress",
+      "recent": "Recent",
+      "titles": "Titles",
+      "genres": "Genres"
+    }
+  },
+  "titles": {
+    "addons": {
+      "installed": "Installed addons"
+    },
+    "error404": "Page not found",
+    "main": "Kodi",
+    "mainWithSubtitle": "{{ pageTitle }} | Kodi",
+    "movies": {
+      "recent": "Recent movies",
+      "titles": "Movies by title",
+      "sets": "Movies sets",
+      "genres": "Movies by genre",
+      "genre": "Movies by genre: {{ genre }}"
+    },
+    "music": {
+      "recent": "Recent albums",
+      "artists": "Artists",
+      "albums": "Albums",
+      "genres": "Music genres",
+      "genre": "Music genre: {{ genre }}"
+    },
+    "tv": {
+      "inprogress": "TV shows in progress",
+      "recent": "TV shows recently added ",
+      "titles": "TV shows by title",
+      "genres": "TV show genres",
+      "genre": "TV show genre: {{ genre }}"
+    }
+  },
+  "tv": {
+    "episode": "Episode",
+    "episodeCount_one": "{{ count }} episode",
+    "episodeCount_other": "{{ count }} episodes",
+    "season": "Season",
+    "seasonNumber": "Season {{ season }}",
+    "watchedEpisodes_one": "Watched {{ watched }} of {{ count }} episode",
+    "watchedEpisodes_other": "Watched {{ watched }} of {{ count }} episodes",
+    "unwatched": "Unwatched"
+  }
+}

@@ -18,6 +18,7 @@ const defaultCssClasses = [
   "focus:ring-fuchsia-900",
   "focus:ring-offset-2",
   "focus:ring-offset-slate-800",
+  "cursor-pointer",
 ];
 
 @Component({
@@ -34,7 +35,11 @@ export class FormButtonComponent {
   readonly classNames = computed(() =>
     clsx(
       ...defaultCssClasses,
-      { "disabled:opacity-50": this.disabled() },
+      {
+        "disabled:opacity-50": this.disabled(),
+        "cursor-pointer": !this.disabled(),
+        "cursor-not-allowed": this.disabled(),
+      },
       this.css(),
     ),
   );

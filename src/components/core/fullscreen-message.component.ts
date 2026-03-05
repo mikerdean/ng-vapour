@@ -23,7 +23,7 @@ import { AriaRole } from "@vapour/shared/types";
   templateUrl: "fullscreen-message.component.html",
 })
 export class FullscreenMessageComponent implements OnInit, OnDestroy {
-  readonly allowClose = input(true);
+  readonly allowClose = input(false);
   readonly background = input(false);
   readonly closing = signal(false);
   readonly role = input<AriaRole>();

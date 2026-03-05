@@ -31,9 +31,6 @@
         >
           {{ item.label }}
         </p>
-        @for (detail of item.details; track $index) {
-          <p>{{ detail }}</p>
-        }
         <progress-bar
           [speed]="player.speed"
           [start]="player.props.time"

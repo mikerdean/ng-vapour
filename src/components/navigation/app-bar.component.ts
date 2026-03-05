@@ -15,20 +15,18 @@ import {
 
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { KodiLogoComponent } from "@vapour/components/images/kodi-logo.component";
-import { TranslatePipe } from "@vapour/pipes/translate";
 import { ProfileService } from "@vapour/services/profile.service";
-import { TitleService } from "@vapour/services/title.service";
+import { translate } from "@vapour/signals/translate";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FontawesomeIconComponent, KodiLogoComponent, TranslatePipe],
+  imports: [FontawesomeIconComponent, KodiLogoComponent],
   selector: "app-bar",
   templateUrl: "app-bar.component.html",
 })
 export class AppbarComponent {
   private readonly profileService = inject(ProfileService);
   private readonly router = inject(Router);
-  private readonly titleService = inject(TitleService);
 
   readonly allowProfileChange = computed(
     () => (this.profiles.value()?.total ?? 0) > 1,
@@ -56,5 +54,10 @@ export class AppbarComponent {
     },
   });
 
-  readonly title = this.titleService.title;
+  readonly translations = translate({
+    config: "appbar.buttons.config",
+    profile: "appbar.buttons.profile",
+    remote: "common.remote",
+    search: "common.search",
+  });
 }

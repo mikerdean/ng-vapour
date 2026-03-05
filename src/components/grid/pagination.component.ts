@@ -1,11 +1,9 @@
-import { AsyncPipe } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
   input,
 } from "@angular/core";
-import { toObservable } from "@angular/core/rxjs-interop";
 import { Router } from "@angular/router";
 import {
   faAngleLeft,
@@ -13,12 +11,10 @@ import {
   faAnglesLeft,
   faAnglesRight,
 } from "@fortawesome/free-solid-svg-icons";
-import { combineLatest, map, switchMap } from "rxjs";
 
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
-import { TranslatePipe } from "@vapour/pipes/translate";
 import { ConfigurationService } from "@vapour/services/configuration.service";
-import { TranslationService } from "@vapour/services/translation.service";
+import { translate } from "@vapour/signals/translate";
 
 const defaultButtonClasses = [
   "px-2",
@@ -32,7 +28,7 @@ const defaultButtonClasses = [
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, FontawesomeIconComponent, TranslatePipe],
+  imports: [FontawesomeIconComponent],
   selector: "pagination",
   templateUrl: "pagination.component.html",
 })
@@ -40,7 +36,6 @@ export class PaginationComponent {
   constructor(
     private configurationService: ConfigurationService,
     private router: Router,
-    private translationService: TranslationService,
   ) {}
 
   readonly currentPage = input.required<number>();
@@ -77,43 +72,41 @@ export class PaginationComponent {
     Math.ceil(this.total() / this.configurationService.pageSize),
   );
 
-  readonly pages$ = combineLatest([
-    toObservable(this.currentPage),
-    toObservable(this.totalPages),
-    toObservable(this.maxPages),
-  ]).pipe(
-    switchMap(([current, total, maxPages]) => {
-      const max = maxPages || 5;
-      const length = total > max ? max : total;
-      const start = this.calculateStart(current, total, max);
+  readonly translations = translate({
+    change: "pagination.change",
+    first: "pagination.first",
+    last: ["pagination.last", { page: this.totalPages() }],
+    next: ["pagination.next", { page: this.nextPage() }],
+    previous: ["pagination.previous", { page: this.previousPage() }],
+  });
 
-      return combineLatest(
-        Array.from({ length }, (_, i) => {
-          const page = start + i;
+  readonly pages = computed(() => {
+    const current = this.currentPage();
+    const maxPages = this.maxPages();
+    const total = this.totalPages();
 
-          return this.translationService
-            .translate("grid.pagination.change", {
-              page,
-            })
-            .pipe(map((label) => ({ label, page })));
-        }),
-      ).pipe(
-        map((pages) =>
-          pages.map(({ label, page }) => ({
-            classes: [
-              ...defaultButtonClasses,
-              ...(page === current
-                ? ["bg-fuchsia-600", "text-slate-50"]
-                : ["bg-slate-900"]),
-            ],
-            current: current === page ? "page" : undefined,
-            label,
-            value: page,
-          })),
-        ),
-      );
-    }),
-  );
+    const max = maxPages || 5;
+    const length = total > max ? max : total;
+    const start = this.calculateStart(current, total, max);
+
+    const pages = Array.from({ length }, (_, i) => {
+      const page = start + i;
+
+      return {
+        classes: [
+          ...defaultButtonClasses,
+          ...(page === current
+            ? ["bg-fuchsia-600", "text-slate-50"]
+            : ["bg-slate-900"]),
+        ],
+        current: current === page ? "page" : undefined,
+        label: page.toString(),
+        value: page,
+      };
+    });
+
+    return pages;
+  });
 
   private calculateStart(
     currentPage: number,

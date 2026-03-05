@@ -2,31 +2,25 @@
   <div class="flex items-center px-3 py-2">
     <kodi-logo />
     <div class="mx-3 grow">
-      <h1 class="line-clamp-1 text-lg">
-        {{ title() }}
-      </h1>
+      <h1 class="line-clamp-1 text-lg">__title__</h1>
     </div>
     <button class="mr-6">
       <fa-icon [icon]="icons.remote" />
-      <span class="sr-only">{{ "common:remote" | translate }}</span>
+      <span class="sr-only">{{ translations.remote() }}</span>
     </button>
     <button class="mr-6">
       <fa-icon [icon]="icons.search" />
-      <span class="sr-only">{{ "common:search" | translate }}</span>
+      <span class="sr-only">{{ translations.search() }}</span>
     </button>
     @if (allowProfileChange()) {
       <button class="mr-6">
         <fa-icon [icon]="icons.profile" />
-        <span class="sr-only">{{
-          "navigation.appbar.buttons.profile" | translate
-        }}</span>
+        <span class="sr-only">{{ translations.profile() }}</span>
       </button>
     }
     <button>
       <fa-icon [icon]="icons.config" />
-      <span class="sr-only">{{
-        "navigation.appbar.buttons.config" | translate
-      }}</span>
+      <span class="sr-only">{{ translations.config() }}</span>
     </button>
   </div>
   <div

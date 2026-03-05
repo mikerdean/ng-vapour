@@ -1,0 +1,29 @@
+@if (album.value(); as album) {
+  <fanart [uri]="album.details.art?.fanart" />
+  <div class="sm:flex">
+    <figure class="mb-4 w-full sm:mr-4 sm:max-w-72 md:max-w-96">
+      <thumbnail [uri]="album.details.art?.thumb" type="album" />
+    </figure>
+    <section class="sm:grow">
+      <div class="md:max-w-xl">
+        <definition-list
+          label=""
+          [items]="getAlbumDetails(album.details, album.songs)"
+        />
+
+        @if (album.details.description) {
+          <p>{{ album.details.description }}</p>
+        }
+        @if (album.details.rating !== undefined) {
+          <div class="mb-8">
+            <div>
+              <strong>{{ translations.rating() }}</strong>
+            </div>
+            <rating [value]="album.details.rating" />
+          </div>
+        }
+        <song-list [songs]="album.songs" />
+      </div>
+    </section>
+  </div>
+}

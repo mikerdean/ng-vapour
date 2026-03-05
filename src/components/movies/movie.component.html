@@ -1,0 +1,30 @@
+@if (movie.value(); as movie) {
+  <fanart [uri]="movie.art?.fanart" />
+  <div class="sm:flex">
+    <figure class="mb-4 w-full sm:mr-4 sm:max-w-72 md:max-w-96">
+      <thumbnail [uri]="movie.art?.poster" type="album" />
+    </figure>
+    <section class="sm:grow">
+      <div class="md:max-w-xl">
+        <definition-list label="" [items]="getMovieDetails(movie)" />
+        <div class="mb-4">
+          <form-button-split [items]="buttonItems" />
+        </div>
+        @if (movie.plot) {
+          <p class="mb-3">{{ movie.plot }}</p>
+        }
+        @if (movie.rating !== undefined) {
+          <div class="mb-8">
+            <div>
+              <strong>{{ translations.rating() }}</strong>
+            </div>
+            <rating [value]="movie.rating" />
+          </div>
+        }
+        @if (movie.cast && movie.cast.length) {
+          <cast [cast]="movie.cast" />
+        }
+      </div>
+    </section>
+  </div>
+}

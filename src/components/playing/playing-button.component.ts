@@ -11,18 +11,21 @@ import {
   faPauseCircle,
   faPlayCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { firstValueFrom } from "rxjs";
 
 import { FullscreenMessageComponent } from "@vapour/components/core/fullscreen-message.component";
-import type { GridItem } from "@vapour/components/grid/grid.component";
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
 import { ProgressBarComponent } from "@vapour/components/playing/progress-bar.component";
-import { MappingService } from "@vapour/services/mapping.service";
 import { MoviesService } from "@vapour/services/movies.service";
 import { MusicService } from "@vapour/services/music.service";
 import { PlayerService } from "@vapour/services/player.service";
 import { TvService } from "@vapour/services/tv.service";
+
+type PlayingItem = {
+  id: string | number;
+  label: string;
+  thumbnail?: string;
+};
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,7 +39,6 @@ import { TvService } from "@vapour/services/tv.service";
   templateUrl: "playing-button.component.html",
 })
 export class PlayingButtonComponent {
-  private readonly mappingService = inject(MappingService);
   private readonly moviesService = inject(MoviesService);
   private readonly musicService = inject(MusicService);
   private readonly playerService = inject(PlayerService);
@@ -57,25 +59,34 @@ export class PlayingButtonComponent {
       }
 
       const promises = players.map((player) => {
-        let item: Promise<GridItem | null>;
+        let item: Promise<PlayingItem | null>;
 
         switch (player.item?.type) {
           case "episode": {
             item = this.tvService
               .getEpisodeById(player.item.id)
-              .then(({ episodedetails }) =>
-                firstValueFrom(
-                  this.mappingService.mapEpisodeToGridItem(episodedetails),
-                ),
+              .then(
+                ({
+                  episodedetails: { episodeid, label, title, thumbnail },
+                }) => ({
+                  id: episodeid,
+                  label: title || label,
+                  thumbnail,
+                }),
               );
+
             break;
           }
 
           case "movie": {
             item = this.moviesService
               .getMovieById(player.item.id)
-              .then(({ moviedetails }) =>
-                this.mappingService.mapMovieToGridItem(moviedetails),
+              .then(
+                ({ moviedetails: { movieid, label, title, thumbnail } }) => ({
+                  id: movieid,
+                  label: title || label,
+                  thumbnail,
+                }),
               );
             break;
           }
@@ -83,9 +94,11 @@ export class PlayingButtonComponent {
           case "song": {
             item = this.musicService
               .getSongById(player.item.id)
-              .then(({ songdetails }) =>
-                this.mappingService.mapSongDetailsToGridItem(songdetails),
-              );
+              .then(({ songdetails: { songid, label, title, thumbnail } }) => ({
+                id: songid,
+                label: title || label,
+                thumbnail,
+              }));
             break;
           }
 

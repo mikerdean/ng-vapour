@@ -1,0 +1,17 @@
+@if (season.value(); as season) {
+  <fanart [uri]="season.details.art?.fanart" />
+  <div class="sm:flex">
+    <figure class="mb-4 w-full sm:mr-4 sm:max-w-72 md:max-w-96">
+      <thumbnail [uri]="season.details.art?.poster" type="album" />
+    </figure>
+    <section class="sm:grow">
+      <div class="md:max-w-xl">
+        <definition-list
+          label=""
+          [items]="getSeasonDetails(season.details, season.episodes)"
+        />
+        <episode-list [episodes]="season.episodes" />
+      </div>
+    </section>
+  </div>
+}

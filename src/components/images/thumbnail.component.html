@@ -16,7 +16,7 @@
     <fa-icon css="w-full h-auto" [icon]="icons.fallback()" />
   </div>
   @if (played()) {
-    <div class="relative h-full w-full" [title]="'common:played' | translate">
+    <div class="relative h-full w-full" [title]="translations.played()">
       <ng-container *ngTemplateOutlet="playedIcon" />
     </div>
   }

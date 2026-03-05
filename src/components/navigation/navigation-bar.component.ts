@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   inject,
+  Signal,
 } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import {
@@ -18,13 +19,13 @@ import {
   type FontAwesomeIcon,
 } from "@vapour/components/images/fontawesome-icon.component";
 import { PlayingButtonComponent } from "@vapour/components/playing/playing-button.component";
-import { TranslatePipe } from "@vapour/pipes/translate";
 import { PlayerService } from "@vapour/services/player.service";
+import { translate } from "@vapour/signals/translate";
 
 export type NavigationBarItem = {
   icon: FontAwesomeIcon;
   path: string;
-  title: string;
+  title: Signal<string>;
 };
 
 @Component({
@@ -34,7 +35,6 @@ export type NavigationBarItem = {
     PlayingButtonComponent,
     RouterLink,
     RouterLinkActive,
-    TranslatePipe,
   ],
   selector: "navigation-bar",
   templateUrl: "navigation-bar.component.html",
@@ -50,11 +50,19 @@ export class NavigationBarComponent {
     );
   });
 
+  readonly translations = translate({
+    addons: "navbar.addons",
+    movies: "navbar.movies",
+    music: "navbar.music",
+    settings: "navbar.settings",
+    tv: "navbar.tv",
+  });
+
   readonly links: NavigationBarItem[] = [
-    { path: "/movies", icon: faFilm, title: "navigation.navbar.movies" },
-    { path: "/music", icon: faMusic, title: "navigation.navbar.music" },
-    { path: "/tv", icon: faDisplay, title: "navigation.navbar.tv" },
-    { path: "/addons", icon: faCubes, title: "navigation.navbar.addons" },
-    { path: "/settings", icon: faCog, title: "navigation.navbar.settings" },
+    { path: "/movies", icon: faFilm, title: this.translations.movies },
+    { path: "/music", icon: faMusic, title: this.translations.music },
+    { path: "/tv", icon: faDisplay, title: this.translations.tv },
+    { path: "/addons", icon: faCubes, title: this.translations.addons },
+    { path: "/settings", icon: faCog, title: this.translations.settings },
   ];
 }

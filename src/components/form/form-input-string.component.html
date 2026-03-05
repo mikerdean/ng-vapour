@@ -1,0 +1,22 @@
+@if (label(); as formLabel) {
+  <label [attr.for]="id">{{ formLabel }}</label>
+}
+<input
+  class="w-full rounded-sm border border-slate-300 bg-slate-400 px-2 py-1 text-slate-900 focus:ring-2 focus:ring-fuchsia-700 focus:ring-offset-2 focus:ring-offset-slate-800 focus:outline-hidden"
+  [class.bg-fuchsia-200]="invalid()"
+  [class.bg-border-500]="invalid()"
+  [id]="id"
+  [required]="required()"
+  [value]="value()"
+  [attr.aria-invalid]="invalid()"
+  [attr.maxlength]="maxLength()"
+  [attr.type]="type()"
+  (input)="value.set($event.target.value)"
+/>
+@if (invalid()) {
+  <div class="mt-2 text-xs text-slate-300">
+    @for (error of errors(); track error) {
+      <span>{{ error.message }}</span>
+    }
+  </div>
+}

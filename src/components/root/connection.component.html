@@ -10,7 +10,7 @@
       <div class="text-center">
         <fa-icon animation="spin" [icon]="icons.loading" size="6x" />
         <div class="mt-2">
-          {{ "root.connection.connecting" | translate }}
+          {{ translations.connecting() }}
         </div>
       </div>
     </fullscreen-message>
@@ -18,32 +18,30 @@
 
   @case ("disconnected") {
     <fullscreen-message [allowClose]="false">
-      <heading [level]="1">{{ "root.connection.title" | translate }}</heading>
+      <heading [level]="1">{{ translations.title() }}</heading>
       <p class="mb-5">
-        <strong>{{ "root.connection.subtitle" | translate }}</strong>
+        <strong>{{ translations.subtitle() }}</strong>
       </p>
       <p class="mb-2">
-        {{ "root.connection.errorList.introduction" | translate }}
+        {{ translations.errorListIntroduction() }}
       </p>
-      @if (errorListItems$ | async; as errors) {
-        <ordered-list [items]="errors" />
-      }
+      <ordered-list [items]="errorListItems()" />
       <div class="my-5">
         <form-button (click)="reconnect()">{{
-          "root.connection.buttons.retry" | translate
+          translations.reconnect()
         }}</form-button>
       </div>
       <hr class="mb-5" />
       <p class="mb-2">
-        {{ "root.connection.hostSummary.introduction" | translate }}
+        {{ translations.summaryIntroduction() }}
       </p>
       <definition-list
-        [label]="('root.connection.hostSummary.label' | translate) || ''"
-        [items]="(hostSummaryItems$ | async) || []"
+        [label]="translations.label()"
+        [items]="hostSummaryItems()"
       />
       <div class="my-5">
         <form-button (click)="clear()">{{
-          "root.connection.buttons.changeHost" | translate
+          translations.changeHost()
         }}</form-button>
       </div>
     </fullscreen-message>
