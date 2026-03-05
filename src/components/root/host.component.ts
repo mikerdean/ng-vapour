@@ -8,19 +8,11 @@ import {
 import {
   form,
   FormField,
+  max,
+  min,
+  required,
   submit,
-  validateStandardSchema,
 } from "@angular/forms/signals";
-import {
-  integer,
-  maxValue,
-  minValue,
-  number,
-  object,
-  pipe,
-  string,
-  type InferOutput,
-} from "valibot";
 
 import { FullscreenMessageComponent } from "@vapour/components/core/fullscreen-message.component";
 import { HeadingComponent } from "@vapour/components/core/heading.component";
@@ -31,12 +23,6 @@ import { HostService } from "@vapour/services/host.service";
 import { translate } from "@vapour/signals/translate";
 
 import { FormInputNumberComponent } from "../form/form-input-number";
-
-const hostSchema = object({
-  hostname: string(),
-  httpPort: pipe(number(), integer(), minValue(1000), maxValue(9999)),
-  tcpPort: pipe(number(), integer(), minValue(1000), maxValue(9999)),
-});
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -65,14 +51,22 @@ export class HostComponent {
 
   readonly hasValidHost = computed(() => Boolean(this.#hostService.host()));
 
-  readonly host = signal<InferOutput<typeof hostSchema>>({
+  readonly host = signal({
     hostname: window.location.hostname,
     httpPort: 8080,
     tcpPort: 9090,
   });
 
   readonly hostForm = form(this.host, (schemaPath) => {
-    validateStandardSchema(schemaPath, hostSchema);
+    required(schemaPath.hostname);
+
+    required(schemaPath.httpPort);
+    min(schemaPath.httpPort, 1000);
+    max(schemaPath.httpPort, 9999);
+
+    required(schemaPath.tcpPort);
+    min(schemaPath.tcpPort, 1000);
+    max(schemaPath.tcpPort, 9999);
   });
 
   onSubmit(event: SubmitEvent) {

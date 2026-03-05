@@ -3,8 +3,8 @@
 }
 <input
   class="w-full rounded-sm border border-slate-300 bg-slate-400 px-2 py-1 text-slate-900 focus:ring-2 focus:ring-fuchsia-700 focus:ring-offset-2 focus:ring-offset-slate-800 focus:outline-hidden"
-  [class.bg-fuchsia-200]="invalid()"
-  [class.bg-border-500]="invalid()"
+  [class.bg-fuchsia-200!]="invalid()"
+  [class.bg-border-500!]="invalid()"
   [id]="id"
   [required]="required()"
   [value]="value()"
@@ -15,7 +15,7 @@
 />
 @if (invalid()) {
   <div class="mt-2 text-xs text-slate-300">
-    @for (error of errors(); track error) {
+    @for (error of errors(); track $index) {
       <span>{{ error.message }}</span>
     }
   </div>

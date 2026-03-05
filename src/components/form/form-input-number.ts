@@ -27,9 +27,10 @@ export class FormInputNumberComponent implements FormValueControl<number> {
   readonly min = input<number | undefined>();
   readonly name = input.required<string>();
   readonly required = input<boolean>(false);
-  readonly value = model(0);
+  readonly value = model.required<number>();
 
-  updateModel() {
-    this.value.set(Number.parseInt(this.displayValue(), 10));
+  updateModel(newValue: string): void {
+    const parsed = Number.parseInt(newValue, 10);
+    this.value.set(parsed);
   }
 }
