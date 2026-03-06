@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   input,
-  linkedSignal,
   model,
 } from "@angular/core";
 import {
@@ -12,17 +11,15 @@ import {
 } from "@angular/forms/signals";
 import { nanoid } from "nanoid";
 
+type Errors = readonly WithOptionalFieldTree<ValidationError>[];
+
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: "form-input-number",
   templateUrl: "form-input-number.component.html",
 })
 export class FormInputNumberComponent implements FormValueControl<number> {
-  readonly errors = input<readonly WithOptionalFieldTree<ValidationError>[]>(
-    [],
-  );
-
-  readonly displayValue = linkedSignal(() => this.value().toString());
+  readonly errors = input<Errors>([]);
   readonly id = nanoid();
   readonly label = input<string>();
   readonly invalid = input<boolean>(false);
