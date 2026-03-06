@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BaseIssue, BaseSchema, InferOutput, safeParse } from "valibot";
+import { safeParse, type GenericSchema, type InferOutput } from "valibot";
 
 type Cached = {
   expires: number;
@@ -14,7 +14,7 @@ export class CachingService {
 
   get<TInput, TOutput>(
     key: string,
-    schema: BaseSchema<TInput, TOutput, BaseIssue<unknown>>,
+    schema: GenericSchema<TInput, TOutput>,
   ): InferOutput<typeof schema> | undefined {
     const cached = this.#cache.get(key);
     if (!cached) {
