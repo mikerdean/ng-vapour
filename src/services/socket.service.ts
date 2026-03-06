@@ -25,9 +25,9 @@ import {
   requestResponseMap,
   RequestResponseMap,
 } from "@vapour/schema/map";
-import { HostService } from "@vapour/services/host.service";
 import { LoggingService } from "@vapour/services/logging.service";
 import { toError } from "@vapour/shared/error";
+import { HostState } from "@vapour/state/host.state";
 
 export type ConnectionState = "connected" | "connecting" | "disconnected";
 export type EventRpcListener = (message: unknown) => void;
@@ -36,7 +36,7 @@ export type Unsubscribe = () => void;
 
 @Injectable({ providedIn: "root" })
 export class SocketService implements OnDestroy {
-  readonly #hostService = inject(HostService);
+  readonly #hostState = inject(HostState);
   readonly #loggingService = inject(LoggingService);
 
   readonly #notifications = new Map<
@@ -53,7 +53,7 @@ export class SocketService implements OnDestroy {
   readonly timeout = 5000;
 
   readonly #socketEffect = effect(() => {
-    const url = this.#hostService.websocketUrl();
+    const url = this.#hostState.websocketUrl();
     this.#attempts();
 
     if (this.#socket) {

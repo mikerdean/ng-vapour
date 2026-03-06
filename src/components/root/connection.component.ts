@@ -18,9 +18,9 @@ import { FormButtonComponent } from "@vapour/components/form/form-button.compone
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { AppbarComponent } from "@vapour/components/navigation/app-bar.component";
 import { NavigationBarComponent } from "@vapour/components/navigation/navigation-bar.component";
-import { HostService } from "@vapour/services/host.service";
 import { SocketService } from "@vapour/services/socket.service";
 import { translate } from "@vapour/signals/translate";
+import { HostState } from "@vapour/state/host.state";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,7 +39,7 @@ import { translate } from "@vapour/signals/translate";
   templateUrl: "connection.component.html",
 })
 export class ConnectionComponent {
-  readonly #hostService = inject(HostService);
+  readonly #hostState = inject(HostState);
   readonly #socketService = inject(SocketService);
 
   readonly connectionState = this.#socketService.connectionState;
@@ -71,12 +71,12 @@ export class ConnectionComponent {
     {
       header: this.translations.hostname(),
       description:
-        this.#hostService.host()?.hostname || this.translations.unknown(),
+        this.#hostState.host()?.hostname || this.translations.unknown(),
     },
     {
       header: this.translations.port(),
       description:
-        this.#hostService.host()?.tcpPort.toString() ||
+        this.#hostState.host()?.tcpPort.toString() ||
         this.translations.unknown(),
     },
   ]);
@@ -86,7 +86,7 @@ export class ConnectionComponent {
   };
 
   clear() {
-    this.#hostService.clear();
+    this.#hostState.clear();
   }
 
   reconnect() {

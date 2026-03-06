@@ -5,9 +5,9 @@ import {
   input,
 } from "@angular/core";
 
-import { HostService } from "@vapour/services/host.service";
 import { imageUrl } from "@vapour/signals/images";
 import { mediaQuery } from "@vapour/signals/mediaQuery";
+import { HostState } from "@vapour/state/host.state";
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,11 +15,11 @@ import { mediaQuery } from "@vapour/signals/mediaQuery";
   templateUrl: "fanart.component.html",
 })
 export class FanartComponent {
-  readonly #hostService = inject(HostService);
+  readonly #hostState = inject(HostState);
 
   readonly uri = input<string>();
 
-  readonly fanartUrl = imageUrl(this.#hostService.httpUrl, this.uri);
+  readonly fanartUrl = imageUrl(this.#hostState.httpUrl, this.uri);
   readonly isMinWidth = mediaQuery("(min-width: 640px)");
 
   onImageLoaded(element: HTMLImageElement) {

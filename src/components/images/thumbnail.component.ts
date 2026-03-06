@@ -24,9 +24,9 @@ import {
   FontawesomeIconComponent,
   type FontAwesomeIcon,
 } from "@vapour/components/images/fontawesome-icon.component";
-import { HostService } from "@vapour/services/host.service";
 import { imageUrl } from "@vapour/signals/images";
 import { translate } from "@vapour/signals/translate";
+import { HostState } from "@vapour/state/host.state";
 
 export type ThumbnailType =
   | "actor"
@@ -52,14 +52,14 @@ export type ThumbnailType =
   templateUrl: "thumbnail.component.html",
 })
 export class ThumbnailComponent {
-  readonly #hostService = inject(HostService);
+  readonly #hostState = inject(HostState);
 
   readonly alt = input<string>();
   readonly played = input<boolean>();
   readonly type = input.required<ThumbnailType>();
   readonly uri = input<string>();
 
-  readonly thumbnailUrl = imageUrl(this.#hostService.httpUrl, this.uri);
+  readonly thumbnailUrl = imageUrl(this.#hostState.httpUrl, this.uri);
 
   readonly icons = {
     fallback: computed<FontAwesomeIcon>(() => {

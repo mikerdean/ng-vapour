@@ -19,8 +19,8 @@ import { HeadingComponent } from "@vapour/components/core/heading.component";
 import { FormButtonComponent } from "@vapour/components/form/form-button.component";
 import { FormInputStringComponent } from "@vapour/components/form/form-input-string.component";
 import { ConnectionComponent } from "@vapour/components/root/connection.component";
-import { HostService } from "@vapour/services/host.service";
 import { translate } from "@vapour/signals/translate";
+import { HostState } from "@vapour/state/host.state";
 
 import { FormInputNumberComponent } from "../form/form-input-number";
 
@@ -39,7 +39,7 @@ import { FormInputNumberComponent } from "../form/form-input-number";
   templateUrl: "host.component.html",
 })
 export class HostComponent {
-  readonly #hostService = inject(HostService);
+  readonly #hostState = inject(HostState);
 
   readonly translations = translate({
     title: "host.title",
@@ -49,7 +49,7 @@ export class HostComponent {
     save: "common.save",
   });
 
-  readonly hasValidHost = computed(() => Boolean(this.#hostService.host()));
+  readonly hasValidHost = computed(() => Boolean(this.#hostState.host()));
 
   readonly host = signal({
     hostname: window.location.hostname,
@@ -73,7 +73,7 @@ export class HostComponent {
     event.preventDefault();
 
     void submit(this.hostForm, () => {
-      this.#hostService.update(this.host());
+      this.#hostState.update(this.host());
       return Promise.resolve();
     });
   }

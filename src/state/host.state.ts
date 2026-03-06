@@ -7,7 +7,7 @@ export type Host = {
 };
 
 @Injectable({ providedIn: "root" })
-export class HostService {
+export class HostState {
   readonly #host = signal<Host | undefined>({
     hostname: window.location.hostname,
     httpPort: 8080,
