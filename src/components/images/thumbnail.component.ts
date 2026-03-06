@@ -1,11 +1,11 @@
-import { AsyncPipe, NgTemplateOutlet } from "@angular/common";
+import { NgTemplateOutlet } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
 } from "@angular/core";
-import { toObservable } from "@angular/core/rxjs-interop";
 import {
   faBolt,
   faCheckCircle,
@@ -25,7 +25,7 @@ import {
   type FontAwesomeIcon,
 } from "@vapour/components/images/fontawesome-icon.component";
 import { HostService } from "@vapour/services/host.service";
-import { toImageUrl } from "@vapour/shared/images";
+import { imageUrl } from "@vapour/signals/images";
 import { translate } from "@vapour/signals/translate";
 
 export type ThumbnailType =
@@ -47,22 +47,19 @@ export type ThumbnailType =
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, FontawesomeIconComponent, NgTemplateOutlet],
+  imports: [FontawesomeIconComponent, NgTemplateOutlet],
   selector: "thumbnail",
   templateUrl: "thumbnail.component.html",
 })
 export class ThumbnailComponent {
-  constructor(private hostService: HostService) {}
+  readonly #hostService = inject(HostService);
 
   readonly alt = input<string>();
   readonly played = input<boolean>();
   readonly type = input.required<ThumbnailType>();
   readonly uri = input<string>();
 
-  readonly imageUrl$ = toImageUrl(
-    toObservable(this.hostService.httpUrl),
-    toObservable(this.uri),
-  );
+  readonly thumbnailUrl = imageUrl(this.#hostService.httpUrl, this.uri);
 
   readonly icons = {
     fallback: computed<FontAwesomeIcon>(() => {

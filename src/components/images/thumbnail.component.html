@@ -1,9 +1,9 @@
-@if (imageUrl$ | async; as imageUrl) {
+@if (thumbnailUrl(); as thumbnailUrl) {
   <div class="relative">
     <img
       [alt]="alt()"
       class="h-auto w-full opacity-0 transition-opacity duration-300"
-      [src]="imageUrl"
+      [src]="thumbnailUrl"
       (load)="onImageLoaded(thumbnail)"
       #thumbnail
     />
