@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
 } from "@angular/core";
 import { Router } from "@angular/router";
@@ -33,10 +34,8 @@ const defaultButtonClasses = [
   templateUrl: "pagination.component.html",
 })
 export class PaginationComponent {
-  constructor(
-    private configurationService: ConfigurationService,
-    private router: Router,
-  ) {}
+  readonly #configurationService = inject(ConfigurationService);
+  readonly #router = inject(Router);
 
   readonly currentPage = input.required<number>();
   readonly maxPages = input<number>();
@@ -69,7 +68,7 @@ export class PaginationComponent {
   readonly previousPage = computed(() => this.currentPage() - 1);
 
   readonly totalPages = computed(() =>
-    Math.ceil(this.total() / this.configurationService.pageSize),
+    Math.ceil(this.total() / this.#configurationService.pageSize),
   );
 
   readonly translations = translate({
@@ -133,6 +132,6 @@ export class PaginationComponent {
   }
 
   changePage(page: number): void {
-    void this.router.navigate([], { queryParams: { page } });
+    void this.#router.navigate([], { queryParams: { page } });
   }
 }
