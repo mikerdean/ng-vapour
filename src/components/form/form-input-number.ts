@@ -8,7 +8,7 @@ import {
 import {
   type FormValueControl,
   type ValidationError,
-  type WithOptionalField,
+  type WithOptionalFieldTree,
 } from "@angular/forms/signals";
 import { nanoid } from "nanoid";
 
@@ -18,8 +18,11 @@ import { nanoid } from "nanoid";
   templateUrl: "form-input-number.component.html",
 })
 export class FormInputNumberComponent implements FormValueControl<number> {
+  readonly errors = input<readonly WithOptionalFieldTree<ValidationError>[]>(
+    [],
+  );
+
   readonly displayValue = linkedSignal(() => this.value().toString());
-  readonly errors = input<readonly WithOptionalField<ValidationError>[]>([]);
   readonly id = nanoid();
   readonly label = input<string>();
   readonly invalid = input<boolean>(false);

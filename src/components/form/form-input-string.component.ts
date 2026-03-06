@@ -7,7 +7,7 @@ import {
 import {
   type FormValueControl,
   type ValidationError,
-  type WithOptionalField,
+  type WithOptionalFieldTree,
 } from "@angular/forms/signals";
 import { nanoid } from "nanoid";
 
@@ -19,7 +19,10 @@ export type FormStringType = "email" | "password" | "text" | "url";
   templateUrl: "form-input-string.component.html",
 })
 export class FormInputStringComponent implements FormValueControl<string> {
-  readonly errors = input<readonly WithOptionalField<ValidationError>[]>([]);
+  readonly errors = input<readonly WithOptionalFieldTree<ValidationError>[]>(
+    [],
+  );
+
   readonly id = nanoid();
   readonly label = input<string>();
   readonly invalid = input<boolean>(false);
