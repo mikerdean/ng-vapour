@@ -1,9 +1,4 @@
-import {
-  assertInInjectionContext,
-  computed,
-  inject,
-  Signal,
-} from "@angular/core";
+import { computed, inject, Signal } from "@angular/core";
 import type { ParseKeys, TOptions } from "i18next";
 
 import { TranslationState } from "@vapour/state/translation.state";
@@ -17,8 +12,6 @@ type TranslationOutput<T> = {
 export function translate<T extends TranslationInput>(
   translations: T,
 ): TranslationOutput<T> {
-  assertInInjectionContext(translate);
-
   const translationState = inject(TranslationState);
 
   const output: Record<string, Signal<string>> = {};

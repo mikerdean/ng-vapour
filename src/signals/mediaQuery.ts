@@ -1,8 +1,6 @@
-import { assertInInjectionContext, signal, type Signal } from "@angular/core";
+import { signal, type Signal } from "@angular/core";
 
 export function mediaQuery(query: string): Signal<boolean> {
-  assertInInjectionContext(mediaQuery);
-
   const matchMedia = window.matchMedia(query);
   const mediaQuerySignal = signal(matchMedia.matches);
 
