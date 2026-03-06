@@ -1,7 +1,11 @@
-import { AsyncPipe } from "@angular/common";
-import { ChangeDetectionStrategy, Component, input } from "@angular/core";
-import { toObservable } from "@angular/core/rxjs-interop";
-import { combineLatest, interval, map, startWith } from "rxjs";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  input,
+  signal,
+} from "@angular/core";
 
 import type { Time } from "@vapour/schema/base";
 
@@ -11,7 +15,6 @@ const getTotalSeconds = ({ hours, minutes, seconds }: Time): number => {
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe],
   selector: "progress-bar",
   templateUrl: "progress-bar.component.html",
 })
@@ -20,17 +23,31 @@ export class ProgressBarComponent {
   readonly start = input.required<Time>();
   readonly total = input.required<Time>();
 
-  readonly percentage$ = combineLatest([
-    toObservable(this.speed),
-    toObservable(this.start),
-    toObservable(this.total),
-    interval(1000).pipe(startWith(0)),
-  ]).pipe(
-    map(([, start, total, offset]) => {
-      const percentage =
-        ((getTotalSeconds(start) + offset + 1) / getTotalSeconds(total)) * 100;
+  readonly offset = signal(0);
 
-      return `${percentage.toString()}%`;
-    }),
-  );
+  readonly percentage = computed(() => {
+    const offset = this.offset();
+    const start = this.start();
+    const total = this.total();
+
+    const percentage = Math.min(
+      ((getTotalSeconds(start) + offset + 1) / getTotalSeconds(total)) * 100,
+      100,
+    );
+
+    return `${percentage.toString()}%`;
+  });
+
+  readonly offsetEffect = effect((onCleanup) => {
+    const speed = this.speed();
+    const timeout = 1000 / speed;
+
+    const timer = setInterval(() => {
+      this.offset.update((i) => i + 1);
+    }, timeout);
+
+    onCleanup(() => {
+      clearInterval(timer);
+    });
+  });
 }
