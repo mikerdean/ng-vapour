@@ -1,12 +1,14 @@
 import {
   fallback,
   integer,
+  literal,
   minLength,
   minValue,
   object,
   pipe,
   string,
   transform,
+  union,
   unknown,
 } from "valibot";
 
@@ -32,6 +34,22 @@ export const artistValidator = object({
 
 export const genreValidator = object({
   genre: pipe(string(), minLength(1)),
+});
+
+export const gridValidator = object({
+  action: union([
+    literal("all"),
+    literal("recent"),
+    literal("albums"),
+    literal("artists"),
+    literal("seasons"),
+  ]),
+  type: union([
+    literal("addons"),
+    literal("music"),
+    literal("movies"),
+    literal("tv"),
+  ]),
 });
 
 export const movieValidator = object({
