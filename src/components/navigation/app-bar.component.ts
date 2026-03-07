@@ -59,5 +59,6 @@ export class AppbarComponent {
     profile: "appbar.buttons.profile",
     remote: "common.remote",
     search: "common.search",
+    title: "titles.main",
   });
 }
