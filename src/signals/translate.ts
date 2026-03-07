@@ -8,7 +8,7 @@ import type { ParseKeys, TOptions } from "i18next";
 
 import { TranslationState } from "@vapour/state/translation.state";
 
-type TranslationInput = Record<string, ParseKeys | [ParseKeys, TOptions]>;
+type TranslationInput = Record<string, ParseKeys | [ParseKeys, () => TOptions]>;
 
 type TranslationOutput<T> = {
   [Property in keyof T]: Signal<string>;
@@ -24,13 +24,15 @@ export function translate<T extends TranslationInput>(
   const output: Record<string, Signal<string>> = {};
 
   for (const [key, translation] of Object.entries(translations)) {
-    const tkey = typeof translation === "string" ? translation : translation[0];
-
-    const options =
-      typeof translation === "string" ? undefined : translation[1];
-
     const signal = computed(() => {
+      const tkey =
+        typeof translation === "string" ? translation : translation[0];
+
+      const options =
+        typeof translation === "string" ? undefined : translation[1]();
+
       const t = translationState.t();
+
       if (!t) {
         return "__translation_failed__";
       }

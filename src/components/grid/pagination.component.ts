@@ -74,9 +74,9 @@ export class PaginationComponent {
   readonly translations = translate({
     change: "pagination.change",
     first: "pagination.first",
-    last: ["pagination.last", { page: this.totalPages() }],
-    next: ["pagination.next", { page: this.nextPage() }],
-    previous: ["pagination.previous", { page: this.previousPage() }],
+    last: ["pagination.last", () => ({ page: this.totalPages() })],
+    next: ["pagination.next", () => ({ page: this.nextPage() })],
+    previous: ["pagination.previous", () => ({ page: this.previousPage() })],
   });
 
   readonly pages = computed(() => {
