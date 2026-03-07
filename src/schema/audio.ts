@@ -65,7 +65,7 @@ const audioDetailsAlbum = object({
   albumid: id(),
   albumduration: optional(number()),
   albumlabel: optional(string()),
-  albumstatus: string(),
+  albumstatus: optional(string()),
   compilation: optional(boolean()),
   description: optional(string()),
   isboxset: optional(boolean()),
