@@ -77,7 +77,6 @@ const addonContent = union([
 ]);
 
 const addonDetails = object({
-  ...itemDetailsBase.entries,
   addonid: string(),
   author: optional(string()),
   broken: optional(boolean()),

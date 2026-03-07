@@ -1,4 +1,4 @@
-@if (data(); as gridData) {
+@if (grid.value(); as gridData) {
   @if (gridData.limits) {
     <pagination
       [currentPage]="gridData.currentPage"
@@ -33,7 +33,7 @@
                 {{ item.label }}
               </div>
               @for (detail of item.details; track $index) {
-                @if (detail !== undefined && detail !== null) {
+                @if (detail) {
                   <div class="mt-1 line-clamp-1 text-xs text-slate-400">
                     {{ detail }}
                   </div>
