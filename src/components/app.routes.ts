@@ -7,8 +7,12 @@ import {
   recentlyAddedMoviesResolver,
 } from "@vapour/resolvers/movies.resolvers";
 
+import { socketGuard } from "./guards/socket.guard";
+
 export const routes: Route[] = [
   {
+    canActivate: [socketGuard],
+    canActivateChild: [socketGuard],
     path: "movies",
     loadComponent: () =>
       import("./movies/movies.component").then((x) => x.MoviesComponent),
@@ -53,6 +57,7 @@ export const routes: Route[] = [
     ],
   },
   {
+    canActivate: [socketGuard],
     path: "settings",
     loadComponent: () =>
       import("./settings/settings.component").then((x) => x.SettingsComponent),
