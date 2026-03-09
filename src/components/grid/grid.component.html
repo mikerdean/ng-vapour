@@ -1,4 +1,4 @@
-@if (grid.value(); as gridData) {
+@if (grid(); as gridData) {
   @if (gridData.limits) {
     <pagination
       [currentPage]="gridData.currentPage"
@@ -20,7 +20,7 @@
               <div class="flex h-full items-center">
                 <thumbnail
                   [played]="item.played"
-                  [type]="thumbnailType()"
+                  [type]="gridData.thumbnailType"
                   [uri]="item.thumbnail"
                 />
               </div>

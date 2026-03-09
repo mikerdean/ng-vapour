@@ -5,6 +5,7 @@ import {
 import {
   provideRouter,
   TitleStrategy,
+  withComponentInputBinding,
   withHashLocation,
   withInMemoryScrolling,
 } from "@angular/router";
@@ -18,6 +19,7 @@ export const appConfig: ApplicationConfig = {
       routes,
       withHashLocation(),
       withInMemoryScrolling({ scrollPositionRestoration: "enabled" }),
+      withComponentInputBinding(),
     ),
     provideZonelessChangeDetection(),
     {

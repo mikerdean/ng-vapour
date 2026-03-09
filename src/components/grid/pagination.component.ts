@@ -25,6 +25,7 @@ const defaultButtonClasses = [
   "border-b",
   "border-sky-900",
   "text-slate-300",
+  "cursor-pointer",
 ];
 
 @Component({
