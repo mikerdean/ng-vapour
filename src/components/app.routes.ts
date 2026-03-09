@@ -2,6 +2,9 @@ import { type Route } from "@angular/router";
 
 import { Error404Component } from "@vapour/components/error/error404.component";
 import {
+  movieGenresResolver,
+  moviesByGenreResolver,
+  moviesBySetResolver,
   movieSetsResolver,
   moviesResolver,
   recentlyAddedMoviesResolver,
@@ -36,11 +39,38 @@ export const routes: Route[] = [
         runGuardsAndResolvers: "paramsOrQueryParamsChange",
       },
       {
+        path: "sets/:movieSetId",
+        loadComponent: () =>
+          import("./grid/grid.component").then((x) => x.GridComponent),
+        resolve: {
+          grid: moviesBySetResolver,
+        },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange",
+      },
+      {
         path: "sets",
         loadComponent: () =>
           import("./grid/grid.component").then((x) => x.GridComponent),
         resolve: {
           grid: movieSetsResolver,
+        },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange",
+      },
+      {
+        path: "genres/:genre",
+        loadComponent: () =>
+          import("./grid/grid.component").then((x) => x.GridComponent),
+        resolve: {
+          grid: moviesByGenreResolver,
+        },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange",
+      },
+      {
+        path: "genres",
+        loadComponent: () =>
+          import("./grid/grid.component").then((x) => x.GridComponent),
+        resolve: {
+          grid: movieGenresResolver,
         },
         runGuardsAndResolvers: "paramsOrQueryParamsChange",
       },
