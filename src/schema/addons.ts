@@ -10,7 +10,7 @@ import {
   type InferOutput,
 } from "valibot";
 
-import { itemDetailsBase, kodiLimits, kodiLimitsWithTotal } from "./base";
+import { kodiLimits, kodiLimitsWithTotal } from "./base";
 import { properties } from "./utils";
 
 const addonDependency = object({
