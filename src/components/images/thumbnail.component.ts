@@ -3,8 +3,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  ElementRef,
   inject,
   input,
+  OnChanges,
+  SimpleChanges,
+  viewChild,
 } from "@angular/core";
 import {
   faBolt,
@@ -51,13 +55,16 @@ export type ThumbnailType =
   selector: "thumbnail",
   templateUrl: "thumbnail.component.html",
 })
-export class ThumbnailComponent {
+export class ThumbnailComponent implements OnChanges {
   readonly #hostState = inject(HostState);
 
   readonly alt = input<string>();
   readonly played = input<boolean>();
   readonly type = input.required<ThumbnailType>();
   readonly uri = input<string>();
+
+  readonly thumbnailElement =
+    viewChild.required<ElementRef<HTMLImageElement>>("thumbnail");
 
   readonly thumbnailUrl = imageUrl(this.#hostState.httpUrl, this.uri);
 
@@ -98,7 +105,19 @@ export class ThumbnailComponent {
     played: "common.played",
   });
 
-  onImageLoaded(element: HTMLImageElement) {
-    element.classList.replace("opacity-0", "opacity-100");
+  ngOnChanges(changes: SimpleChanges): void {
+    if ("uri" in changes && !changes["uri"].isFirstChange()) {
+      this.thumbnailElement().nativeElement.classList.replace(
+        "opacity-100",
+        "opacity-0",
+      );
+    }
+  }
+
+  onImageLoaded() {
+    this.thumbnailElement().nativeElement.classList.replace(
+      "opacity-0",
+      "opacity-100",
+    );
   }
 }
