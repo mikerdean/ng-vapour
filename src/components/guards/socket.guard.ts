@@ -3,8 +3,6 @@ import { RedirectCommand, UrlTree } from "@angular/router";
 
 import { SocketService } from "@vapour/services/socket.service";
 
-const interval = 500;
-
 export async function socketGuard(): Promise<
   boolean | UrlTree | RedirectCommand
 > {
@@ -17,16 +15,16 @@ export async function socketGuard(): Promise<
     return true;
   }
 
-  let waited = 0;
+  let attempts = 0;
 
-  while (waited < 10_000) {
-    await delay(interval);
+  while (attempts < 5) {
+    await delay(500);
 
     if (isConnected()) {
       return true;
     }
 
-    waited += interval;
+    attempts += 1;
   }
 
   return false;
