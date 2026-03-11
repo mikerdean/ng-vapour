@@ -106,7 +106,7 @@ const audioDetailsArtist = object({
   sortname: optional(string()),
   sourceid: optional(array(id())),
   style: optional(array(string())),
-  type: string(),
+  type: optional(string()),
   yearsactive: optional(array(string())),
 });
 
