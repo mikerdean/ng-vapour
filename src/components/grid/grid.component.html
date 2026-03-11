@@ -1,5 +1,5 @@
 @if (grid(); as gridData) {
-  @if (gridData.limits) {
+  @if (gridData.limits.total) {
     <pagination
       [currentPage]="gridData.currentPage"
       [total]="gridData.limits.total"
@@ -32,11 +32,9 @@
               {{ item.label }}
             </div>
             @for (detail of item.details; track $index) {
-              @if (detail) {
-                <div class="mt-1 line-clamp-1 text-xs text-slate-400">
-                  {{ detail }}
-                </div>
-              }
+              <div class="mt-1 line-clamp-1 text-xs text-slate-400">
+                {{ detail }}
+              </div>
             }
           </div>
           <div>
@@ -47,6 +45,8 @@
           </div>
         </a>
       </li>
+    } @empty {
+      <li>[ no results message goes here]</li>
     }
   </ol>
 }

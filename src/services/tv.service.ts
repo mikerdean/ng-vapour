@@ -132,7 +132,14 @@ export class TvService {
   getTvShows(page = 1) {
     return this.socketService.send("VideoLibrary.GetTVShows", {
       limits: this.configurationService.getPageLimits(page),
-      properties: ["art", "episode", "title", "watchedepisodes", "year"],
+      properties: [
+        "art",
+        "episode",
+        "season",
+        "title",
+        "watchedepisodes",
+        "year",
+      ],
       sort: { method: "title", order: "ascending" },
     });
   }

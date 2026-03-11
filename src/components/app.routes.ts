@@ -17,6 +17,10 @@ import {
   musicGenresResolver,
   recentlyAddedAlbumsResolver,
 } from "@vapour/resolvers/music.resolvers";
+import {
+  getTvShowsInProgressResolver,
+  getTvShowsResolver,
+} from "@vapour/resolvers/tv.resolvers";
 
 import { socketGuard } from "./guards/socket.guard";
 
@@ -157,6 +161,37 @@ export const routes: Route[] = [
           import("./grid/grid.component").then((x) => x.GridComponent),
         resolve: {
           grid: musicGenresResolver,
+        },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange",
+      },
+      {
+        path: "",
+        pathMatch: "full",
+        redirectTo: "recent",
+      },
+    ],
+  },
+  {
+    canActivate: [socketGuard],
+    canActivateChild: [socketGuard],
+    path: "tv",
+    loadComponent: () => import("./tv/tv.component").then((x) => x.TvComponent),
+    children: [
+      {
+        path: "recent",
+        loadComponent: () =>
+          import("./grid/grid.component").then((x) => x.GridComponent),
+        resolve: {
+          grid: getTvShowsInProgressResolver,
+        },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange",
+      },
+      {
+        path: "titles",
+        loadComponent: () =>
+          import("./grid/grid.component").then((x) => x.GridComponent),
+        resolve: {
+          grid: getTvShowsResolver,
         },
         runGuardsAndResolvers: "paramsOrQueryParamsChange",
       },
