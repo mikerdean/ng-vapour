@@ -1,5 +1,5 @@
 import { assertInInjectionContext, inject } from "@angular/core";
-import { ActivatedRouteSnapshot } from "@angular/router";
+import { ActivatedRouteSnapshot, Router } from "@angular/router";
 import { parse } from "valibot";
 
 import type {
@@ -17,6 +17,8 @@ import {
   genreValidator,
   pageValidator,
 } from "@vapour/validators";
+
+import { getDetails } from "./resolver-utils";
 
 export async function recentlyAddedAlbumsResolver(): Promise<GridData> {
   assertInInjectionContext(recentlyAddedAlbumsResolver);
@@ -57,6 +59,8 @@ export async function albumsByArtistResolver(
   assertInInjectionContext(albumsByArtistResolver);
 
   const musicService = inject(MusicService);
+  const router = inject(Router);
+
   const params = parse(artistValidator, route.params);
 
   const { artistdetails } = await musicService.getArtistById(params.artistId);
@@ -64,6 +68,10 @@ export async function albumsByArtistResolver(
   const { limits, albums } = await musicService.getAlbumsByAlbumArtist(
     artistdetails.artist,
   );
+
+  if (albums.length === 1) {
+    await router.navigate(["/music", "albums", albums[0].albumid]);
+  }
 
   return {
     currentPage: 1,
@@ -97,6 +105,8 @@ export async function artistsByGenreResolver(
   assertInInjectionContext(artistsByGenreResolver);
 
   const musicService = inject(MusicService);
+  const router = inject(Router);
+
   const params = parse(genreValidator, route.params);
   const query = parse(pageValidator, route.queryParams);
 
@@ -104,6 +114,10 @@ export async function artistsByGenreResolver(
     params.genre,
     query.page,
   );
+
+  if (artists.length === 1) {
+    await router.navigate(["/music", "artists", artists[0].artistid]);
+  }
 
   return {
     currentPage: query.page,
@@ -134,7 +148,7 @@ export async function musicGenresResolver(
 function mapAlbumToGridItem(album: AudioDetailsAlbum): GridItem {
   return {
     id: album.albumid,
-    details: [],
+    details: getDetails(album.artist?.join(", "), album.year),
     label: album.title ?? album.label,
     thumbnail: album.art?.thumb ?? album.thumbnail,
     url: `/music/albums/${album.albumid.toString()}`,
@@ -144,7 +158,7 @@ function mapAlbumToGridItem(album: AudioDetailsAlbum): GridItem {
 function mapArtistToGridItem(artist: AudioDetailsArtist): GridItem {
   return {
     id: artist.artistid,
-    details: [],
+    details: [artist.songgenres?.map((x) => x.title).join(", ")],
     label: artist.label,
     thumbnail: artist.thumbnail,
     url: `/music/artists/${artist.artistid.toString()}`,

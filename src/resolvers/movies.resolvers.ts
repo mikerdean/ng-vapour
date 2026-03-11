@@ -1,5 +1,5 @@
 import { assertInInjectionContext, inject } from "@angular/core";
-import type { ActivatedRouteSnapshot } from "@angular/router";
+import { Router, type ActivatedRouteSnapshot } from "@angular/router";
 import { parse } from "valibot";
 
 import type {
@@ -9,11 +9,14 @@ import type {
 import { LibraryDetailsGenre } from "@vapour/schema/library";
 import { VideoDetailsMovie, VideoDetailsMovieSet } from "@vapour/schema/video";
 import { MoviesService } from "@vapour/services/movies.service";
+import { getVideoDuration } from "@vapour/shared/duration";
 import {
   genreValidator,
   movieSetValidator,
   pageValidator,
 } from "@vapour/validators";
+
+import { getDetails } from "./resolver-utils";
 
 export async function recentlyAddedMoviesResolver(): Promise<GridData> {
   assertInInjectionContext(recentlyAddedMoviesResolver);
@@ -90,9 +93,15 @@ export async function moviesBySetResolver(
   assertInInjectionContext(moviesBySetResolver);
 
   const moviesService = inject(MoviesService);
+  const router = inject(Router);
+
   const params = parse(movieSetValidator, route.params);
 
   const { setdetails } = await moviesService.getMovieSetById(params.movieSetId);
+
+  if (setdetails.movies.length === 1) {
+    await router.navigate(["/movies", setdetails.movies[0].movieid]);
+  }
 
   return {
     currentPage: 1,
@@ -112,6 +121,8 @@ export async function moviesByGenreResolver(
   assertInInjectionContext(moviesByGenreResolver);
 
   const moviesService = inject(MoviesService);
+  const router = inject(Router);
+
   const params = parse(genreValidator, route.params);
   const query = parse(pageValidator, route.queryParams);
 
@@ -119,6 +130,10 @@ export async function moviesByGenreResolver(
     params.genre,
     query.page,
   );
+
+  if (movies.length === 1) {
+    await router.navigate(["/movies", movies[0].movieid]);
+  }
 
   return {
     currentPage: query.page,
@@ -131,8 +146,9 @@ export async function moviesByGenreResolver(
 function mapMovieToGridItem(movie: VideoDetailsMovie): GridItem {
   return {
     id: movie.movieid,
-    details: [],
+    details: getDetails(movie.year, getVideoDuration(movie.runtime ?? 0)),
     label: movie.title ?? movie.label,
+    played: (movie.playcount ?? 0) > 0,
     thumbnail: movie.art?.poster ?? movie.thumbnail,
     url: `/movies/${movie.movieid.toString()}`,
   };
@@ -143,6 +159,7 @@ function mapMovieSetToGridItem(movieset: VideoDetailsMovieSet): GridItem {
     id: movieset.setid,
     details: [],
     label: movieset.title ?? movieset.label,
+    played: (movieset.playcount ?? 0) > 0,
     thumbnail: movieset.art?.poster ?? movieset.thumbnail,
     url: `/movies/sets/${movieset.setid.toString()}`,
   };
