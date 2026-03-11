@@ -9,6 +9,14 @@ import {
   moviesResolver,
   recentlyAddedMoviesResolver,
 } from "@vapour/resolvers/movies.resolvers";
+import {
+  albumsByArtistResolver,
+  albumsResolver,
+  artistsByGenreResolver,
+  artistsResolver,
+  musicGenresResolver,
+  recentlyAddedAlbumsResolver,
+} from "@vapour/resolvers/music.resolvers";
 
 import { socketGuard } from "./guards/socket.guard";
 
@@ -78,6 +86,79 @@ export const routes: Route[] = [
         path: ":movieId",
         loadComponent: () =>
           import("./movies/movie.component").then((x) => x.MovieComponent),
+      },
+      {
+        path: "",
+        pathMatch: "full",
+        redirectTo: "recent",
+      },
+    ],
+  },
+  {
+    canActivate: [socketGuard],
+    canActivateChild: [socketGuard],
+    path: "music",
+    loadComponent: () =>
+      import("./music/music.component").then((x) => x.MusicComponent),
+    children: [
+      {
+        path: "recent",
+        loadComponent: () =>
+          import("./grid/grid.component").then((x) => x.GridComponent),
+        resolve: {
+          grid: recentlyAddedAlbumsResolver,
+        },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange",
+      },
+      {
+        path: "albums/:albumId",
+        loadComponent: () =>
+          import("./music/album.component").then((x) => x.AlbumComponent),
+      },
+      {
+        path: "albums",
+        loadComponent: () =>
+          import("./grid/grid.component").then((x) => x.GridComponent),
+        resolve: {
+          grid: albumsResolver,
+        },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange",
+      },
+      {
+        path: "artists/:artistId",
+        loadComponent: () =>
+          import("./grid/grid.component").then((x) => x.GridComponent),
+        resolve: {
+          grid: albumsByArtistResolver,
+        },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange",
+      },
+      {
+        path: "artists",
+        loadComponent: () =>
+          import("./grid/grid.component").then((x) => x.GridComponent),
+        resolve: {
+          grid: artistsResolver,
+        },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange",
+      },
+      {
+        path: "genres/:genre",
+        loadComponent: () =>
+          import("./grid/grid.component").then((x) => x.GridComponent),
+        resolve: {
+          grid: artistsByGenreResolver,
+        },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange",
+      },
+      {
+        path: "genres",
+        loadComponent: () =>
+          import("./grid/grid.component").then((x) => x.GridComponent),
+        resolve: {
+          grid: musicGenresResolver,
+        },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange",
       },
       {
         path: "",
