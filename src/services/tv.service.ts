@@ -89,6 +89,7 @@ export class TvService {
         "episode",
         "season",
         "title",
+        "tvshowid",
         "userrating",
         "watchedepisodes",
       ],

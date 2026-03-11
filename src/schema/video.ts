@@ -160,7 +160,7 @@ const videoDetailsSeason = object({
   seasonid: id(),
   showtitle: optional(string()),
   title: optional(string()),
-  tvshowid: id(),
+  tvshowid: optional(id()),
   userrating: optional(int()),
   watchedepisodes: int(),
 });

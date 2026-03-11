@@ -6,9 +6,12 @@ import type {
   GridData,
   GridItem,
 } from "@vapour/components/grid/grid.component";
-import { VideoDetailsTVShow } from "@vapour/schema/video";
+import {
+  VideoDetailsTVShow,
+  type VideoDetailsSeason,
+} from "@vapour/schema/video";
 import { TvService } from "@vapour/services/tv.service";
-import { pageValidator } from "@vapour/validators";
+import { pageValidator, tvShowValidator } from "@vapour/validators";
 
 export async function getTvShowsInProgressResolver(): Promise<GridData> {
   assertInInjectionContext(getTvShowsInProgressResolver);
@@ -43,6 +46,26 @@ export async function getTvShowsResolver(
   };
 }
 
+export async function getTvShowSeasonsResolver(
+  route: ActivatedRouteSnapshot,
+): Promise<GridData> {
+  assertInInjectionContext(getTvShowSeasonsResolver);
+
+  const tvService = inject(TvService);
+  const params = parse(tvShowValidator, route.params);
+
+  const { limits, seasons } = await tvService.getSeasonsByTvShowId(
+    params.tvShowId,
+  );
+
+  return {
+    currentPage: 1,
+    items: seasons.map(mapSeasonToGridItem),
+    limits,
+    thumbnailType: "season",
+  };
+}
+
 function mapTvShowToGridItem(tvshow: VideoDetailsTVShow): GridItem {
   return {
     id: tvshow.tvshowid,
@@ -51,5 +74,16 @@ function mapTvShowToGridItem(tvshow: VideoDetailsTVShow): GridItem {
     thumbnail: tvshow.art?.poster ?? tvshow.thumbnail,
     played: tvshow.watchedepisodes === tvshow.episode,
     url: `/tv/${tvshow.tvshowid.toString()}`,
+  };
+}
+
+function mapSeasonToGridItem(season: VideoDetailsSeason): GridItem {
+  return {
+    id: season.seasonid,
+    details: [season.episode],
+    label: season.title ?? season.label,
+    thumbnail: season.art?.poster ?? season.thumbnail,
+    played: season.watchedepisodes === season.episode,
+    url: `/tv/${season.tvshowid?.toString() ?? ""}/seasons/${season.season.toString()}`,
   };
 }

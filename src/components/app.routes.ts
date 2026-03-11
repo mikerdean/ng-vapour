@@ -18,6 +18,7 @@ import {
   recentlyAddedAlbumsResolver,
 } from "@vapour/resolvers/music.resolvers";
 import {
+  getTvShowSeasonsResolver,
   getTvShowsInProgressResolver,
   getTvShowsResolver,
 } from "@vapour/resolvers/tv.resolvers";
@@ -192,6 +193,15 @@ export const routes: Route[] = [
           import("./grid/grid.component").then((x) => x.GridComponent),
         resolve: {
           grid: getTvShowsResolver,
+        },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange",
+      },
+      {
+        path: ":tvShowId",
+        loadComponent: () =>
+          import("./grid/grid.component").then((x) => x.GridComponent),
+        resolve: {
+          grid: getTvShowSeasonsResolver,
         },
         runGuardsAndResolvers: "paramsOrQueryParamsChange",
       },
