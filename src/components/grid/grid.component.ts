@@ -32,7 +32,7 @@ export type GridItem = {
   url: string;
 };
 
-export type GridItemDetail = string | number | boolean | undefined | null;
+export type GridItemDetail = string | number | undefined | null;
 
 export type GridQuery = {
   page: number;
