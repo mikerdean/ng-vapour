@@ -11,57 +11,41 @@
   >
     @for (item of gridData.items; track $index) {
       <li>
-        @if (item) {
-          <a class="group flex items-center" [routerLink]="item.url">
-            <div
-              class="mr-3 w-20 flex-none overflow-hidden rounded-lg border-2 border-cyan-900 transition-colors duration-200 group-hover:border-cyan-500"
-              [class]="tallThumbnail() ? 'h-28' : 'h-20'"
-            >
-              <div class="flex h-full items-center">
-                <thumbnail
-                  [played]="item.played"
-                  [type]="gridData.thumbnailType"
-                  [uri]="item.thumbnail"
-                />
-              </div>
-            </div>
-            <div class="grow">
-              <div
-                class="group-hover:underline group-hover:underline-offset-4"
-                [class]="tallThumbnail() ? 'line-clamp-2' : 'line-clamp-1'"
-              >
-                {{ item.label }}
-              </div>
-              @for (detail of item.details; track $index) {
-                @if (detail) {
-                  <div class="mt-1 line-clamp-1 text-xs text-slate-400">
-                    {{ detail }}
-                  </div>
-                }
-              }
-            </div>
-            <div>
-              <button type="button" class="p-2" (click)="onItemClick($event)">
-                <fa-icon [icon]="icons.options" />
-                <span class="sr-only">Options for {{ item.label }}</span>
-              </button>
-            </div>
-          </a>
-        } @else {
-          <div class="flex flex-row items-center">
-            <div
-              class="mr-3 w-20 flex-none overflow-hidden rounded-lg border-2 border-cyan-900"
-              [class]="tallThumbnail() ? 'h-28' : 'h-20'"
-            >
-              <div class="h-full animate-pulse bg-slate-800"></div>
-            </div>
-            <div class="grow">
-              <div class="mb-4 h-4 animate-pulse rounded-sm bg-slate-800"></div>
-              <div class="mb-4 h-4 animate-pulse rounded-sm bg-slate-800"></div>
-              <div class="h-4 animate-pulse rounded-sm bg-slate-800"></div>
+        <a class="group flex items-center" [routerLink]="item.url">
+          <div
+            class="mr-3 w-20 flex-none overflow-hidden rounded-lg border-2 border-cyan-900 transition-colors duration-200 group-hover:border-cyan-500"
+            [class]="tallThumbnail() ? 'h-28' : 'h-20'"
+          >
+            <div class="flex h-full items-center">
+              <thumbnail
+                [played]="item.played"
+                [type]="gridData.thumbnailType"
+                [uri]="item.thumbnail"
+              />
             </div>
           </div>
-        }
+          <div class="grow">
+            <div
+              class="group-hover:underline group-hover:underline-offset-4"
+              [class]="tallThumbnail() ? 'line-clamp-2' : 'line-clamp-1'"
+            >
+              {{ item.label }}
+            </div>
+            @for (detail of item.details; track $index) {
+              @if (detail) {
+                <div class="mt-1 line-clamp-1 text-xs text-slate-400">
+                  {{ detail }}
+                </div>
+              }
+            }
+          </div>
+          <div>
+            <button type="button" class="p-2" (click)="onItemClick($event)">
+              <fa-icon [icon]="icons.options" />
+              <span class="sr-only">Options for {{ item.label }}</span>
+            </button>
+          </div>
+        </a>
       </li>
     }
   </ol>

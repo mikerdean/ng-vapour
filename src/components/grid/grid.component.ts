@@ -18,7 +18,7 @@ import type { kodiLimitsWithTotal } from "@vapour/schema/base";
 
 export type GridData = {
   currentPage: number;
-  items: (GridItem | null)[];
+  items: GridItem[];
   limits: InferOutput<typeof kodiLimitsWithTotal>;
   thumbnailType: ThumbnailType;
 };
