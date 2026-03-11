@@ -11,7 +11,7 @@ import { translate } from "@vapour/signals/translate";
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MainContentComponent, RouterOutlet, TabsComponent],
-  selector: "movies",
+  selector: "music",
   templateUrl: "music.component.html",
 })
 export class MusicComponent {
