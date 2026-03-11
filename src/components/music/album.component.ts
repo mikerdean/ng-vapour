@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   resource,
 } from "@angular/core";
@@ -10,13 +11,12 @@ import { parse } from "valibot";
 
 import {
   DefinitionListComponent,
-  DefinitionListItem,
+  type DefinitionListItem,
 } from "@vapour/components/core/definition-list.component";
 import { RatingComponent } from "@vapour/components/core/rating.component";
 import { FanartComponent } from "@vapour/components/images/fanart.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
 import { SongListComponent } from "@vapour/components/music/song-list.component";
-import { AudioDetailsAlbum, AudioDetailsSong } from "@vapour/schema/audio";
 import { MusicService } from "@vapour/services/music.service";
 import { getVideoDuration } from "@vapour/shared/duration";
 import { translate } from "@vapour/signals/translate";
@@ -45,6 +45,7 @@ export class AlbumComponent {
       const { albumdetails: album } = await this.#musicService.getAlbumById(
         params.albumId,
       );
+
       const { songs } = await this.#musicService.getSongsByAlbum({
         artist: album.artist,
         album: album.title,
@@ -69,34 +70,45 @@ export class AlbumComponent {
     year: "common.year",
   });
 
-  getAlbumDetails(
-    album: AudioDetailsAlbum,
-    songs: AudioDetailsSong[],
-  ): DefinitionListItem[] {
+  readonly albumDetails = computed<DefinitionListItem[]>(() => {
+    const album = this.album.value();
+    if (!album) {
+      return [];
+    }
+
     return [
       {
         header: this.translations.album(),
-        description: album.label || this.translations.unknown(),
+        description:
+          album.details.title ||
+          album.details.label ||
+          this.translations.unknown(),
       },
       {
         header: this.translations.artist(),
-        description: album.artist?.join(", ") || this.translations.unknown(),
+        description:
+          album.details.artist?.join(", ") || this.translations.unknown(),
       },
       {
         header: this.translations.duration(),
         description:
           getVideoDuration(
-            songs.reduce((total, song) => total + (song.duration || 0), 0),
+            album.songs.reduce(
+              (total, song) => total + (song.duration || 0),
+              0,
+            ),
           ) || this.translations.unknown(),
       },
       {
         header: this.translations.genre(),
-        description: album.genre?.join(", ") || this.translations.unknown(),
+        description:
+          album.details.genre?.join(", ") || this.translations.unknown(),
       },
       {
         header: this.translations.year(),
-        description: album.year?.toString() || this.translations.unknown(),
+        description:
+          album.details.year?.toString() || this.translations.unknown(),
       },
     ];
-  }
+  });
 }

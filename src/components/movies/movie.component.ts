@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   resource,
 } from "@angular/core";
@@ -11,7 +12,7 @@ import { parse } from "valibot";
 
 import {
   DefinitionListComponent,
-  DefinitionListItem,
+  type DefinitionListItem,
 } from "@vapour/components/core/definition-list.component";
 import { RatingComponent } from "@vapour/components/core/rating.component";
 import {
@@ -21,7 +22,6 @@ import {
 import { FanartComponent } from "@vapour/components/images/fanart.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
 import { CastComponent } from "@vapour/components/movies/cast.component";
-import { VideoDetailsMovie } from "@vapour/schema/video";
 import { MoviesService } from "@vapour/services/movies.service";
 import { getVideoDuration } from "@vapour/shared/duration";
 import { translate } from "@vapour/signals/translate";
@@ -84,7 +84,12 @@ export class MovieComponent {
     },
   ];
 
-  getMovieDetails(movie: VideoDetailsMovie): DefinitionListItem[] {
+  readonly movieDetails = computed<DefinitionListItem[]>(() => {
+    const movie = this.movie.value();
+    if (!movie) {
+      return [];
+    }
+
     return [
       {
         header: this.translations.duration(),
@@ -108,5 +113,5 @@ export class MovieComponent {
         description: movie.year?.toString() ?? this.translations.unknown(),
       },
     ];
-  }
+  });
 }
