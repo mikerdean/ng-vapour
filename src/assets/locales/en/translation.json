@@ -131,6 +131,8 @@
     "episodeCount_one": "{{ count }} episode",
     "episodeCount_other": "{{ count }} episodes",
     "season": "Season",
+    "seasonCount_one": "{{ count }} season",
+    "seasonCount_other": "{{ count }} seasons",
     "seasonNumber": "Season {{ season }}",
     "watchedEpisodes_one": "Watched {{ watched }} of {{ count }} episode",
     "watchedEpisodes_other": "Watched {{ watched }} of {{ count }} episodes",
