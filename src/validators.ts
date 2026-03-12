@@ -65,7 +65,8 @@ export const tvShowValidator = object({
 });
 
 export const seasonValidator = object({
-  seasonId: minimumOneInteger,
+  tvShowId: minimumOneInteger,
+  season: minimumOneInteger,
 });
 
 export const episodeValidator = object({

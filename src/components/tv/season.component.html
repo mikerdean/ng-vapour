@@ -6,10 +6,7 @@
     </figure>
     <section class="sm:grow">
       <div class="md:max-w-xl">
-        <definition-list
-          label=""
-          [items]="getSeasonDetails(season.details, season.episodes)"
-        />
+        <definition-list label="" [items]="seasonDetails()" />
         <episode-list [episodes]="season.episodes" />
       </div>
     </section>

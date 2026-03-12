@@ -162,7 +162,7 @@ const videoDetailsSeason = object({
   title: optional(string()),
   tvshowid: optional(id()),
   userrating: optional(int()),
-  watchedepisodes: int(),
+  watchedepisodes: optional(int()),
 });
 
 export type VideoDetailsSeason = InferOutput<typeof videoDetailsSeason>;
@@ -170,7 +170,7 @@ export type VideoDetailsSeason = InferOutput<typeof videoDetailsSeason>;
 const videoDetailsEpisode = object({
   ...videoDetailsFile.entries,
   cast: optional(array(videoCast)),
-  episode: int(),
+  episode: optional(int()),
   episodeid: id(),
   firstaired: optional(string()),
   originaltitle: optional(string()),
@@ -178,7 +178,7 @@ const videoDetailsEpisode = object({
   rating: optional(number()),
   ratings: optional(unknown()),
   season: optional(int()),
-  seasonid: id(),
+  seasonid: optional(id()),
   showtitle: optional(string()),
   specialsortepisode: optional(int()),
   specialsortseason: optional(int()),

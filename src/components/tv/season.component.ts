@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   resource,
 } from "@angular/core";
@@ -15,7 +16,6 @@ import {
 import { FanartComponent } from "@vapour/components/images/fanart.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
 import { EpisodeListComponent } from "@vapour/components/tv/episode-list.component";
-import { VideoDetailsEpisode, VideoDetailsSeason } from "@vapour/schema/video";
 import { TvService } from "@vapour/services/tv.service";
 import { getVideoDuration } from "@vapour/shared/duration";
 import { translate } from "@vapour/signals/translate";
@@ -40,14 +40,18 @@ export class SeasonComponent {
 
   readonly season = resource({
     loader: async ({ params }) => {
-      const { seasondetails: season } = await this.#tvService.getSeasonById(
-        params.seasonId,
-      );
+      const [{ seasons }, { episodes }] = await Promise.all([
+        this.#tvService.getSeasonsByTvShowId(params.tvShowId),
+        this.#tvService.getEpisodeByTvShowSeason(
+          params.tvShowId,
+          params.season,
+        ),
+      ]);
 
-      const { episodes } = await this.#tvService.getEpisodeByTvShowSeason(
-        season.tvshowid,
-        season.season,
-      );
+      const season = seasons.find(({ season }) => season === params.season);
+      if (!season) {
+        throw Error("Season not found");
+      }
 
       return {
         details: season,
@@ -66,25 +70,27 @@ export class SeasonComponent {
     year: "common.year",
   });
 
-  getSeasonDetails(
-    season: VideoDetailsSeason,
-    episodes: VideoDetailsEpisode[],
-  ): DefinitionListItem[] {
+  readonly seasonDetails = computed<DefinitionListItem[]>(() => {
+    const season = this.season.value();
+    if (!season) {
+      return [];
+    }
+
     return [
       {
         header: this.translations.season(),
-        description: season.season.toString(),
+        description: season.details.title ?? season.details.label,
       },
       {
         header: this.translations.duration(),
         description:
           getVideoDuration(
-            episodes.reduce(
+            season.episodes.reduce(
               (total, episode) => total + (episode.runtime || 0),
               0,
             ),
           ) || this.translations.unknown(),
       },
     ];
-  }
+  });
 }

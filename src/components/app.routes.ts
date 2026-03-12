@@ -206,6 +206,11 @@ export const routes: Route[] = [
         runGuardsAndResolvers: "paramsOrQueryParamsChange",
       },
       {
+        path: ":tvShowId/seasons/:season",
+        loadComponent: () =>
+          import("./tv/season.component").then((x) => x.SeasonComponent),
+      },
+      {
         path: "",
         pathMatch: "full",
         redirectTo: "recent",
