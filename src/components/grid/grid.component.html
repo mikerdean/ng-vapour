@@ -32,9 +32,11 @@
               {{ item.label }}
             </div>
             @for (detail of item.details; track $index) {
-              <div class="mt-1 line-clamp-1 text-xs text-slate-400">
-                {{ detail }}
-              </div>
+              @if (detail(); as detail) {
+                <div class="mt-1 line-clamp-1 text-xs text-slate-400">
+                  {{ detail }}
+                </div>
+              }
             }
           </div>
           <div>

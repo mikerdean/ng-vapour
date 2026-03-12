@@ -1,4 +1,10 @@
-import { assertInInjectionContext, inject } from "@angular/core";
+import {
+  assertInInjectionContext,
+  computed,
+  inject,
+  Injector,
+  runInInjectionContext,
+} from "@angular/core";
 import { Router, type ActivatedRouteSnapshot } from "@angular/router";
 import { parse } from "valibot";
 
@@ -16,21 +22,20 @@ import {
   pageValidator,
 } from "@vapour/validators";
 
-import { getDetails } from "./resolver-utils";
-
 export async function recentlyAddedMoviesResolver(): Promise<GridData> {
   assertInInjectionContext(recentlyAddedMoviesResolver);
 
+  const injector = inject(Injector);
   const moviesService = inject(MoviesService);
 
   const { limits, movies } = await moviesService.getRecentlyAddedMovies();
 
-  return {
+  return runInInjectionContext(injector, () => ({
     currentPage: 1,
     items: movies.map(mapMovieToGridItem),
     limits,
     thumbnailType: "movie",
-  };
+  }));
 }
 
 export async function moviesResolver(
@@ -38,17 +43,18 @@ export async function moviesResolver(
 ): Promise<GridData> {
   assertInInjectionContext(moviesResolver);
 
+  const injector = inject(Injector);
   const moviesService = inject(MoviesService);
   const query = parse(pageValidator, route.queryParams);
 
   const { limits, movies } = await moviesService.getMovies(query.page);
 
-  return {
+  return runInInjectionContext(injector, () => ({
     currentPage: query.page,
     items: movies.map(mapMovieToGridItem),
     limits,
     thumbnailType: "movie",
-  };
+  }));
 }
 
 export async function movieSetsResolver(
@@ -56,17 +62,18 @@ export async function movieSetsResolver(
 ): Promise<GridData> {
   assertInInjectionContext(movieSetsResolver);
 
+  const injector = inject(Injector);
   const moviesService = inject(MoviesService);
   const query = parse(pageValidator, route.queryParams);
 
   const { limits, sets } = await moviesService.getMovieSets(query.page);
 
-  return {
+  return runInInjectionContext(injector, () => ({
     currentPage: query.page,
     items: sets.map(mapMovieSetToGridItem),
     limits,
     thumbnailType: "movieSet",
-  };
+  }));
 }
 
 export async function movieGenresResolver(
@@ -74,17 +81,18 @@ export async function movieGenresResolver(
 ): Promise<GridData> {
   assertInInjectionContext(movieGenresResolver);
 
+  const injector = inject(Injector);
   const moviesService = inject(MoviesService);
   const query = parse(pageValidator, route.queryParams);
 
   const { limits, genres } = await moviesService.getMovieGenres(query.page);
 
-  return {
+  return runInInjectionContext(injector, () => ({
     currentPage: query.page,
     items: genres.map(mapMovieGenreToGridItem),
     limits,
     thumbnailType: "movieGenre",
-  };
+  }));
 }
 
 export async function moviesBySetResolver(
@@ -92,6 +100,7 @@ export async function moviesBySetResolver(
 ): Promise<GridData> {
   assertInInjectionContext(moviesBySetResolver);
 
+  const injector = inject(Injector);
   const moviesService = inject(MoviesService);
   const router = inject(Router);
 
@@ -103,7 +112,7 @@ export async function moviesBySetResolver(
     await router.navigate(["/movies", setdetails.movies[0].movieid]);
   }
 
-  return {
+  return runInInjectionContext(injector, () => ({
     currentPage: 1,
     items: setdetails.movies.map(mapMovieToGridItem),
     limits: {
@@ -112,7 +121,7 @@ export async function moviesBySetResolver(
       total: setdetails.movies.length,
     },
     thumbnailType: "movie",
-  };
+  }));
 }
 
 export async function moviesByGenreResolver(
@@ -120,6 +129,7 @@ export async function moviesByGenreResolver(
 ): Promise<GridData> {
   assertInInjectionContext(moviesByGenreResolver);
 
+  const injector = inject(Injector);
   const moviesService = inject(MoviesService);
   const router = inject(Router);
 
@@ -135,18 +145,21 @@ export async function moviesByGenreResolver(
     await router.navigate(["/movies", movies[0].movieid]);
   }
 
-  return {
+  return runInInjectionContext(injector, () => ({
     currentPage: query.page,
     items: movies.map(mapMovieToGridItem),
     limits,
     thumbnailType: "movie",
-  };
+  }));
 }
 
 function mapMovieToGridItem(movie: VideoDetailsMovie): GridItem {
   return {
     id: movie.movieid,
-    details: getDetails(movie.year, getVideoDuration(movie.runtime ?? 0)),
+    details: [
+      computed(() => movie.year),
+      computed(() => getVideoDuration(movie.runtime ?? 0)),
+    ],
     label: movie.title ?? movie.label,
     played: (movie.playcount ?? 0) > 0,
     thumbnail: movie.art?.poster ?? movie.thumbnail,

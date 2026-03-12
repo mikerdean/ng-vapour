@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   input,
+  type Signal,
 } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
@@ -32,7 +33,7 @@ export type GridItem = {
   url: string;
 };
 
-export type GridItemDetail = string | number | undefined | null;
+export type GridItemDetail = Signal<string | number | undefined | null>;
 
 export type GridQuery = {
   page: number;
