@@ -6,10 +6,7 @@
     </figure>
     <section class="sm:grow">
       <div class="md:max-w-xl">
-        <definition-list
-          label=""
-          [items]="albumDetails()"
-        />
+        <definition-list label="" [items]="albumDetails()" />
 
         @if (album.details.description) {
           <p>{{ album.details.description }}</p>
