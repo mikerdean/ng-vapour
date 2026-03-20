@@ -18,6 +18,7 @@ import {
   recentlyAddedAlbumsResolver,
 } from "@vapour/resolvers/music.resolvers";
 import {
+  getSeasonResolver,
   getTvShowSeasonsResolver,
   getTvShowsInProgressResolver,
   getTvShowsResolver,
@@ -209,6 +210,10 @@ export const routes: Route[] = [
         path: ":tvShowId/seasons/:season",
         loadComponent: () =>
           import("./tv/season.component").then((x) => x.SeasonComponent),
+        resolve: {
+          season: getSeasonResolver,
+        },
+        runGuardsAndResolvers: "paramsOrQueryParamsChange",
       },
       {
         path: "",

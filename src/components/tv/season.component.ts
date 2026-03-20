@@ -2,12 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  inject,
-  resource,
+  input,
 } from "@angular/core";
-import { toSignal } from "@angular/core/rxjs-interop";
-import { ActivatedRoute } from "@angular/router";
-import { parse } from "valibot";
 
 import {
   DefinitionListComponent,
@@ -16,10 +12,14 @@ import {
 import { FanartComponent } from "@vapour/components/images/fanart.component";
 import { ThumbnailComponent } from "@vapour/components/images/thumbnail.component";
 import { EpisodeListComponent } from "@vapour/components/tv/episode-list.component";
-import { TvService } from "@vapour/services/tv.service";
+import { VideoDetailsEpisode, VideoDetailsSeason } from "@vapour/schema/video";
 import { getVideoDuration } from "@vapour/shared/duration";
 import { translate } from "@vapour/signals/translate";
-import { seasonValidator } from "@vapour/validators";
+
+type SeasonDetails = {
+  details: VideoDetailsSeason;
+  episodes: VideoDetailsEpisode[];
+};
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,33 +33,7 @@ import { seasonValidator } from "@vapour/validators";
   templateUrl: "season.component.html",
 })
 export class SeasonComponent {
-  readonly #route = inject(ActivatedRoute);
-  readonly #tvService = inject(TvService);
-
-  readonly params = toSignal(this.#route.params);
-
-  readonly season = resource({
-    loader: async ({ params }) => {
-      const [{ seasons }, { episodes }] = await Promise.all([
-        this.#tvService.getSeasonsByTvShowId(params.tvShowId),
-        this.#tvService.getEpisodeByTvShowSeason(
-          params.tvShowId,
-          params.season,
-        ),
-      ]);
-
-      const season = seasons.find(({ season }) => season === params.season);
-      if (!season) {
-        throw Error("Season not found");
-      }
-
-      return {
-        details: season,
-        episodes,
-      };
-    },
-    params: () => parse(seasonValidator, this.params()),
-  });
+  readonly season = input.required<SeasonDetails>();
 
   readonly translations = translate({
     duration: "common.duration",
@@ -71,10 +45,7 @@ export class SeasonComponent {
   });
 
   readonly seasonDetails = computed<DefinitionListItem[]>(() => {
-    const season = this.season.value();
-    if (!season) {
-      return [];
-    }
+    const season = this.season();
 
     return [
       {

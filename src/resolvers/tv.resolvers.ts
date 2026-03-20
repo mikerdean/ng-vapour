@@ -17,7 +17,11 @@ import {
 } from "@vapour/schema/video";
 import { TvService } from "@vapour/services/tv.service";
 import { translateOne } from "@vapour/signals/translate";
-import { pageValidator, tvShowValidator } from "@vapour/validators";
+import {
+  pageValidator,
+  seasonValidator,
+  tvShowValidator,
+} from "@vapour/validators";
 
 export async function getTvShowsInProgressResolver(): Promise<GridData> {
   assertInInjectionContext(getTvShowsInProgressResolver);
@@ -73,6 +77,28 @@ export async function getTvShowSeasonsResolver(
     limits,
     thumbnailType: "season",
   }));
+}
+
+export async function getSeasonResolver(route: ActivatedRouteSnapshot) {
+  assertInInjectionContext(getSeasonResolver);
+
+  const tvService = inject(TvService);
+  const params = parse(seasonValidator, route.params);
+
+  const [{ seasons }, { episodes }] = await Promise.all([
+    tvService.getSeasonsByTvShowId(params.tvShowId),
+    tvService.getEpisodeByTvShowSeason(params.tvShowId, params.season),
+  ]);
+
+  const season = seasons.find(({ season }) => season === params.season);
+  if (!season) {
+    throw Error("Season not found");
+  }
+
+  return {
+    details: season,
+    episodes,
+  };
 }
 
 function mapTvShowToGridItem(tvshow: VideoDetailsTVShow): GridItem {
