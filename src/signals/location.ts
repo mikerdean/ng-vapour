@@ -1,6 +1,7 @@
 import { Location } from "@angular/common";
 import {
   assertInInjectionContext,
+  effect,
   inject,
   signal,
   type Signal,
@@ -12,8 +13,12 @@ export function locationPath(): Signal<string> {
   const location = inject(Location);
   const locationSignal = signal(location.path());
 
-  location.onUrlChange(() => {
+  const unsubscribe = location.onUrlChange(() => {
     locationSignal.set(location.path());
+  });
+
+  effect((onCleanup) => {
+    onCleanup(unsubscribe);
   });
 
   return locationSignal.asReadonly();
