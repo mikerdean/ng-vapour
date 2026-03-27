@@ -18,9 +18,16 @@ import { FormButtonComponent } from "@vapour/components/form/form-button.compone
 import { FontawesomeIconComponent } from "@vapour/components/images/fontawesome-icon.component";
 import { AppbarComponent } from "@vapour/components/navigation/app-bar.component";
 import { NavigationBarComponent } from "@vapour/components/navigation/navigation-bar.component";
+import {
+  TabsComponent,
+  type TabItem,
+} from "@vapour/components/navigation/tabs.component";
 import { SocketService } from "@vapour/services/socket.service";
+import { locationPath } from "@vapour/signals/location";
 import { translate } from "@vapour/signals/translate";
 import { HostState } from "@vapour/state/host.state";
+
+const emptyTabs: TabItem[] = [];
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,6 +41,7 @@ import { HostState } from "@vapour/state/host.state";
     NavigationBarComponent,
     OrderedListComponent,
     RouterOutlet,
+    TabsComponent,
   ],
   selector: "connection",
   templateUrl: "connection.component.html",
@@ -43,6 +51,8 @@ export class ConnectionComponent {
   readonly #socketService = inject(SocketService);
 
   readonly connectionState = this.#socketService.connectionState;
+
+  readonly path = locationPath();
 
   readonly translations = translate({
     changeHost: "connection.buttons.changeHost",
@@ -59,6 +69,62 @@ export class ConnectionComponent {
     summaryIntroduction: "connection.hostSummary.introduction",
     title: "connection.title",
     unknown: "common.unknown",
+
+    tabsMoviesRecent: "tabs.movies.recent",
+    tabsMoviesTitles: "tabs.movies.titles",
+    tabsMoviesSets: "tabs.movies.sets",
+    tabsMoviesGenres: "tabs.movies.genres",
+    tabsMusicRecent: "tabs.music.recent",
+    tabsMusicArtists: "tabs.music.artists",
+    tabsMusicAlbums: "tabs.music.albums",
+    tabsMusicGenres: "tabs.music.genres",
+    tabsTvRecent: "tabs.tv.recent",
+    tabsTvTitles: "tabs.tv.titles",
+  });
+
+  readonly tabs = computed<TabItem[]>(() => {
+    const segments = this.path().split("/");
+    if (segments.length < 2) {
+      return emptyTabs;
+    }
+
+    switch (segments[1]) {
+      case "addons":
+        return [];
+      case "movies":
+        return [
+          {
+            label: this.translations.tabsMoviesRecent(),
+            path: "/movies/recent",
+          },
+          {
+            label: this.translations.tabsMoviesTitles(),
+            path: "/movies/titles",
+          },
+          { label: this.translations.tabsMoviesSets(), path: "/movies/sets" },
+          {
+            label: this.translations.tabsMoviesGenres(),
+            path: "/movies/genres",
+          },
+        ];
+      case "music":
+        return [
+          { label: this.translations.tabsMusicRecent(), path: "/music/recent" },
+          {
+            label: this.translations.tabsMusicArtists(),
+            path: "/music/artists",
+          },
+          { label: this.translations.tabsMusicAlbums(), path: "/music/albums" },
+          { label: this.translations.tabsMusicGenres(), path: "/music/genres" },
+        ];
+      case "tv":
+        return [
+          { label: this.translations.tabsTvRecent(), path: "/tv/recent" },
+          { label: this.translations.tabsTvTitles(), path: "/tv/titles" },
+        ];
+      default:
+        return emptyTabs;
+    }
   });
 
   readonly errorListItems = computed<string[]>(() => [

@@ -1,8 +1,13 @@
 @switch (connectionState()) {
   @case ("connected") {
-    <app-bar />
-    <router-outlet />
-    <navigation-bar />
+    <div class="flex h-screen flex-col">
+      <app-bar />
+      <tabs [items]="tabs()" />
+      <main class="grow overflow-y-scroll p-3">
+        <router-outlet />
+      </main>
+      <navigation-bar />
+    </div>
   }
 
   @case ("connecting") {

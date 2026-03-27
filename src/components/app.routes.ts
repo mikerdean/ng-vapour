@@ -31,8 +31,6 @@ export const routes: Route[] = [
     canActivate: [socketGuard],
     canActivateChild: [socketGuard],
     path: "movies",
-    loadComponent: () =>
-      import("./movies/movies.component").then((x) => x.MoviesComponent),
     children: [
       {
         path: "recent",
@@ -104,8 +102,6 @@ export const routes: Route[] = [
     canActivate: [socketGuard],
     canActivateChild: [socketGuard],
     path: "music",
-    loadComponent: () =>
-      import("./music/music.component").then((x) => x.MusicComponent),
     children: [
       {
         path: "recent",
@@ -177,7 +173,6 @@ export const routes: Route[] = [
     canActivate: [socketGuard],
     canActivateChild: [socketGuard],
     path: "tv",
-    loadComponent: () => import("./tv/tv.component").then((x) => x.TvComponent),
     children: [
       {
         path: "recent",

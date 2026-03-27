@@ -3,8 +3,6 @@ import {
   Component,
   computed,
   input,
-  OnDestroy,
-  OnInit,
   output,
   signal,
 } from "@angular/core";
@@ -22,7 +20,7 @@ import { AriaRole } from "@vapour/shared/types";
   selector: "fullscreen-message",
   templateUrl: "fullscreen-message.component.html",
 })
-export class FullscreenMessageComponent implements OnInit, OnDestroy {
+export class FullscreenMessageComponent {
   readonly allowClose = input(false);
   readonly background = input(false);
   readonly closing = signal(false);
@@ -37,14 +35,6 @@ export class FullscreenMessageComponent implements OnInit, OnDestroy {
   readonly icons = {
     close: faTimesCircle,
   };
-
-  ngOnInit(): void {
-    document.body.classList.add("overflow-hidden");
-  }
-
-  ngOnDestroy(): void {
-    document.body.classList.remove("overflow-hidden");
-  }
 
   closeModal() {
     if (!this.allowClose()) {
