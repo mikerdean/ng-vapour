@@ -2,7 +2,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     "allowJs": true,
-    "baseUrl": "./src",
     "checkJs": true,
     "declaration": false,
     "experimentalDecorators": true,
@@ -17,7 +16,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "outDir": "./dist/out-tsc",
     "paths": {
-      "@vapour/*": ["./*"]
+      "@vapour/*": ["./src/*"]
     },
     "resolveJsonModule": true,
     "strict": true,
